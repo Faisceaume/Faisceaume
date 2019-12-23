@@ -1,0 +1,83 @@
+<mat-toolbar *ngIf="isAuthentification" fxLayout="row" color="primary">
+
+  <a href="#">
+    <img src="./../../assets/logo.png" alt="Logo Faisceaume" class="logo-header">
+  </a>
+
+  <div fxLayout="row" fxLayoutGap="20px" [ngStyle]="{'padding-left':'10px'}" class="words-button">
+    <div routerLink="/members">Members</div>
+  <!--  <div *ngIf="usersService.isAdministrateur" routerLink="/classement">Classement</div> -->
+    <div *ngIf="usersService.isAdministrateur" routerLink="/categories">Catégories</div>
+    <div *ngIf="usersService.isAdministrateur" routerLink="/users">Users</div>
+    <div routerLink="/tasks">Tasks</div>
+    <div *ngIf="usersService.isAdministrateur" routerLink="/projects">Projetcs</div>
+  </div>
+
+  <div fxLayout="row" [ngStyle]="{'padding-left':'10px'}">
+
+    <div fxLayout="row" *ngIf="showSearchTool">
+
+      <mat-form-field class="example-full-width">
+        <input type="text" placeholder="Recherche" aria-label="Assignee" 
+                matInput [formControl]="myControl" [matAutocomplete]="auto" 
+                (keyup)="onKeyUp($event.target.value)">
+        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+        <mat-option *ngFor="let option of filteredOptions | async" [value]="option" (click)="clickMe()">
+          {{option.name}}
+        </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+      &nbsp;
+      <mat-form-field>
+        <mat-label>Categorie</mat-label>
+        <mat-select [(value)]="categorieSelected" (valueChange)="onSearch()">
+          <mat-option *ngFor="let categorie of categories" [value]="categorie.id">
+                {{categorie.libelle}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      
+      <button mat-icon-button color="accent" (click)="showSearchTool = !showSearchTool" 
+        *ngIf="usersService.isAdministrateur&&showSearchTool"
+        [ngStyle]="{'padding-top':'20px'}"> 
+          <mat-icon>close</mat-icon>          
+      </button>
+
+    </div>
+
+    <div *ngIf="!showSearchTool">
+
+      <button mat-icon-button color="accent" (click)="openDialog()" 
+      *ngIf="isAuthentification && tasksService.tasksSection"> 
+        <mat-icon>note_add</mat-icon>          
+      </button>
+      <button mat-icon-button color="accent" (click)="onShowGrille()" 
+      *ngIf="isAuthentification && tasksService.tasksSection && !tasksService.onsShowGrille"> 
+        <mat-icon>grid_on</mat-icon>          
+      </button>
+      <button mat-icon-button color="accent" (click)="onShowTable()" 
+      *ngIf="isAuthentification && tasksService.tasksSection && tasksService.onsShowGrille"> 
+        <mat-icon>table_chart</mat-icon>          
+      </button>
+
+      <button mat-icon-button color="accent" routerLink="/projects/project_form" 
+      *ngIf="isAuthentification && projectsService.isProjectsSection"> 
+        <mat-icon>note_add</mat-icon>          
+      </button>
+
+      <button mat-icon-button color="accent" (click)="showSearchTool = !showSearchTool" *ngIf="usersService.isAdministrateur"> 
+        <mat-icon>search</mat-icon>          
+      </button>
+
+      <button mat-icon-button color="accent" (click)="onCreateMember()" *ngIf="usersService.isAdministrateur"> 
+        <mat-icon>person_add</mat-icon>          
+      </button>
+
+      <button mat-icon-button color="accent" (click)="seDeconnecter()" *ngIf="isAuthentification"> 
+        <mat-icon>power_settings_new</mat-icon>          
+      </button>
+    </div>
+
+  </div>
+
+</mat-toolbar>

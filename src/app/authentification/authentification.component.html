@@ -1,0 +1,40 @@
+
+<div fxLayoutAlign="center center">
+  <img src="./../../assets/logo.png" alt="Logo Faisceaume" class="logo-header">
+</div>
+
+<div class="mattab">
+
+  <mat-tab-group mat-align-tabs="center">
+    
+    <mat-tab label="Connection">  
+      <form #form2="ngForm" autocomplete="off" (submit)="onSubmit2()" class="text-center">
+        <div fxLayout="column" fxLayoutAlign="start center" class="divlog">
+          <mat-form-field>
+            <input matInput placeholder="Email" type="email" name="email" #email="ngModel" [(ngModel)]="userSingUp.email" id="email" required>
+          </mat-form-field>
+          <mat-form-field>
+            <input matInput placeholder="password" type="password" name="password" #password="ngModel" [(ngModel)]="userSingUp.password" id="password" required>
+          </mat-form-field>
+          <button mat-raised-button color="primary" type="submit" [disabled]="form2.invalid">Valider</button>
+        </div>        
+      </form>
+    </mat-tab>
+
+    <mat-tab label="Inscription"> 
+      <form #form1="ngForm" autocomplete="off" (ngSubmit)="onSubmit(form1)" class="text-center">
+        <div fxLayout="column" fxLayoutAlign="start center" class="divlog">
+          <mat-form-field>
+            <input matInput placeholder="Email " type="email" name="email" #email="ngModel" [(ngModel)]="userRegister.email" id="email" required>
+          </mat-form-field>
+          <mat-form-field>
+            <input matInput placeholder="password" type="password" name="password" #password="ngModel" [(ngModel)]="userRegister.password" id="password" required>
+          </mat-form-field>
+          <button mat-raised-button color="warn" type="submit" [disabled]="form1.invalid">Valider</button>      
+        </div>
+      </form>
+    </mat-tab>
+
+  </mat-tab-group>
+  
+</div>

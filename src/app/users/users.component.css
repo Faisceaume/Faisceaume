@@ -1,0 +1,13 @@
+table {
+    width: 100%;
+  }
+  
+.displayData {
+  margin-top: 15px;
+}
+
+.mat-form-field {
+  color: white;
+  font-size: 14px;
+  width: 100%;
+}

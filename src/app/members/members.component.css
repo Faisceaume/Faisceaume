@@ -1,0 +1,65 @@
+
+.member-grid {
+	cursor: pointer !important;
+	transition: all 0.1s;	
+	opacity: 0.95;	
+	padding: 1px;
+	background-color: #FFF;
+	border-bottom: 1px solid #FFF;
+	-webkit-filter: grayscale(50%);
+  	filter: grayscale(50%);		
+	-webkit-background-size: cover !important; 
+  background-size: cover !important; 
+  min-width: 300px;
+  max-width: 300px;
+  margin: 10px;
+}
+.member-grid:hover {
+	-webkit-filter: grayscale(0%);
+  filter: grayscale(0%);
+	opacity: 1;
+}
+
+h3 {
+  color: #FFF;
+  font-size: 1.3em;
+}
+h4 {
+  color: #eee;
+  font-size: 0.9em;
+}
+
+.members-buttons button {
+  color: #eee;
+	transition: all 0.1s;	
+}
+.members-buttons button:hover {
+  color: #fff;
+}
+
+
+.parent {
+	width: auto;
+	display: flex;
+	flex-direction: row;
+	overflow-x: scroll;
+}
+
+.parent::-webkit-scrollbar {
+    height: 10px;
+    width: 4px
+}
+  
+.parent::-webkit-scrollbar-track {
+	  	background-color: #000;
+}
+
+.parent::-webkit-scrollbar {
+	width: 3px;
+	background-color: #000;
+}
+
+.parent::-webkit-scrollbar-thumb {
+	background-color: #f5f5f5;
+	border: 2px solid #555555;
+}
