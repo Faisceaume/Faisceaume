@@ -34,10 +34,10 @@ export class MemberService {
     this.firestore.collection('members', ref => ref.orderBy('location', 'asc'))
                   .snapshotChanges().subscribe( data => {
       this.members = data.map( e => {
-        const data = e.payload.doc.data() as Member;
+        const anotherData = e.payload.doc.data() as Member;
         return {
           memberid : e.payload.doc.id,
-          ...data
+          ...anotherData
         } as Member;
       });
       this.emitMembersSubject();
@@ -164,6 +164,8 @@ createNewMember(form: NgForm) {
       if (this.beforePhotoUrl !== this.fileUrl) {
         data.picture = this.fileUrl;
       }
+    } else if (!this.beforePhotoUrl && this.fileUrl) {
+      data.picture = this.fileUrl;
     }
 
     batch.update(newsRef,  data);
