@@ -9,9 +9,9 @@ import { SharedModule } from '../shared/shared.module';
 @NgModule({
   declarations: [TasksListComponent],
   imports: [
+    SharedModule,
     CommonModule,
     TasksRoutingModule,
-    SharedModule
   ],
 })
 export class TasksModule { }

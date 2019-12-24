@@ -20,9 +20,9 @@ import { EditCategorieComponent } from './categories/edit-categorie/edit-categor
             EditComponent,
           ],
   imports: [
+    SharedModule,
     CommonModule,
     DragDropModule,
-    SharedModule,
     MembersRoutingModule,
   ]
 })

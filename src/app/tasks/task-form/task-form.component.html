@@ -1,25 +1,25 @@
 <div class="addform" fxLayout="column" [ngStyle]="{'padding':'20px'}" *ngIf="tasksService.formData">
     <h2>Task Dynamic Form</h2>
     <form #form="ngForm" autocomplete="off" (submit)="onSubmit(form)">
-        <input *ngIf="tasksService.toEditForm()" type="hidden" 
-            name="taskid" #taskid="ngModel" 
-            [(ngModel)]="tasksService.formData.taskid" 
+        <input *ngIf="tasksService.toEditForm()" type="hidden"
+            name="taskid" #taskid="ngModel"
+            [(ngModel)]="tasksService.formData.taskid"
             class="form-control">
-        <input *ngIf="tasksService.toEditForm()" type="hidden" 
-            name="memberid" #memberid="ngModel" 
-            [(ngModel)]="tasksService.formData.memberid" 
+        <input *ngIf="tasksService.toEditForm()" type="hidden"
+            name="memberid" #memberid="ngModel"
+            [(ngModel)]="tasksService.formData.memberid"
             class="form-control">
-        <input *ngIf="tasksService.toEditForm()" type="hidden" 
-            name="projectid" #projectid="ngModel" 
-            [(ngModel)]="tasksService.formData.projectid" 
+        <input *ngIf="tasksService.toEditForm()" type="hidden"
+            name="projectid" #projectid="ngModel"
+            [(ngModel)]="tasksService.formData.projectid"
             class="form-control">
 
         <div fxLayout="column">
 
             <mat-form-field *ngIf="usersService.isAdministrateur && !tasksService.toEditForm()" >
                 <mat-label>Member</mat-label>
-                        <mat-select name="memberid" #memberid="ngModel" 
-                            [(ngModel)]="tasksService.formData.memberid" 
+                        <mat-select name="memberid" #memberid="ngModel"
+                            [(ngModel)]="tasksService.formData.memberid"
                             (selectionChange)="onMemberChange($event)">
                                 <mat-option *ngFor="let data of members" [value]="data">
                                     {{data.name}}
@@ -28,30 +28,30 @@
             </mat-form-field>
 
             <mat-form-field *ngIf="!tasksService.toUpdateTaskStatut">
-                <input matInput placeholder="title" 
-                    name="title" #title="ngModel" 
+                <input matInput placeholder="title"
+                    name="title" #title="ngModel"
                     [(ngModel)]="tasksService.formData.title">
             </mat-form-field>
 
             <mat-form-field class="example-full-width">
-                <textarea matInput placeholder="Description" 
-                name="description" #description="ngModel" 
+                <textarea matInput placeholder="Description"
+                name="description" #description="ngModel"
                 [(ngModel)]="tasksService.formData.description"></textarea>
             </mat-form-field>
 
             <mat-form-field *ngIf="!tasksService.toUpdateTaskStatut">
                 <mat-label>Time</mat-label>
-                <mat-select name="time" #time="ngModel" 
+                <mat-select name="time" #time="ngModel"
                     [(ngModel)]="tasksService.formData.time">
                         <mat-option *ngFor="let data of timesTable" [value]="data">
                             {{data}}
                         </mat-option>
                 </mat-select>
             </mat-form-field>
-            
+
             <mat-form-field *ngIf="!tasksService.toUpdateTaskStatut && !tasksService.toEditForm()">
                 <mat-label>Project</mat-label>
-                <mat-select name="projectid" #projectid="ngModel" 
+                <mat-select name="projectid" #projectid="ngModel"
                     [(ngModel)]="tasksService.formData.projectid">
                         <mat-option *ngFor="let data of projectsTable" [value]="data.projectid">
                             {{data.title}}
@@ -59,9 +59,9 @@
                 </mat-select>
             </mat-form-field>
 
-            <mat-form-field *ngIf="!tasksService.toUpdateTaskStatut" hidden>
+            <mat-form-field hidden *ngIf="!tasksService.toUpdateTaskStatut" hidden>
                 <mat-label>Statut</mat-label>
-                <mat-select name="statut" #statut="ngModel" 
+                <mat-select name="statut" #statut="ngModel"
                     [(ngModel)]="tasksService.formData.statut">
                         <mat-option *ngFor="let data of statutsTable" [value]="data">
                             {{data}}
@@ -71,7 +71,7 @@
 
             <mat-form-field *ngIf="tasksService.toUpdateTaskStatut">
                 <mat-label>Time Spent</mat-label>
-                <mat-select name="timestamp" #timestamp="ngModel" 
+                <mat-select name="timestamp" #timestamp="ngModel"
                 [(ngModel)]="tasksService.formData.timestamp">
                         <mat-option *ngFor="let data of timesTable" [value]="data">
                             {{data}}
@@ -81,7 +81,7 @@
 
         </div>
 
-            <button type="submit" 
+            <button type="submit"
                 [class]="tasksService.formData.taskid ? 'btn btn-success': 'btn btn-warning' ">
                 {{tasksService.formData.taskid ? 'Modifier': 'Ajouter'}}</button>
     </form>

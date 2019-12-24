@@ -33,6 +33,7 @@ firebase.initializeApp(environment.firebaseConfig);
     TaskFormComponent,
   ],
   imports: [
+    SharedModule,
     BrowserModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFirestoreModule,
@@ -41,7 +42,6 @@ firebase.initializeApp(environment.firebaseConfig);
     ReactiveFormsModule,
     MembersModule,
     ProjectsModule,
-    SharedModule,
     AppRoutingModule
   ],
   providers: [],

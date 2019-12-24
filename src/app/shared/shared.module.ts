@@ -21,30 +21,7 @@ import { UploadImageComponent } from './upload-image/upload-image.component';
 import { TasksViewComponent } from './tasks-view/tasks-view.component';
 
 
-
-
-@NgModule({
-  declarations: [UploadImageComponent, TasksViewComponent],
-  imports: [CommonModule,
-    FormsModule,
-    FlexLayoutModule,
-    MatSelectModule,
-    MatTabsModule,
-    MatTableModule,
-    MatToolbarModule,
-    MatAutocompleteModule,
-    MatCardModule,
-    MatButtonModule,
-    MatInputModule,
-    MatIconModule,
-    MatBadgeModule,
-    MatFormFieldModule,
-    MatPaginatorModule,
-    MatDialogModule,
-    MatSlideToggleModule,
-    MatSortModule
-  ],
-  exports: [
+const modules = [
     CommonModule,
     FormsModule,
     FlexLayoutModule,
@@ -62,9 +39,18 @@ import { TasksViewComponent } from './tasks-view/tasks-view.component';
     MatPaginatorModule,
     MatDialogModule,
     MatSlideToggleModule,
+    MatSortModule
+];
+
+@NgModule({
+  declarations: [UploadImageComponent, TasksViewComponent],
+  imports: [
+    ...modules,
+  ],
+  exports: [
+    ...modules,
     UploadImageComponent,
     TasksViewComponent,
-    MatSortModule
 ]
 })
 export class SharedModule {
