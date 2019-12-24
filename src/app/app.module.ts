@@ -18,8 +18,8 @@ import { UsersComponent } from './users/users.component';
 import { TaskFormComponent } from './tasks/task-form/task-form.component';
 import { ProjectsModule } from './projects/projects.module';
 
-import { environment } from '../environments/environment';
-// import { environment } from '../environments/environment.prod';
+// import { environment } from '../environments/environment';
+import { environment } from '../environments/environment.prod';
 
 import * as firebase from 'firebase/app';
 import { EditCategorieComponent } from './members/categories/edit-categorie/edit-categorie.component';

@@ -147,6 +147,20 @@ export class TasksService {
     });
   }
 
+  getAllTasksForProject(projectid: string) {
+    this.firestore.collection('projects').doc(projectid)
+    .collection('tasks').snapshotChanges().subscribe( data => {
+      this.allTasks = data.map( e => {
+        const anotherData = e.payload.doc.data() as Task;
+        return {
+          taskid : e.payload.doc.id,
+          ...anotherData
+        } as Task;
+      });
+      this.emitTasksSubject();
+    });
+  }
+
   emitTasksSubject() {
     this.tasksSubject.next(this.allTasks.slice());
   }
