@@ -7,6 +7,7 @@ import { MemberService } from '../members/member.service';
 import { Subject } from 'rxjs';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { UsersService } from '../authentification/users.service';
+import { ProjectsService } from '../projects/projects.service';
 
 @Injectable({
   providedIn: 'root'
@@ -21,8 +22,10 @@ export class TasksService {
   toUpdateTaskStatut: boolean;
   onsShowGrille: boolean;
 
-  constructor(private membersService: MemberService, private firestore: AngularFirestore,
-              private usersService: UsersService) { }
+  constructor(private membersService: MemberService,
+              private firestore: AngularFirestore,
+              private usersService: UsersService,
+              private projectsService: ProjectsService) { }
 
   setFormDataValue(task?: Task): void {
     if (task) {
@@ -55,6 +58,7 @@ export class TasksService {
   createNewTask(form: NgForm) {
     const batch = this.db.batch();
     const donneesFormulaire = form.value;
+    donneesFormulaire.projectid = this.projectsService.currentProject.projectid;
 
     if (!this.usersService.isAdministrateur) {
       donneesFormulaire.memberid = this.membersService.sessionMember.memberid;
@@ -133,10 +137,10 @@ export class TasksService {
   getAllTasks() {
     this.firestore.collection('tasks').snapshotChanges().subscribe( data => {
       this.allTasks = data.map( e => {
-        const data = e.payload.doc.data() as Task;
+        const anotherData = e.payload.doc.data() as Task;
         return {
           taskid : e.payload.doc.id,
-          ...data
+          ...anotherData
         } as Task;
       });
       this.emitTasksSubject();

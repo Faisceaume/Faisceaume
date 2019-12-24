@@ -59,13 +59,10 @@ export class TaskFormComponent implements OnInit, OnDestroy {
     } else if (data.taskid) {
        this.tasksService.updateTask(form);
     } else {
+      form.value.statut = false;
       this.tasksService.createNewTask(form);
     }
     this.matDialogRef.close();
-  }
-
-  onMemberChange(event) {
-    console.log(event.value);
   }
 
   ngOnDestroy(): void {

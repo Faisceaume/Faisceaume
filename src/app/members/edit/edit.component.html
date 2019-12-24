@@ -1,42 +1,43 @@
 <div class="addform" fxLayout="column" [ngStyle]="{'padding':'20px'}">
     <h2>Créer un nouveau membre</h2>
     <form #form="ngForm" autocomplete="off" (submit)="onSubmit(form)">
-        <input *ngIf="memberService.formData ? memberService.formData.memberid : null" type="hidden" 
-            name="memberid" #memberid="ngModel" 
-            [(ngModel)]="memberService.formData.memberid" 
+        <input *ngIf="memberService.formData ? memberService.formData.memberid : null" type="hidden"
+            name="memberid" #memberid="ngModel"
+            [(ngModel)]="memberService.formData.memberid"
             class="form-control">
-        <input *ngIf="memberService.formData ? memberService.formData.memberid : null" type="hidden" 
-            name="picture" #picture="ngModel" 
-            [(ngModel)]="memberService.formData.picture" 
+        <input *ngIf="memberService.formData ? memberService.formData.memberid : null" type="hidden"
+            name="picture" #picture="ngModel"
+            [(ngModel)]="memberService.formData.picture"
             class="form-control">
         <div *ngIf="memberService.singleUser">
             <mat-form-field>
-                <input matInput placeholder="email" 
-                    name="email" #email="ngModel" 
+                <input matInput placeholder="email"
+                    name="email" #email="ngModel"
                     [(ngModel)]="memberService.singleUser.email">
             </mat-form-field>
         </div>
         <div fxLayout="column">
             <mat-form-field>
-                <input matInput placeholder="Nom du nouveau membre" 
-                    name="name" #name="ngModel" 
+                <input matInput placeholder="Nom du nouveau membre"
+                    name="name" #name="ngModel"
                     [(ngModel)]="memberService.formData.name">
             </mat-form-field>
             <mat-form-field>
                 <mat-label>Categorie</mat-label>
-                <mat-select name="categoryid" #categoryid="ngModel" 
+                <mat-select name="categoryid" #categoryid="ngModel"
                     [(ngModel)]="memberService.formData.categoryid">
+                    <mat-option (click)="onCreateCategorie()">New</mat-option>
                         <mat-option *ngFor="let categorie of categories" [value]="categorie.id">
                             {{categorie.libelle}}
                         </mat-option>
                 </mat-select>
-            </mat-form-field>        
+            </mat-form-field>
         </div>
 
         <app-upload-image *ngIf="!memberService.fileUrl"></app-upload-image>
-        
-        <button type="submit" 
-            [class]="memberService.formData.memberid ? 'btn btn-success': 'btn btn-warning' " 
+
+        <button type="submit"
+            [class]="memberService.formData.memberid ? 'btn btn-success': 'btn btn-warning' "
             [disabled]="!memberService.fileUrl">{{memberService.formData.memberid ? 'Modifier': 'Ajouter'}}</button>
     </form>
 

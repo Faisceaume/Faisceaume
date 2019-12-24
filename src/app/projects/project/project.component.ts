@@ -9,6 +9,8 @@ import { TasksService } from 'src/app/tasks/tasks.service';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import * as firebase from 'firebase/app';
 import 'firebase/storage';
+import { MatDialogConfig, MatDialog } from '@angular/material';
+import { TaskFormComponent } from 'src/app/tasks/task-form/task-form.component';
 
 @Component({
   selector: 'app-project',
@@ -21,9 +23,11 @@ export class ProjectComponent implements OnInit {
   projectTasks: Task[];
 
 
-  constructor(private projectsService: ProjectsService, private membersService: MemberService,
+  constructor(private projectsService: ProjectsService,
+              private membersService: MemberService,
               private router: Router, private firestore: AngularFirestore,
-              private tasksService: TasksService) { }
+              private tasksService: TasksService,
+              private matDialog: MatDialog) { }
 
   ngOnInit() {
     this.projectTasks = this.tasksService.getTasksForProject(this.project.projectid);
@@ -58,7 +62,6 @@ export class ProjectComponent implements OnInit {
     this.projectTasks.forEach(
       (item) => {
         item.location = i;
-
         // mise à jour  dans la collection racine
         db.collection('tasks').doc(item.taskid).update(item);
 
@@ -74,6 +77,19 @@ export class ProjectComponent implements OnInit {
         i++;
       }
     );
+  }
+
+  onCreateTask() {
+    this.projectsService.setCurrentProject(this.project);
+    this.openDialog();
+  }
+
+  openDialog() {
+    this.tasksService.resetForm();
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = '60%';
+    this.matDialog.open(TaskFormComponent, dialogConfig);
   }
 
 }

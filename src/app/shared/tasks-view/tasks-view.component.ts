@@ -19,8 +19,8 @@ export class TasksViewComponent implements OnInit {
 
   @Input() tasksList: Task[];
   dataSource: MatTableDataSource<Task>;
-  displayedColumns: string[] = ['created_at', 'title', 'description',
-  'statut', 'time', 'action', 'member'];
+  displayedColumns: string[] = ['created_at', 'title', 'description', 'time',
+  'action', 'member', 'statut'];
 
   @ViewChild(MatSort, {static: true}) sort: MatSort;
 
@@ -33,6 +33,7 @@ export class TasksViewComponent implements OnInit {
   ngOnInit() {
     this.dataSource = new MatTableDataSource<Task>(this.tasksList);
     this.dataSource.sort = this.sort;
+    console.log(this.tasksList);
   }
 
   onEditMemberSection(task: Task) {

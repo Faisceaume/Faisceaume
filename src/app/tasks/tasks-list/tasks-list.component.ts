@@ -43,7 +43,6 @@ export class TasksListComponent implements OnInit, OnDestroy {
     this.subscriptionTask = this.tasksService.tasksSubject.subscribe(data => {
       this.tasks = data;
     });
-
   }
 
   onEdit(task: Task) {

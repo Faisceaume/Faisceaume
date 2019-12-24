@@ -19,6 +19,7 @@ import {MatDialogModule} from '@angular/material/dialog';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import { UploadImageComponent } from './upload-image/upload-image.component';
 import { TasksViewComponent } from './tasks-view/tasks-view.component';
+import {MatTooltipModule} from '@angular/material/tooltip';
 
 
 const modules = [
@@ -39,7 +40,8 @@ const modules = [
     MatPaginatorModule,
     MatDialogModule,
     MatSlideToggleModule,
-    MatSortModule
+    MatSortModule,
+    MatTooltipModule
 ];
 
 @NgModule({

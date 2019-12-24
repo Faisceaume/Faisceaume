@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { CategoriesService } from '../categories.service';
 import { Location } from '@angular/common';
+import { MatDialogRef } from '@angular/material';
 
 @Component({
   selector: 'app-edit-categorie',
@@ -11,7 +12,7 @@ import { Location } from '@angular/common';
 export class EditCategorieComponent implements OnInit {
 
   constructor(public categoriesService: CategoriesService,
-              private location: Location) { }
+              public matDialogRef: MatDialogRef<EditCategorieComponent>) { }
 
   ngOnInit() {
   }
@@ -26,7 +27,7 @@ export class EditCategorieComponent implements OnInit {
     } else {
       this.categoriesService.onSubmit(form);
     }
-    this.location.back();
+    this.matDialogRef.close();
   }
 
 }
