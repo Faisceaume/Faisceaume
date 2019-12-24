@@ -12,10 +12,10 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 @NgModule({
   declarations: [ProjectsListComponent, ProjectFormComponent, ProjectComponent],
   imports: [
+    SharedModule,
     CommonModule,
     ProjectsRoutingModule,
     DragDropModule,
-    SharedModule
   ]
 })
 export class ProjectsModule { }

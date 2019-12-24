@@ -1,9 +1,0 @@
-<div class="container">
-        <div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
-                <div class="example-box" *ngFor="let membere of members" cdkDrag>
-                  {{membere.name}}
-                  <img *cdkDragPreview [src]="membere.picture">
-                </div>
-         </div>
-         <button mat-raised-button color="warn" (click)="onRang()">Valider</button>
-</div>
