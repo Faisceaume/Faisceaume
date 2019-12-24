@@ -1,25 +1,25 @@
 <div class="addform" fxLayout="column" [ngStyle]="{'padding':'20px'}">
-    <h2>Project Form</h2>
+    <h2>New Project</h2>
     <form #form="ngForm" autocomplete="off" (submit)="onSubmit(form)">
-        <input *ngIf="projectsService.formData ? projectsService.formData.projectid : null" type="hidden" 
-            name="projectid" #projectid="ngModel" 
-            [(ngModel)]="projectsService.formData.projectid" 
+        <input *ngIf="projectsService.formData ? projectsService.formData.projectid : null" type="hidden"
+            name="projectid" #projectid="ngModel"
+            [(ngModel)]="projectsService.formData.projectid"
             class="form-control">
-        <input *ngIf="projectsService.formData ? projectsService.formData.projectid : null" type="hidden" 
-            name="picture" #picture="ngModel" 
-            [(ngModel)]="projectsService.formData.picture" 
+        <input *ngIf="projectsService.formData ? projectsService.formData.projectid : null" type="hidden"
+            name="picture" #picture="ngModel"
+            [(ngModel)]="projectsService.formData.picture"
             class="form-control">
         <div fxLayout="column">
             <mat-form-field>
-                <input matInput placeholder="project title" 
-                    name="title" #title="ngModel" 
+                <input matInput placeholder="project title"
+                    name="title" #title="ngModel"
                     [(ngModel)]="projectsService.formData.title">
-            </mat-form-field>      
+            </mat-form-field>
         </div>
 
         <app-upload-image *ngIf="!memberService.fileUrl"></app-upload-image>
-            <button type="submit" 
-                [class]="projectsService.formData.projectid ? 'btn btn-success': 'btn btn-warning' " 
+            <button type="submit"
+                [class]="projectsService.formData.projectid ? 'btn btn-success': 'btn btn-warning' "
                 [disabled]="!memberService.fileUrl">{{projectsService.formData.projectid ? 'Modifier': 'Ajouter'}}</button>
     </form>
 
