@@ -47,11 +47,15 @@ export class EditComponent implements OnInit, OnDestroy {
   onSubmit(form: NgForm) {
     if (form.value.memberid) {
       this.memberService.updatePersonnageData(form);
+      console.log(form.value);
+      console.log('Updated section');
     } else {
+      console.log('created section');
+      console.log(form.value);
       this.memberService.createNewMember(form);
     }
-    this.memberService.resetSingleUser();
-    this.router.navigate(['']);
+    // this.memberService.resetSingleUser();
+    // this.router.navigate(['']);
   }
 
   onDeleteDrapImage() {

@@ -12,4 +12,7 @@
                     <p style="text-align: center"> <strong>Drop Your Images Here</strong></p>
             </div>
         </div>
+        <ul *ngIf="erreursMessages">
+          <li *ngFor='let erreur of erreursMessages' class="erreurMessage"> {{ erreur }} </li>
+        </ul>
 </div>

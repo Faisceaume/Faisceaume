@@ -11,11 +11,11 @@ export class UploadImageComponent implements OnInit {
   fileIsOK = true;
   fileIsUploading = false;
   fileUploaded = false;
+  erreursMessages: string[];
 
   constructor(private memberService: MemberService) { }
 
   ngOnInit() {}
-
 
   onUploadFile(file: File) {
     this.fileIsUploading = true;
@@ -48,6 +48,14 @@ export class UploadImageComponent implements OnInit {
        this.fileIsOK = true;
       } else {
         this.fileIsOK = false;
+      }
+     this.erreursMessages = [];
+     if (file.size >= 30000) {
+        this.erreursMessages.push('Le poids de l\'image doit etre inférieur à 30 000 octets');
+      }
+
+     if (dimension >= 800) {
+        this.erreursMessages.push('la dimension de l\'image doit etre inférieur à 800px');
       }
     }
   );
