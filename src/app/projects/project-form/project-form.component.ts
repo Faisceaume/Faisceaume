@@ -10,7 +10,8 @@ import { NgForm } from '@angular/forms';
 })
 export class ProjectFormComponent implements OnInit {
 
-  constructor(public projectsService: ProjectsService, public memberService: MemberService) { }
+  constructor(public projectsService: ProjectsService,
+              public memberService: MemberService) { }
 
   ngOnInit() {
     if (!this.projectsService.formData) {

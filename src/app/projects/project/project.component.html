@@ -42,11 +42,11 @@
     cdkDropList
     cdkDropListOrientation="vertical"
     (cdkDropListDropped)="drop($event)"
-  >
+    *ngIf="projectTasks">
     <div
       class="inner-card"
       cdkDrag
-      *ngFor="let task of projectTasks; let i = index"
+      *ngFor="let task of projectTasks;"
     >
       <mat-card> {{ task.title }} <img class="mat-card-vignette" mat-card-image src="{{ task.memberpicture }}"></mat-card>
     </div>

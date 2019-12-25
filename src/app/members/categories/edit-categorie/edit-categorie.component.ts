@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { CategoriesService } from '../categories.service';
-import { Location } from '@angular/common';
 import { MatDialogRef } from '@angular/material';
 
 @Component({

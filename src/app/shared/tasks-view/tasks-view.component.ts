@@ -33,7 +33,6 @@ export class TasksViewComponent implements OnInit {
   ngOnInit() {
     this.dataSource = new MatTableDataSource<Task>(this.tasksList);
     this.dataSource.sort = this.sort;
-    console.log(this.tasksList);
   }
 
   onEditMemberSection(task: Task) {

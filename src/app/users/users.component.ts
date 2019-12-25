@@ -24,12 +24,10 @@ export class UsersComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-   this.usersSouscription = this.usersService.usersSubject.subscribe(
-      (items: any[]) => {
-        this.dataSource = new MatTableDataSource<Users>(items);
-      }
-    );
-   this.usersService.emitUsersSubject();
+   this.usersService.getAllUsers();
+   this.usersSouscription = this.usersService.usersSubject.subscribe(data => {
+    this.dataSource = new MatTableDataSource<Users>(data);
+   });
   }
 
   applyFilter(filterValue: string) {
@@ -57,9 +55,8 @@ export class UsersComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.usersService.resetLocalData();
+    // this.usersService.resetLocalData();
     this.usersSouscription.unsubscribe();
-    this.usersService.initialLocalData();
   }
 
 }

@@ -37,8 +37,6 @@ export class MembersComponent implements OnInit, OnDestroy {
               public usersService: UsersService) { }
 
   ngOnInit() {
-    this.usersService.resetLocalData();
-    this.usersService.initialLocalData();
     this.memberService.resetForm();
 
     this.categorieService.getAllCategories();

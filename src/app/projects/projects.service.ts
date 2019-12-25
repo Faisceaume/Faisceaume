@@ -8,7 +8,6 @@ import { MemberService } from '../members/member.service';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { Task } from '../tasks/task';
 
 @Injectable({
   providedIn: 'root'
@@ -23,8 +22,6 @@ export class ProjectsService {
   projectsSubject = new Subject<any[]>();
   projects: Project[];
   currentProject: Project;
- // projectsWithTasksSubject = new Subject<any[]>();
- // projectsWithTasks: Project[];
 
   constructor(private membersService: MemberService,
               private router: Router, private firestore: AngularFirestore) { }
@@ -143,9 +140,5 @@ export class ProjectsService {
       this.currentProject = project;
     }
   }
-
- // emitProjectsWithTasksSubject() {
- //   this.projectsWithTasksSubject.next(this.projectsWithTasks.slice());
- // }
 
 }

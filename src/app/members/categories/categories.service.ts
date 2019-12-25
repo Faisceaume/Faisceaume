@@ -24,9 +24,10 @@ export class CategoriesService {
   getAllCategories() {
     this.firestore.collection('categories').snapshotChanges().subscribe( data => {
       this.categories = data.map( e => {
+        const anotherData = e.payload.doc.data() as Categorie;
         return {
           id : e.payload.doc.id,
-          ...e.payload.doc.data()
+          ...anotherData
         } as Categorie;
       });
       this.emitCategoriesSubject();
