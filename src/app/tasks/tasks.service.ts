@@ -58,7 +58,10 @@ export class TasksService {
   createNewTask(form: NgForm) {
     const batch = this.db.batch();
     const donneesFormulaire = form.value;
-    donneesFormulaire.projectid = this.projectsService.currentProject.projectid;
+
+    if (this.projectsService.currentProject) {
+      donneesFormulaire.projectid = this.projectsService.currentProject.projectid;
+    }
 
     if (!this.usersService.isAdministrateur) {
       donneesFormulaire.memberid = this.membersService.sessionMember.memberid;
@@ -68,7 +71,6 @@ export class TasksService {
     const nextDocument1 = this.db.collection('tasks').doc(nextId);
 
     let data = Object.assign({}, donneesFormulaire);
-    // data.createdat = new Date().toLocaleString();
 
     data = Object.assign(data, {taskid: nextId, createdat: new Date().toLocaleString(),
                           location: 0});
@@ -189,23 +191,6 @@ export class TasksService {
       return false;
     }
   }
-
-/*
-  getTasksForProject(idProject: string) {
-    const data: Task[] = [];
-    this.db.collection('projects').doc(idProject).collection('tasks').orderBy('location', 'asc')
-    .onSnapshot((querySnapshot) => {
-    querySnapshot.forEach((doc) => {
-      data.push(
-        {
-          taskid : doc.id,
-          ...doc.data()
-        } as Task);
-    });
-  });
-    return data;
-}
-*/
 
 getTasksForMember(idMember: string) {
   if (idMember) {

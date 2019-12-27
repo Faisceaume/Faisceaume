@@ -47,8 +47,8 @@
                         </mat-option>
                 </mat-select>
             </mat-form-field>
-<!--
-            <mat-form-field *ngIf="!tasksService.toUpdateTaskStatut && !tasksService.toEditForm()">
+
+            <mat-form-field *ngIf="!tasksService.toUpdateTaskStatut && !tasksService.toEditForm() && !projetcsService.currentProject">
                 <mat-label>Project</mat-label>
                 <mat-select name="projectid" #projectid="ngModel"
                     [(ngModel)]="tasksService.formData.projectid">
@@ -57,7 +57,7 @@
                         </mat-option>
                 </mat-select>
             </mat-form-field>
--->
+
             <mat-form-field *ngIf="tasksService.toUpdateTaskStatut">
                 <mat-label>Time Spent</mat-label>
                 <mat-select name="timestamp" #timestamp="ngModel"

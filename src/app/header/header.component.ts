@@ -131,6 +131,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   openDialog() {
     this.tasksService.resetForm();
+    this.projectsService.setCurrentProject();
     const dialogConfig = new MatDialogConfig();
     dialogConfig.autoFocus = true;
     dialogConfig.width = '60%';

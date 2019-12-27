@@ -27,7 +27,7 @@ export class TaskFormComponent implements OnInit, OnDestroy {
               public matDialogRef: MatDialogRef<TaskFormComponent>,
               private memebersService: MemberService,
               public usersService: UsersService,
-              private projetcsService: ProjectsService) { }
+              public projetcsService: ProjectsService) { }
 
   ngOnInit() {
     this.projetcsService.getAllProjects();
@@ -61,6 +61,7 @@ export class TaskFormComponent implements OnInit, OnDestroy {
       form.value.statut = false;
       this.tasksService.createNewTask(form);
     }
+    this.projetcsService.setCurrentProject();
     this.matDialogRef.close();
   }
 

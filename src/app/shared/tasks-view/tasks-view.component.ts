@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, OnDestroy } from '@angular/core';
 import { Task } from '../../tasks/task';
 import { MatTableDataSource } from '@angular/material';
 import {MatSort} from '@angular/material/sort';
@@ -9,15 +9,17 @@ import {Member} from '../../members/member';
 import { Router } from '@angular/router';
 import { MatDialog, MatDialogConfig } from '@angular/material';
 import { TaskFormComponent } from '../../tasks/task-form/task-form.component';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-tasks-view',
   templateUrl: './tasks-view.component.html',
   styleUrls: ['./tasks-view.component.css']
 })
-export class TasksViewComponent implements OnInit {
+export class TasksViewComponent implements OnInit, OnDestroy {
 
-  @Input() tasksList: Task[];
+  @Input() forDisplay: boolean;
+  subscription: Subscription;
   dataSource: MatTableDataSource<Task>;
   displayedColumns: string[] = ['created_at', 'title', 'description', 'time',
   'action', 'member', 'statut'];
@@ -31,8 +33,17 @@ export class TasksViewComponent implements OnInit {
               private tasksService: TasksService) { }
 
   ngOnInit() {
-    this.dataSource = new MatTableDataSource<Task>(this.tasksList);
-    this.dataSource.sort = this.sort;
+
+    if ( this.usersService.isAdministrateur ) {
+      this.tasksService.getAllTasks();
+    } else if (this.membersService.sessionMember) {
+      this.tasksService.getTasksForMember(this.membersService.sessionMember.memberid);
+    }
+
+    this.subscription = this.tasksService.tasksSubject.subscribe(data => {
+      this.dataSource = new MatTableDataSource<Task>(data);
+      this.dataSource.sort = this.sort;
+    });
   }
 
   onEditMemberSection(task: Task) {
@@ -59,4 +70,7 @@ export class TasksViewComponent implements OnInit {
     this.matDialog.open(TaskFormComponent, dialogConfig);
   }
 
+  ngOnDestroy(): void {
+   this.subscription.unsubscribe();
+  }
 }
