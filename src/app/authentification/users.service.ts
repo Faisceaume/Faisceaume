@@ -3,51 +3,34 @@ import * as firebase from 'firebase/app';
 import {Users} from './users';
 import 'firebase/firestore';
 import { Subject } from 'rxjs';
+import { AngularFirestore } from '@angular/fire/firestore';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UsersService {
 
-  localData: Users[];
+  users: Users[];
   usersSubject = new Subject<any[]>();
   isAdministrateur: boolean;
   db = firebase.firestore();
 
 
-  constructor() {
-    this.localData = this.getAllUsers();
-  }
+  constructor(private firestore: AngularFirestore) {}
 
-  getAllUsers()   {
-    const users: Users[] = [];
-    this.db.collection('users').onSnapshot((querySnapshot) => {
-    querySnapshot.forEach((doc) => {
-      users.push(
-        {
-          userid : doc.id,
-          ...doc.data()
-        } as Users);
+  getAllUsers() {
+    this.firestore.collection('users')
+                  .snapshotChanges().subscribe( data => {
+      this.users = data.map( e => {
+        const anotherData = e.payload.doc.data() as Users;
+        return {
+          memberid : e.payload.doc.id,
+          ...anotherData
+        } as Users;
+      });
+      this.emitUsersSubject();
     });
-  });
-    return users;
-}
-
-getAllUsersSynchrone()   {
-  const users: Users[] = [];
-  this.db.collection('users').onSnapshot((querySnapshot) => {
-  querySnapshot.forEach((doc) => {
-    users.push(
-      {
-        userid : doc.id,
-        ...doc.data()
-      } as Users);
-  });
-});
-  return new Promise<Users[]>((resolve, reject) => {
-  resolve(users);
-});
-}
+  }
 
   getSingleUser(email: string) {
     return new Promise<Users>((resolve, reject) => {
@@ -67,15 +50,7 @@ getAllUsersSynchrone()   {
     this.isAdministrateur = value;
   }
 
-  resetLocalData() {
-    this.localData = [];
-  }
-
-  initialLocalData() {
-    this.localData = this.getAllUsers();
-  }
-
   emitUsersSubject() {
-    this.usersSubject.next(this.localData.slice());
+    this.usersSubject.next(this.users.slice());
   }
 }

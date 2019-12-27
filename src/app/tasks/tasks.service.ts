@@ -7,6 +7,7 @@ import { MemberService } from '../members/member.service';
 import { Subject } from 'rxjs';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { UsersService } from '../authentification/users.service';
+import { ProjectsService } from '../projects/projects.service';
 
 @Injectable({
   providedIn: 'root'
@@ -21,8 +22,10 @@ export class TasksService {
   toUpdateTaskStatut: boolean;
   onsShowGrille: boolean;
 
-  constructor(private membersService: MemberService, private firestore: AngularFirestore,
-              private usersService: UsersService) { }
+  constructor(private membersService: MemberService,
+              private firestore: AngularFirestore,
+              private usersService: UsersService,
+              private projectsService: ProjectsService) { }
 
   setFormDataValue(task?: Task): void {
     if (task) {
@@ -55,6 +58,7 @@ export class TasksService {
   createNewTask(form: NgForm) {
     const batch = this.db.batch();
     const donneesFormulaire = form.value;
+    donneesFormulaire.projectid = this.projectsService.currentProject.projectid;
 
     if (!this.usersService.isAdministrateur) {
       donneesFormulaire.memberid = this.membersService.sessionMember.memberid;
@@ -74,6 +78,7 @@ export class TasksService {
     const nextDocument3 = this.db.collection('projects')
                         .doc(data.projectid).collection('tasks')
                         .doc(nextId);
+
     batch.set(nextDocument1, data);
     batch.set(nextDocument2, data);
     batch.set(nextDocument3, data);
@@ -109,8 +114,8 @@ export class TasksService {
     this.resetForm();
   }
 
-  updateTaskStatut(form: NgForm) {
 
+  updateTaskStatut(form: NgForm) {
     const formData = form.value;
 
     const db = firebase.firestore();
@@ -130,30 +135,52 @@ export class TasksService {
     .catch((error) => { console.error('Error Updating document: ', error); });
   }
 
+
   getAllTasks() {
-    this.firestore.collection('tasks').snapshotChanges().subscribe( data => {
+    this.firestore.collection('tasks', ref => ref.orderBy('location', 'asc'))
+    .snapshotChanges().subscribe( data => {
       this.allTasks = data.map( e => {
-        const data = e.payload.doc.data() as Task;
+        const anotherData = e.payload.doc.data() as Task;
         return {
           taskid : e.payload.doc.id,
-          ...data
+          ...anotherData
         } as Task;
       });
       this.emitTasksSubject();
     });
   }
 
+
+  getAllTasksForProject(projectid: string) {
+    this.firestore.collection('projects', ref => ref.orderBy('location', 'asc'))
+    .doc(projectid)
+    .collection('tasks').snapshotChanges().subscribe( data => {
+      this.allTasks = data.map( e => {
+        const anotherData = e.payload.doc.data() as Task;
+        return {
+          taskid : e.payload.doc.id,
+          ...anotherData
+        } as Task;
+      });
+      this.emitTasksSubject();
+    });
+  }
+
+
   emitTasksSubject() {
     this.tasksSubject.next(this.allTasks.slice());
   }
+
 
   setTasksSectionValue(bool: boolean) {
     this.tasksSection = bool;
   }
 
+
   setToUpdateTaskStatut(bool: boolean) {
     this.toUpdateTaskStatut = bool;
   }
+
 
   toEditForm(): boolean {
     if (this.formData) {
@@ -163,6 +190,7 @@ export class TasksService {
     }
   }
 
+/*
   getTasksForProject(idProject: string) {
     const data: Task[] = [];
     this.db.collection('projects').doc(idProject).collection('tasks').orderBy('location', 'asc')
@@ -177,10 +205,12 @@ export class TasksService {
   });
     return data;
 }
+*/
 
 getTasksForMember(idMember: string) {
   if (idMember) {
-    this.firestore.collection('members').doc(idMember).collection('tasks')
+    this.firestore.collection('members', ref => ref.orderBy('location', 'asc'))
+    .doc(idMember).collection('tasks')
     .snapshotChanges().subscribe( data => {
        this.allTasks = data.map( e => {
          return {

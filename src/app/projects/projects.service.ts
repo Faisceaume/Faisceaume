@@ -8,7 +8,6 @@ import { MemberService } from '../members/member.service';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { Task } from '../tasks/task';
 
 @Injectable({
   providedIn: 'root'
@@ -20,10 +19,9 @@ export class ProjectsService {
   formData: Project;
   isProjectsSection: boolean;
 
- projectsSubject = new Subject<any[]>();
- projects: Project[];
- projectsWithTasksSubject = new Subject<any[]>();
- projectsWithTasks: Project[];
+  projectsSubject = new Subject<any[]>();
+  projects: Project[];
+  currentProject: Project;
 
   constructor(private membersService: MemberService,
               private router: Router, private firestore: AngularFirestore) { }
@@ -98,10 +96,10 @@ export class ProjectsService {
     this.firestore.collection('projects')
                   .snapshotChanges().subscribe( data => {
       this.projects = data.map( e => {
-        const data = e.payload.doc.data() as Project;
+        const anotherData = e.payload.doc.data() as Project;
         return {
           projectid : e.payload.doc.id,
-          ...data
+          ...anotherData
         } as Project;
       });
       this.emitProjectsSubject();
@@ -137,8 +135,10 @@ export class ProjectsService {
     this.projectsSubject.next(this.projects.slice());
   }
 
-  emitProjectsWithTasksSubject() {
-    this.projectsWithTasksSubject.next(this.projectsWithTasks.slice());
+  setCurrentProject(project?: Project) {
+    if (project) {
+      this.currentProject = project;
+    }
   }
 
 }

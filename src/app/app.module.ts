@@ -22,6 +22,7 @@ import { ProjectsModule } from './projects/projects.module';
 import { environment } from '../environments/environment.prod';
 
 import * as firebase from 'firebase/app';
+import { EditCategorieComponent } from './members/categories/edit-categorie/edit-categorie.component';
 firebase.initializeApp(environment.firebaseConfig);
 
 @NgModule({
@@ -46,6 +47,6 @@ firebase.initializeApp(environment.firebaseConfig);
   ],
   providers: [],
   bootstrap: [AppComponent],
-  entryComponents: [TaskFormComponent]
+  entryComponents: [TaskFormComponent, EditCategorieComponent]
 })
 export class AppModule { }

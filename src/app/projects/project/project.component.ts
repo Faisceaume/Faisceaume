@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { Project } from '../project';
 import { ProjectsService } from '../projects.service';
 import { MemberService } from 'src/app/members/member.service';
@@ -9,24 +9,35 @@ import { TasksService } from 'src/app/tasks/tasks.service';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import * as firebase from 'firebase/app';
 import 'firebase/storage';
+import { MatDialogConfig, MatDialog } from '@angular/material';
+import { TaskFormComponent } from 'src/app/tasks/task-form/task-form.component';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-project',
   templateUrl: './project.component.html',
   styleUrls: ['./project.component.css']
 })
-export class ProjectComponent implements OnInit {
+export class ProjectComponent implements OnInit, OnDestroy {
 
   @Input() project: Project;
   projectTasks: Task[];
+  subscription: Subscription;
 
 
-  constructor(private projectsService: ProjectsService, private membersService: MemberService,
+  constructor(private projectsService: ProjectsService,
+              private membersService: MemberService,
               private router: Router, private firestore: AngularFirestore,
-              private tasksService: TasksService) { }
+              private tasksService: TasksService,
+              private matDialog: MatDialog) { }
 
   ngOnInit() {
-    this.projectTasks = this.tasksService.getTasksForProject(this.project.projectid);
+    this.tasksService.getAllTasksForProject(this.project.projectid);
+    this.subscription = this.tasksService.tasksSubject.subscribe(
+      data => {
+        this.projectTasks = data;
+      }
+    );
   }
 
 
@@ -47,8 +58,6 @@ export class ProjectComponent implements OnInit {
   drop(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.projectTasks, event.previousIndex, event.currentIndex);
     this.onRang();
-    this.projectTasks = [];
-    this.projectTasks = this.tasksService.getTasksForProject(this.project.projectid);
   }
 
   onRang() {
@@ -58,7 +67,6 @@ export class ProjectComponent implements OnInit {
     this.projectTasks.forEach(
       (item) => {
         item.location = i;
-
         // mise à jour  dans la collection racine
         db.collection('tasks').doc(item.taskid).update(item);
 
@@ -74,6 +82,23 @@ export class ProjectComponent implements OnInit {
         i++;
       }
     );
+  }
+
+  onCreateTask() {
+    this.projectsService.setCurrentProject(this.project);
+    this.openDialog();
+  }
+
+  openDialog() {
+    this.tasksService.resetForm();
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = '60%';
+    this.matDialog.open(TaskFormComponent, dialogConfig);
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
 }

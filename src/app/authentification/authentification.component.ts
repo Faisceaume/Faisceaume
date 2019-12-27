@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthentificationService } from './authentification.service';
-import { MemberService } from '../members/member.service';
-import { Member } from '../members/member';
 import { NgForm } from '@angular/forms';
 
 @Component({
@@ -22,8 +20,7 @@ export class AuthentificationComponent implements OnInit {
     password : ''
   };
 
-  constructor(private authentificationService: AuthentificationService,
-              private memberService: MemberService) { }
+  constructor(private authentificationService: AuthentificationService) { }
 
   ngOnInit() {
 

@@ -1,7 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ProjectsService } from '../projects.service';
 import { Project } from '../project';
-import { TasksService } from '../../tasks/tasks.service';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -16,8 +15,7 @@ export class ProjectsListComponent implements OnInit, OnDestroy {
   subscriptionProject: Subscription;
 
 
-  constructor(private projectsService: ProjectsService,
-              private tasksService: TasksService) { }
+  constructor(private projectsService: ProjectsService) { }
 
   ngOnInit() {
     this.projectsService.setIsProjectsSectionValue(true);

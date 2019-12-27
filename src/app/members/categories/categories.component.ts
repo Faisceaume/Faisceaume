@@ -1,6 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { AngularFirestore } from '@angular/fire/firestore';
 import { CategoriesService } from './categories.service';
 import { Categorie} from './categorie';
 import { Router } from '@angular/router';
@@ -16,8 +15,7 @@ export class CategoriesComponent implements OnInit, OnDestroy {
 categories: Categorie[];
 subscriptionCategorie: Subscription;
 
-  constructor(private firestore: AngularFirestore,
-              private categoriesService: CategoriesService,
+  constructor(private categoriesService: CategoriesService,
               private router: Router) { }
 
   ngOnInit() {

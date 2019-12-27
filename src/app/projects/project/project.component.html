@@ -9,11 +9,11 @@
       <div *ngFor="let task of projectTasks">{{ task.title }}</div>
     </mat-card-content>
     <mat-card-actions>
-      <button mat-icon-button color="accent" (click)="onEdit(project)"> 
-        <mat-icon>edit</mat-icon>          
+      <button mat-icon-button color="accent" (click)="onEdit(project)">
+        <mat-icon>edit</mat-icon>
         </button>
-        <button mat-icon-button color="accent" (click)="onDelete(project)"> 
-          <mat-icon>delete</mat-icon>          
+        <button mat-icon-button color="accent" (click)="onDelete(project)">
+          <mat-icon>delete</mat-icon>
           </button>
     </mat-card-actions>
   </mat-card>
@@ -42,21 +42,24 @@
     cdkDropList
     cdkDropListOrientation="vertical"
     (cdkDropListDropped)="drop($event)"
-  >
+    *ngIf="projectTasks">
     <div
       class="inner-card"
       cdkDrag
-      *ngFor="let task of projectTasks; let i = index"
+      *ngFor="let task of projectTasks;"
     >
       <mat-card> {{ task.title }} <img class="mat-card-vignette" mat-card-image src="{{ task.memberpicture }}"></mat-card>
     </div>
   </div>
   <mat-card-actions>
-    <button mat-icon-button color="accent" (click)="onEdit(project)"> 
-      <mat-icon>edit</mat-icon>          
-      </button>
-      <button mat-icon-button color="accent" (click)="onDelete(project)"> 
-        <mat-icon>delete</mat-icon>          
-        </button>
+    <button mat-icon-button color="accent" (click)="onEdit(project)">
+      <mat-icon>edit</mat-icon>
+    </button>
+    <button mat-icon-button color="accent" (click)="onDelete(project)">
+        <mat-icon>delete</mat-icon>
+    </button>
+    <button mat-icon-button color="accent" (click)="onCreateTask(project)">
+      <mat-icon>add</mat-icon>
+  </button>
   </mat-card-actions>
 </mat-card>

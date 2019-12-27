@@ -19,8 +19,7 @@
             <mat-form-field *ngIf="usersService.isAdministrateur && !tasksService.toEditForm()" >
                 <mat-label>Member</mat-label>
                         <mat-select name="memberid" #memberid="ngModel"
-                            [(ngModel)]="tasksService.formData.memberid"
-                            (selectionChange)="onMemberChange($event)">
+                            [(ngModel)]="tasksService.formData.memberid">
                                 <mat-option *ngFor="let data of members" [value]="data">
                                     {{data.name}}
                                 </mat-option>
@@ -48,7 +47,7 @@
                         </mat-option>
                 </mat-select>
             </mat-form-field>
-
+<!--
             <mat-form-field *ngIf="!tasksService.toUpdateTaskStatut && !tasksService.toEditForm()">
                 <mat-label>Project</mat-label>
                 <mat-select name="projectid" #projectid="ngModel"
@@ -58,17 +57,7 @@
                         </mat-option>
                 </mat-select>
             </mat-form-field>
-
-            <mat-form-field hidden *ngIf="!tasksService.toUpdateTaskStatut" hidden>
-                <mat-label>Statut</mat-label>
-                <mat-select name="statut" #statut="ngModel"
-                    [(ngModel)]="tasksService.formData.statut">
-                        <mat-option *ngFor="let data of statutsTable" [value]="data">
-                            {{data}}
-                        </mat-option>
-                </mat-select>
-            </mat-form-field>
-
+-->
             <mat-form-field *ngIf="tasksService.toUpdateTaskStatut">
                 <mat-label>Time Spent</mat-label>
                 <mat-select name="timestamp" #timestamp="ngModel"

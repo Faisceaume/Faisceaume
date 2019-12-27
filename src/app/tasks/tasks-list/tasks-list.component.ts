@@ -36,14 +36,13 @@ export class TasksListComponent implements OnInit, OnDestroy {
 
     if (this.usersService.isAdministrateur) {
       this.tasksService.getAllTasks();
-    } else {
+    } else if (this.membersService.sessionMember) {
       this.tasksService.getTasksForMember(this.membersService.sessionMember.memberid);
     }
 
     this.subscriptionTask = this.tasksService.tasksSubject.subscribe(data => {
       this.tasks = data;
     });
-
   }
 
   onEdit(task: Task) {
