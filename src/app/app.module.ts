@@ -47,6 +47,6 @@ firebase.initializeApp(environment.firebaseConfig);
   ],
   providers: [],
   bootstrap: [AppComponent],
-  entryComponents: [TaskFormComponent,EditCategorieComponent]
+  entryComponents: [TaskFormComponent, EditCategorieComponent]
 })
 export class AppModule { }
