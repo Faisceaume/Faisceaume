@@ -138,6 +138,8 @@ export class ProjectsService {
   setCurrentProject(project?: Project) {
     if (project) {
       this.currentProject = project;
+    } else {
+      this.currentProject = null;
     }
   }
 

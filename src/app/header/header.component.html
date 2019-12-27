@@ -48,12 +48,12 @@
     </div>
 
     <div *ngIf="!showSearchTool">
-<!--
+
       <button mat-icon-button color="accent" matTooltip="Create Task" (click)="openDialog()"
       *ngIf="isAuthentification && tasksService.tasksSection">
         <mat-icon>note_add</mat-icon>
       </button>
--->
+
       <button mat-icon-button color="accent"
       (click)="onShowGrille()" matTooltip="Display Table"
       *ngIf="isAuthentification && tasksService.tasksSection && !tasksService.onsShowGrille">

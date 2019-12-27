@@ -13,19 +13,19 @@
             <mat-form-field>
                 <input matInput placeholder="email"
                     name="email" #email="ngModel"
-                    [(ngModel)]="memberService.singleUser.email">
+                    [(ngModel)]="memberService.singleUser.email" required>
             </mat-form-field>
         </div>
         <div fxLayout="column">
             <mat-form-field>
                 <input matInput placeholder="Nom du nouveau membre"
                     name="name" #name="ngModel"
-                    [(ngModel)]="memberService.formData.name">
+                    [(ngModel)]="memberService.formData.name" required>
             </mat-form-field>
             <mat-form-field>
                 <mat-label>Categorie</mat-label>
                 <mat-select name="categoryid" #categoryid="ngModel"
-                    [(ngModel)]="memberService.formData.categoryid">
+                    [(ngModel)]="memberService.formData.categoryid" required>
                     <mat-option (click)="onCreateCategorie()">New</mat-option>
                         <mat-option *ngFor="let categorie of categories" [value]="categorie.id">
                             {{categorie.libelle}}
@@ -36,9 +36,10 @@
 
         <app-upload-image *ngIf="!memberService.fileUrl"></app-upload-image>
 
-        <button type="submit"
-            [class]="memberService.formData.memberid ? 'btn btn-success': 'btn btn-warning' "
-            [disabled]="!memberService.fileUrl">{{memberService.formData.memberid ? 'Modifier': 'Ajouter'}}</button>
+        <button mat-raised-button color="primary"
+        type="submit" [disabled]="!memberService.fileUrl || form.invalid">
+        {{memberService.formData.memberid ? 'Modifier': 'Ajouter'}}
+        </button>
     </form>
 
     <div class="del" *ngIf="memberService.fileUrl != null">
@@ -54,6 +55,6 @@
 </div>
 
 
-<div class="container" *ngIf="tasks">
-    <app-tasks-view [tasksList]="tasks" *ngIf="tasks"></app-tasks-view>
+<div class="container">
+    <app-tasks-view></app-tasks-view>
 </div>

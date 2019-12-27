@@ -13,14 +13,15 @@
             <mat-form-field>
                 <input matInput placeholder="project title"
                     name="title" #title="ngModel"
-                    [(ngModel)]="projectsService.formData.title">
+                    [(ngModel)]="projectsService.formData.title" required>
             </mat-form-field>
         </div>
 
         <app-upload-image *ngIf="!memberService.fileUrl"></app-upload-image>
-            <button type="submit"
-                [class]="projectsService.formData.projectid ? 'btn btn-success': 'btn btn-warning' "
-                [disabled]="!memberService.fileUrl">{{projectsService.formData.projectid ? 'Modifier': 'Ajouter'}}</button>
+        <button mat-raised-button color="primary" type="submit"
+        [disabled]="!memberService.fileUrl || form.invalid">
+        {{projectsService.formData.projectid ? 'Modifier': 'Ajouter'}}
+        </button>
     </form>
 
     <div class="del" *ngIf="memberService.fileUrl != null">

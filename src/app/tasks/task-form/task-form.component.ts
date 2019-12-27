@@ -27,7 +27,7 @@ export class TaskFormComponent implements OnInit, OnDestroy {
               public matDialogRef: MatDialogRef<TaskFormComponent>,
               private memebersService: MemberService,
               public usersService: UsersService,
-              private projetcsService: ProjectsService) { }
+              public projetcsService: ProjectsService) { }
 
   ngOnInit() {
     this.projetcsService.getAllProjects();
@@ -46,22 +46,22 @@ export class TaskFormComponent implements OnInit, OnDestroy {
   onSubmit(form: NgForm) {
     const data = form.value;
 
-    if (this.usersService.isAdministrateur) {
-      form.value.memberpicture = form.value.memberid.picture;
-      form.value.memberid = form.value.memberid.memberid;
-    } else {
-      form.value.memberpicture = this.memebersService.sessionMember.picture;
-      form.value.memberid = this.memebersService.sessionMember.memberid;
-    }
-
     if (this.tasksService.toUpdateTaskStatut) {
        this.tasksService.updateTaskStatut(form);
     } else if (data.taskid) {
        this.tasksService.updateTask(form);
     } else {
+      if (this.usersService.isAdministrateur) {
+        form.value.memberpicture = form.value.memberid.picture;
+        form.value.memberid = form.value.memberid.memberid;
+      } else {
+        form.value.memberpicture = this.memebersService.sessionMember.picture;
+        form.value.memberid = this.memebersService.sessionMember.memberid;
+      }
       form.value.statut = false;
       this.tasksService.createNewTask(form);
     }
+    this.projetcsService.setCurrentProject();
     this.matDialogRef.close();
   }
 
