@@ -1,6 +1,7 @@
-<div
-  fxLayout="row wrap" fxLayoutGap="3px"
-  fxFlex="25%"
-  [ngStyle]="{ 'margin-top':'20px' }" >
-    <app-project *ngFor="let project of projects" [project]="project" ></app-project>
+<div class="container">
+  <div
+    fxLayout="row wrap" fxLayoutGap="10px"
+    [ngStyle]="{ 'margin':'20px' }" >
+      <app-project *ngFor="let project of projects" [project]="project" fxFlex="25"></app-project>
+  </div>
 </div>

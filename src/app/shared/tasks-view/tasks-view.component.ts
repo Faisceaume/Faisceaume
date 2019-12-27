@@ -21,8 +21,7 @@ export class TasksViewComponent implements OnInit, OnDestroy {
   @Input() forDisplay: boolean;
   subscription: Subscription;
   dataSource: MatTableDataSource<Task>;
-  displayedColumns: string[] = ['created_at', 'title', 'description', 'time',
-  'action', 'member', 'statut'];
+  displayedColumns: string[] = ['created_at', 'title', 'description', 'time', 'member', 'statut'];
 
   @ViewChild(MatSort, {static: true}) sort: MatSort;
 

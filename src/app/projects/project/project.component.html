@@ -1,69 +1,3 @@
-<!--
-<mat-card class="example-card" *ngIf="project">
-    <mat-card-header>
-      <mat-card-title>{{project.title}}</mat-card-title>
-      <mat-card-subtitle>{{project.timestamp}}</mat-card-subtitle>
-    </mat-card-header>
-    <img mat-card-image src="{{ project.picture }}">
-    <mat-card-content>
-      <div *ngFor="let task of projectTasks">{{ task.title }}</div>
-    </mat-card-content>
-    <mat-card-actions>
-      <button mat-icon-button color="accent" (click)="onEdit(project)">
-        <mat-icon>edit</mat-icon>
-        </button>
-        <button mat-icon-button color="accent" (click)="onDelete(project)">
-          <mat-icon>delete</mat-icon>
-          </button>
-    </mat-card-actions>
-  </mat-card>
-
-  <div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
-    <div class="example-box" *ngFor="let task of projectTasks" cdkDrag>
-      <div class="example-custom-placeholder" *cdkDragPlaceholder></div>
-      {{ task.title }}
-    </div>
-  </div>
--->
-
-<!-- <mat-card class="outer-card">
-  <mat-card-header>
-    <mat-card-title class="white">
-      {{ project.title }}
-    </mat-card-title>
-    <mat-card-subtitle class="white">
-      {{ project.projectid }}
-    </mat-card-subtitle>
-  </mat-card-header>
-  <img mat-card-image src="{{ project.picture }}">
-  <div
-    class="tasks"
-    cdkDropList
-    cdkDropListOrientation="vertical"
-    (cdkDropListDropped)="drop($event)"
-    *ngIf="projectTasks">
-    <div
-      class="inner-card"
-      cdkDrag
-      *ngFor="let task of projectTasks;"
-    >
-      <mat-card> {{ task.title }} <img class="mat-card-vignette" mat-card-image src="{{ task.memberpicture }}"></mat-card>
-    </div>
-  </div>
-  <mat-card-actions>
-    <button mat-icon-button color="accent" (click)="onEdit(project)">
-      <mat-icon>edit</mat-icon>
-    </button>
-    <button mat-icon-button color="accent" (click)="onDelete(project)">
-        <mat-icon>delete</mat-icon>
-    </button>
-    <button mat-icon-button color="accent" (click)="onCreateTask(project)">
-      <mat-icon>add</mat-icon>
-  </button>
-  </mat-card-actions>
-</mat-card> -->
-
-
 
 <div fxLayout="column" fxLayoutAlign="start start" class="capsule-project" fxLayoutGap="10px">
 
@@ -80,10 +14,11 @@
       cdkDropListOrientation="vertical"
       (cdkDropListDropped)="drop($event)"
       *ngIf="projectTasks">
+
       <div
         class="inner-card"
         cdkDrag
-        *ngFor="let task of projectTasks;">
+        *ngFor="let task of projectTasks">
         <div class="capsule-task" fxLayout="row" fxLayoutAlign="start center">
           <div>
             <img class="mat-card-vignette" mat-card-image src="{{ task.memberpicture }}">

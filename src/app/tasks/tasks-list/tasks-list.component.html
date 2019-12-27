@@ -14,14 +14,15 @@
       <mat-card-actions>
 
         <button mat-icon-button color="accent" (click)="onEdit(task)">
-        <mat-icon>edit</mat-icon>
+          <mat-icon>edit</mat-icon>
         </button>
         <button mat-icon-button color="accent" (click)="onDelete(task)">
           <mat-icon>delete</mat-icon>
-          </button>
-          <button mat-icon-button color="accent" *ngIf="!task.statut" (click)="onUpdateTaskStatut(task)">
-            <mat-icon>lock_open</mat-icon>
-            </button>
+        </button>
+        <button mat-icon-button color="accent" *ngIf="!task.statut" (click)="onUpdateTaskStatut(task)">
+          <mat-icon>check</mat-icon>
+        </button>
+
       </mat-card-actions>
   </mat-card>
 </div>
