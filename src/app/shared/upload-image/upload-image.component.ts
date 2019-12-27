@@ -43,14 +43,14 @@ export class UploadImageComponent implements OnInit {
   traitementImage(file: File) {
   this.getImageDimension(window.URL.createObjectURL(file)).then(
     (dimension: number) => {
-     if ( file.size < 30000 && dimension < 800) {
+     if ( file.size < 90000 && dimension < 800) {
        this.onUploadFile(file);
        this.fileIsOK = true;
       } else {
         this.fileIsOK = false;
       }
      this.erreursMessages = [];
-     if (file.size >= 30000) {
+     if (file.size >= 90000) {
         this.erreursMessages.push('Le poids de l\'image doit etre inférieur à 30 000 octets');
       }
 

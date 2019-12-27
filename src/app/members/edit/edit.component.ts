@@ -54,8 +54,8 @@ export class EditComponent implements OnInit, OnDestroy {
       console.log(form.value);
       this.memberService.createNewMember(form);
     }
-    // this.memberService.resetSingleUser();
-    // this.router.navigate(['']);
+    this.memberService.resetSingleUser();
+    this.router.navigate(['']);
   }
 
   onDeleteDrapImage() {
