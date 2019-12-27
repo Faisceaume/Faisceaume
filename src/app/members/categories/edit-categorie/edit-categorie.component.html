@@ -29,9 +29,10 @@
           <mat-form-field>
               <input matInput placeholder="Nom du nouveau membre"
                   name="libelle" #libelle="ngModel"
-                  [(ngModel)]="categoriesService.formData.libelle">
+                  [(ngModel)]="categoriesService.formData.libelle" required>
           </mat-form-field>
       </div>
-      <button type="submit">Valider</button>
+      <button mat-raised-button color="accent" type="submit"
+      [disabled]="form.invalid">Valider</button>
   </form>
 </div>

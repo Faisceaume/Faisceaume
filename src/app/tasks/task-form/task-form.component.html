@@ -19,7 +19,7 @@
             <mat-form-field *ngIf="usersService.isAdministrateur && !tasksService.toEditForm()" >
                 <mat-label>Member</mat-label>
                         <mat-select name="memberid" #memberid="ngModel"
-                            [(ngModel)]="tasksService.formData.memberid">
+                            [(ngModel)]="tasksService.formData.memberid" required>
                                 <mat-option *ngFor="let data of members" [value]="data">
                                     {{data.name}}
                                 </mat-option>
@@ -29,19 +29,19 @@
             <mat-form-field *ngIf="!tasksService.toUpdateTaskStatut">
                 <input matInput placeholder="title"
                     name="title" #title="ngModel"
-                    [(ngModel)]="tasksService.formData.title">
+                    [(ngModel)]="tasksService.formData.title" required>
             </mat-form-field>
 
             <mat-form-field class="example-full-width">
                 <textarea matInput placeholder="Description"
                 name="description" #description="ngModel"
-                [(ngModel)]="tasksService.formData.description"></textarea>
+                [(ngModel)]="tasksService.formData.description" required></textarea>
             </mat-form-field>
 
             <mat-form-field *ngIf="!tasksService.toUpdateTaskStatut">
                 <mat-label>Time</mat-label>
                 <mat-select name="time" #time="ngModel"
-                    [(ngModel)]="tasksService.formData.time">
+                    [(ngModel)]="tasksService.formData.time" required>
                         <mat-option *ngFor="let data of timesTable" [value]="data">
                             {{data}}
                         </mat-option>
@@ -61,7 +61,7 @@
             <mat-form-field *ngIf="tasksService.toUpdateTaskStatut">
                 <mat-label>Time Spent</mat-label>
                 <mat-select name="timestamp" #timestamp="ngModel"
-                [(ngModel)]="tasksService.formData.timestamp">
+                [(ngModel)]="tasksService.formData.timestamp" required>
                         <mat-option *ngFor="let data of timesTable" [value]="data">
                             {{data}}
                         </mat-option>
@@ -69,9 +69,8 @@
             </mat-form-field>
 
         </div>
-
-            <button type="submit"
-                [class]="tasksService.formData.taskid ? 'btn btn-success': 'btn btn-warning' ">
-                {{tasksService.formData.taskid ? 'Modifier': 'Ajouter'}}</button>
+        <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">
+          {{tasksService.formData.taskid ? 'Modifier': 'Ajouter'}}
+        </button>
     </form>
 </div>
