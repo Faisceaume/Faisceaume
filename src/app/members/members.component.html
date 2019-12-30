@@ -40,8 +40,8 @@ class="parent" *ngIf="usersService.isAdministrateur && conditionToDropped">
         <div [ngStyle]="{ 'height':'200px'}"></div>
 
         <div *ngIf="usersService.isAdministrateur" fxLayout="row" fxLayoutAlign="end end" class="members-buttons">
-          <button mat-icon-button (click)="onEdit(member)"><mat-icon>edit</mat-icon></button>
-          <button mat-icon-button (click)="onDelete(member)"><mat-icon>delete</mat-icon></button>
+          <button mat-icon-button matTooltip="Editer" (click)="onEdit(member)"><mat-icon>edit</mat-icon></button>
+          <button mat-icon-button matTooltip="Supprimer" (click)="onDelete(member)"><mat-icon>delete</mat-icon></button>
         </div>
     </div>
 </div>

@@ -67,8 +67,8 @@
 
             <mat-form-field *ngIf="tasksService.toUpdateTaskStatut">
                 <mat-label>Time Spent</mat-label>
-                <mat-select name="timestamp" #timestamp="ngModel"
-                [(ngModel)]="tasksService.formData.timestamp" required>
+                <mat-select name="timespent" #timespent="ngModel"
+                [(ngModel)]="tasksService.formData.timespent" required>
                         <mat-option *ngFor="let data of timesTable" [value]="data">
                             {{data}}
                         </mat-option>
@@ -76,13 +76,15 @@
             </mat-form-field>
 
         </div>
-        <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid" *ngIf="!tasksService.toUpdateTaskStatut">
+        <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid"
+        *ngIf="!tasksService.toUpdateTaskStatut">
           {{tasksService.formData.taskid ? 'Modifier': 'Ajouter'}}
         </button>
-        <button mat-raised-button color="primary" *ngIf="tasksService.toUpdateTaskStatut" (click)="seeEditFormTask()">
+        <button mat-raised-button color="primary" *ngIf="tasksService.toUpdateTaskStatut"
+        (click)="seeEditFormTask()">
           Editer
         </button>
-        <button mat-raised-button color="primary" type="submit" *ngIf="tasksService.toUpdateTaskStatut">
+        <button mat-raised-button color="accent" type="submit" *ngIf="tasksService.toUpdateTaskStatut">
           Finaliser la tâche
         </button>
     </form>

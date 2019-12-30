@@ -10,4 +10,5 @@ export class Task {
     timestamp: string;
     memberpicture?: string;
     location: number;
+    timespent: number;
 }

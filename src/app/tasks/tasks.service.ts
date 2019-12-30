@@ -42,7 +42,8 @@ export class TasksService {
         projectid: '',
         statut: false,
         timestamp: new Date().toLocaleString(),
-        location: 0
+        location: 0,
+        timespent: 0
       };
     }
   }
