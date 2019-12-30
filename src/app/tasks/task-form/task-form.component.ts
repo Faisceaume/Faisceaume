@@ -43,6 +43,10 @@ export class TaskFormComponent implements OnInit, OnDestroy {
     );
   }
 
+  seeEditFormTask() {
+    // this.tasksService.toEditForm = true;
+  }
+
   onSubmit(form: NgForm) {
     const data = form.value;
 

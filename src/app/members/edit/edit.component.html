@@ -17,11 +17,18 @@
             </mat-form-field>
         </div>
         <div fxLayout="column">
+
+            <mat-form-field>
+                <input matInput name="timestamp" #timestamp="ngModel"
+                    [(ngModel)]="memberService.formData.timestamp" required>
+            </mat-form-field>
+
             <mat-form-field>
                 <input matInput placeholder="Nom du nouveau membre"
                     name="name" #name="ngModel"
                     [(ngModel)]="memberService.formData.name" required>
             </mat-form-field>
+
             <mat-form-field>
                 <mat-label>Categorie</mat-label>
                 <mat-select name="categoryid" #categoryid="ngModel"
@@ -55,6 +62,6 @@
 </div>
 
 
-<div class="container">
-    <app-tasks-view></app-tasks-view>
+<div class="container" *ngIf="memberService.formData.memberid">
+    <app-tasks-view [tasksList]="tasks" *ngIf="tasks"></app-tasks-view>
 </div>

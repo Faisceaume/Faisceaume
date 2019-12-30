@@ -5,5 +5,5 @@ export class Project {
     title: string;
     picture: string;
     timestamp: string;
-    tasks?: Task[];
+    tasks: Task[];
 }

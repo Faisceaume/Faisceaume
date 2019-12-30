@@ -21,13 +21,13 @@
 -->
 
 <div class="addform" fxLayout="column" [ngStyle]="{'padding':'20px'}">
-  <h2>Créer un nouveau membre</h2>
+  <h2>Créer une nouvelle catégorie</h2>
   <form #form="ngForm" autocomplete="off" (submit)="onSubmit(form)">
     <input *ngIf="categoriesService.formData.id" hidden name="id" #id="ngModel"
     [(ngModel)]="categoriesService.formData.id">
       <div fxLayout="column">
           <mat-form-field>
-              <input matInput placeholder="Nom du nouveau membre"
+              <input matInput placeholder="Titre de la catégorie"
                   name="libelle" #libelle="ngModel"
                   [(ngModel)]="categoriesService.formData.libelle" required>
           </mat-form-field>

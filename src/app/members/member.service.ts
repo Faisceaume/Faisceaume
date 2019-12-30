@@ -97,7 +97,8 @@ initFormData() {
       email : '',
       name : '',
       picture: null,
-      location: null
+      location: null,
+      timestamp: new Date().toLocaleString(),
     };
     this.fileUrl = null;
   }
@@ -112,7 +113,6 @@ createNewMember(form: NgForm) {
 
   const nextId = this.db.collection('members').doc().id;
   let data = Object.assign({}, form.value);
-  data.createdat = new Date().toLocaleString();
   if (this.fileUrl) {
     data = Object.assign( data, {memberid: nextId, picture: this.fileUrl, location: 0} );
   } else {

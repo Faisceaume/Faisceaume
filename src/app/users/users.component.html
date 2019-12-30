@@ -44,7 +44,7 @@
           <ng-container matColumnDef="createdat">
               <th mat-header-cell *matHeaderCellDef>TimeStamp </th>
               <td mat-cell *matCellDef="let element"
-              [ngStyle]="{'background-color': element.memberid ? '#27ae60':'#e74c3c'}"> {{element.createdat ? element.createdat : 'no data'}} </td>
+              [ngStyle]="{'background-color': element.memberid ? '#27ae60':'#e74c3c'}"> {{element.timestamp ? element.timestamp : 'no data'}} </td>
            </ng-container>
 
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

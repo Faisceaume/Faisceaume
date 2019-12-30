@@ -18,11 +18,9 @@ import { Subscription } from 'rxjs';
 })
 export class TasksViewComponent implements OnInit, OnDestroy {
 
-  @Input() forDisplay: boolean;
-  subscription: Subscription;
+  @Input() tasksList: Task[];
   dataSource: MatTableDataSource<Task>;
-  displayedColumns: string[] = ['created_at', 'title', 'description', 'time',
-  'action', 'member', 'statut'];
+  displayedColumns: string[] = ['created_at', 'title', 'description', 'time', 'member', 'statut'];
 
   @ViewChild(MatSort, {static: true}) sort: MatSort;
 
@@ -33,17 +31,8 @@ export class TasksViewComponent implements OnInit, OnDestroy {
               private tasksService: TasksService) { }
 
   ngOnInit() {
-
-    if ( this.usersService.isAdministrateur ) {
-      this.tasksService.getAllTasks();
-    } else if (this.membersService.sessionMember) {
-      this.tasksService.getTasksForMember(this.membersService.sessionMember.memberid);
-    }
-
-    this.subscription = this.tasksService.tasksSubject.subscribe(data => {
-      this.dataSource = new MatTableDataSource<Task>(data);
+      this.dataSource = new MatTableDataSource<Task>(this.tasksList);
       this.dataSource.sort = this.sort;
-    });
   }
 
   onEditMemberSection(task: Task) {
@@ -71,6 +60,6 @@ export class TasksViewComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-   this.subscription.unsubscribe();
+   // this.subscription.unsubscribe();
   }
 }
