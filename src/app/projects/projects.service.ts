@@ -41,7 +41,7 @@ export class ProjectsService {
         projectid: null,
         title: '',
         picture: '',
-        timestamp: new Date().toLocaleString(),
+        timestamp: 0,
       } as Project;
     }
   }
@@ -61,7 +61,7 @@ export class ProjectsService {
     const nextDocument1 = this.db.collection('projects').doc(nextId);
     let data = Object.assign({}, donneesFormulaire);
     data = Object.assign(donneesFormulaire,
-      {projectid: nextId, picture: this.membersService.fileUrl});
+      {projectid: nextId, picture: this.membersService.fileUrl, timestamp: new Date().getTime()});
     batch.set(nextDocument1, data);
 
     batch.commit()

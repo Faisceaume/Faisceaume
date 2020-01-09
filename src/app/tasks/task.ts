@@ -7,7 +7,7 @@ export class Task {
     time: number;
     projectid: string;
     statut: boolean;
-    timestamp: string;
+    timestamp: number;
     memberpicture?: string;
     location: number;
     timespent: number;
