@@ -1,8 +1,11 @@
 table {
-    width: 100%;
-  }
-  
-  th.mat-sort-header-sorted {
-    color: black;
-  }
-  
+  width: 100%;
+}
+
+th.mat-sort-header-sorted {
+  color: black;
+}
+
+img {
+  width: 50px;
+}

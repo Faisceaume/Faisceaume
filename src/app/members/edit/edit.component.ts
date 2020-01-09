@@ -80,6 +80,7 @@ export class EditComponent implements OnInit, OnDestroy {
     if (this.subscriptionTask) {
       this.subscriptionTask.unsubscribe();
     }
+    this.memberService.setFormDataValue();
   }
 
 }

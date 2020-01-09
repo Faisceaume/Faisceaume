@@ -68,6 +68,7 @@ export class MembersComponent implements OnInit, OnDestroy {
   onEdit(member: Member) {
     this.memberService.resetSingleUser();
     this.memberService.setFormDataValue(member);
+    this.memberService.setSessionMemberValue(member);
     if (member.picture) {
       this.memberService.beforePhotoUrl = member.picture;
       this.memberService.fileUrl = member.picture;

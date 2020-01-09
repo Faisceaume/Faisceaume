@@ -18,7 +18,7 @@
       <div
         class="inner-card"
         cdkDrag
-        *ngFor="let task of projectTasks">
+        *ngFor="let task of project.tasks">
         <div class="capsule-task" fxLayout="row" fxLayoutAlign="start center">
           <div>
             <img class="mat-card-vignette" mat-card-image src="{{ task.memberpicture }}">
@@ -30,13 +30,16 @@
       </div>
     </div>
     <div>
-      <button mat-icon-button color="accent" (click)="onEdit(project)">
+      <button mat-icon-button color="accent" matTooltip="Modifier"
+       (click)="onEdit(project)">
         <mat-icon>edit</mat-icon>
       </button>
-      <button mat-icon-button color="accent" (click)="onDelete(project)">
+      <button mat-icon-button color="accent" matTooltip="Supprimer"
+       (click)="onDelete(project)">
           <mat-icon>delete</mat-icon>
       </button>
-      <button mat-icon-button color="accent" (click)="onCreateTask(project)">
+      <button mat-icon-button color="accent" matTooltip="Nouvelle Tâche"
+       (click)="onCreateTask()">
         <mat-icon>add</mat-icon>
       </button>
     </div>

@@ -8,6 +8,7 @@ import { MemberService } from '../members/member.service';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { Task } from '../tasks/task';
 
 @Injectable({
   providedIn: 'root'
@@ -40,7 +41,7 @@ export class ProjectsService {
         projectid: null,
         title: '',
         picture: '',
-        timestamp: '',
+        timestamp: new Date().toLocaleString(),
       } as Project;
     }
   }
@@ -60,7 +61,7 @@ export class ProjectsService {
     const nextDocument1 = this.db.collection('projects').doc(nextId);
     let data = Object.assign({}, donneesFormulaire);
     data = Object.assign(donneesFormulaire,
-      {projectid: nextId, picture: this.membersService.fileUrl, timestamp: new Date().toLocaleString()});
+      {projectid: nextId, picture: this.membersService.fileUrl});
     batch.set(nextDocument1, data);
 
     batch.commit()
@@ -95,14 +96,15 @@ export class ProjectsService {
   getAllProjects() {
     this.firestore.collection('projects')
                   .snapshotChanges().subscribe( data => {
-      this.projects = data.map( e => {
+       this.projects = data.map( e => {
         const anotherData = e.payload.doc.data() as Project;
-        return {
+        return  {
           projectid : e.payload.doc.id,
+          tasks: anotherData.tasks,
           ...anotherData
         } as Project;
       });
-      this.emitProjectsSubject();
+       this.emitProjectsSubject();
     });
   }
 
@@ -132,6 +134,18 @@ export class ProjectsService {
   }
 
   emitProjectsSubject() {
+    this.projects.forEach(item => {
+      this.firestore.collection('projects').doc(item.projectid).collection('tasks')
+      .snapshotChanges().subscribe(tasksData => {
+        item.tasks = tasksData.map(taskse => {
+          const againData = taskse.payload.doc.data() as Task;
+          return {
+            taskid: taskse.payload.doc.id,
+            ...againData
+          } as Task;
+        });
+      });
+    });
     this.projectsSubject.next(this.projects.slice());
   }
 

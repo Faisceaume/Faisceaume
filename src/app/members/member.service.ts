@@ -24,7 +24,7 @@ export class MemberService {
   isSearchByCategorie: boolean;
 
   sessionMember: Member;
-
+  editMemberSection: boolean;
   // data for upload-image component
   fileUrl: string;
 
@@ -97,13 +97,20 @@ initFormData() {
       email : '',
       name : '',
       picture: null,
-      location: null
+      location: null,
+      timestamp: new Date().toLocaleString(),
     };
     this.fileUrl = null;
   }
 
-setFormDataValue(member: Member) {
-  this.formData = member;
+setFormDataValue(member?: Member) {
+  if (member) {
+    this.formData = member;
+    this.editMemberSection = true;
+  } else {
+    this.formData = null;
+    this.editMemberSection = false;
+  }
 }
 
 createNewMember(form: NgForm) {
@@ -112,7 +119,6 @@ createNewMember(form: NgForm) {
 
   const nextId = this.db.collection('members').doc().id;
   let data = Object.assign({}, form.value);
-  data.createdat = new Date().toLocaleString();
   if (this.fileUrl) {
     data = Object.assign( data, {memberid: nextId, picture: this.fileUrl, location: 0} );
   } else {

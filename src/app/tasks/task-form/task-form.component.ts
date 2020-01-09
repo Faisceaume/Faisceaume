@@ -44,7 +44,8 @@ export class TaskFormComponent implements OnInit, OnDestroy {
   }
 
   seeEditFormTask() {
-    // this.tasksService.toEditForm = true;
+    this.tasksService.setToUpdateTaskStatut(false);
+    console.log('change config');
   }
 
   onSubmit(form: NgForm) {

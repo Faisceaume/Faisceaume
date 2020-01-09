@@ -35,7 +35,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
     this.tasksService.getAllTasksForProject(this.project.projectid);
     this.subscription = this.tasksService.tasksSubject.subscribe(
       data => {
-        this.projectTasks = data;
+        this.projectTasks = this.project.tasks;
       }
     );
   }
