@@ -49,4 +49,8 @@ export class AuthentificationComponent implements OnInit {
     });
   }
 
+  connectionWithGoogle() {
+    this.authentificationService.connectionWithGoogle();
+  }
+
 }

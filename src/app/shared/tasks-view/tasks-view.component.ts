@@ -23,7 +23,7 @@ export class TasksViewComponent implements OnInit {
 
   @ViewChild(MatSort, {static: true}) sort: MatSort;
 
-  constructor(private membersService: MemberService,
+  constructor(public membersService: MemberService,
               private router: Router,
               public usersService: UsersService,
               private matDialog: MatDialog,

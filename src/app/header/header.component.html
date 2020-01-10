@@ -50,7 +50,7 @@
     <div *ngIf="!showSearchTool">
 
       <button mat-icon-button color="accent" matTooltip="Create Task" (click)="openDialog()"
-      *ngIf="isAuthentification && tasksService.tasksSection">
+      *ngIf="isAuthentification && tasksService.tasksSection && memberService.sessionMember">
         <mat-icon>note_add</mat-icon>
       </button>
 

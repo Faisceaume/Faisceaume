@@ -40,7 +40,9 @@
       <ng-container matColumnDef="member">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> User  </th>
         <td mat-cell *matCellDef="let element">
-        <img matTooltip="Editer membre"  src="{{ element.memberpicture }}" (click)="onEditMemberSection(element)">
+        <img matTooltip="Editer membre"  src="{{ element.memberpicture }}"
+        (click)="onEditMemberSection(element)"
+        *ngIf="usersService.isAdministrateur">
       </td>
       </ng-container>
 

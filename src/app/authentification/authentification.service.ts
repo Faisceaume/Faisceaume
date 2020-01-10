@@ -3,6 +3,7 @@ import * as firebase from 'firebase/app';
 import { Utilisateur} from './utilisateur';
 import { Router } from '@angular/router';
 import 'firebase/firestore';
+import { Users } from './users';
 
 @Injectable({
   providedIn: 'root'
@@ -48,6 +49,20 @@ signOutUser() {
   }).catch((error) => {
     // An error happened.
   });
+}
+
+connectionWithGoogle(): void {
+  const provider = new firebase.auth.GoogleAuthProvider();
+  firebase.auth().signInWithPopup(provider).then(
+    (result) => {
+      const u = result.user;
+      const item = {
+        uid: u.uid,
+        email: u.email
+      } as Users;
+      this.router.navigate(['members']);
+    }
+  );
 }
 
 }

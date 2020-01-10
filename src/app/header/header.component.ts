@@ -38,7 +38,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   subscriptionMember: Subscription;
 
   constructor(private authentificationService: AuthentificationService,
-              private memberService: MemberService,
+              public memberService: MemberService,
               private router: Router,
               private categorieService: CategoriesService,
               public usersService: UsersService,
@@ -119,6 +119,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   seDeconnecter() {
     this.usersService.setIsAdministrateur(false);
+    this.memberService.setSessionMemberValue(null);
     this.authentificationService.signOutUser();
   }
 
