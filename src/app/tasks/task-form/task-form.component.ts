@@ -14,14 +14,14 @@ import { Subscription } from 'rxjs';
   templateUrl: './task-form.component.html',
   styleUrls: ['./task-form.component.css']
 })
-export class TaskFormComponent implements OnInit, OnDestroy {
+export class TaskFormComponent implements OnInit/*, OnDestroy*/ {
 
   members: Member[];
   timesTable = ['1', '3', '6', '12', '24'];
   projectsTable: Project[];
   statutsTable = [true, false];
-  subscriptionMember: Subscription;
-  subscriptionProject: Subscription;
+  /*subscriptionMember: Subscription;
+  subscriptionProject: Subscription;*/
 
   constructor(public tasksService: TasksService,
               public matDialogRef: MatDialogRef<TaskFormComponent>,
@@ -33,10 +33,10 @@ export class TaskFormComponent implements OnInit, OnDestroy {
     this.projetcsService.getAllProjects();
     this.memebersService.getAllMembers();
 
-    this.subscriptionMember = this.memebersService.membersSubject.subscribe(data => {
+    this.memebersService.membersSubject.subscribe(data => {
       this.members = data;
     });
-    this.subscriptionProject = this.projetcsService.projectsSubject.subscribe(
+    this.projetcsService.projectsSubject.subscribe(
       data => {
         this.projectsTable = data;
       }
@@ -70,8 +70,8 @@ export class TaskFormComponent implements OnInit, OnDestroy {
     this.matDialogRef.close();
   }
 
-  ngOnDestroy(): void {
+  /*ngOnDestroy(): void {
     this.subscriptionProject.unsubscribe();
     this.subscriptionMember.unsubscribe();
-  }
+  }*/
 }

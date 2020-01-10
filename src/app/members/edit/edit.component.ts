@@ -15,11 +15,11 @@ import { EditCategorieComponent } from '../categories/edit-categorie/edit-catego
   templateUrl: './edit.component.html',
   styleUrls: ['./edit.component.css']
 })
-export class EditComponent implements OnInit, OnDestroy {
+export class EditComponent implements OnInit/*, OnDestroy*/ {
 
   categories: Categorie[];
   tasks: Task[];
-  subscriptionTask: Subscription;
+  /*subscriptionTask: Subscription;*/
 
 
   constructor(public memberService: MemberService,
@@ -33,7 +33,7 @@ export class EditComponent implements OnInit, OnDestroy {
         this.memberService.initFormData();
     }
     this.categorieService.getAllCategories();
-    this.subscriptionTask = this.categorieService.categoriesSubject.subscribe(data => {
+    this.categorieService.categoriesSubject.subscribe(data => {
       this.categories = data;
     });
 
@@ -76,11 +76,11 @@ export class EditComponent implements OnInit, OnDestroy {
     this.matDialog.open(EditCategorieComponent, dialogConfig);
   }
 
-  ngOnDestroy(): void {
+  /*ngOnDestroy(): void {
     if (this.subscriptionTask) {
       this.subscriptionTask.unsubscribe();
     }
     this.memberService.setFormDataValue();
-  }
+  }*/
 
 }

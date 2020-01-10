@@ -1,28 +1,30 @@
 import { Injectable } from '@angular/core';
-import * as firebase from 'firebase/app';
+/*import * as firebase from 'firebase/app';*/
 import { Utilisateur} from './utilisateur';
 import { Router } from '@angular/router';
-import 'firebase/firestore';
+/*import 'firebase/firestore';*/
+import { AngularFirestore } from '@angular/fire/firestore';
+import { AngularFireAuth } from '@angular/fire/auth';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthentificationService {
 
-  db = firebase.firestore();
+  /*db = firebase.firestore();*/
   user: Utilisateur;
 
-  constructor(private router: Router) { }
+  constructor(private afauth: AngularFireAuth, private router: Router, private db: AngularFirestore) { }
 
   createNewUser(mail: string, password: string) {
     return new Promise<any>((resolve, reject) => {
-      firebase.auth().createUserWithEmailAndPassword(mail, password)
+      this.afauth.auth.createUserWithEmailAndPassword(mail, password)
       .then(res => {
         resolve(res);
-        const batch = this.db.batch();
-        const nextId = this.db.collection('users').doc().id;
+        const batch = this.db.firestore.batch();
+        const nextId = this.db.firestore.collection('users').doc().id;
         const data = Object.assign({}, {email:  mail});
-        const nextDocument1 = this.db.collection('users').doc(nextId);
+        const nextDocument1 = this.db.firestore.collection('users').doc(nextId);
         batch.set(nextDocument1, data);
         batch.commit();
         this.router.navigate(['members']);
@@ -33,7 +35,7 @@ export class AuthentificationService {
 
 SignInUser(email: string, password: string ) {
   return new Promise<any>((resolve, reject) => {
-    firebase.auth().signInWithEmailAndPassword(email, password)
+    this.afauth.auth.signInWithEmailAndPassword(email, password)
     .then(res => {
       resolve(res);
       this.router.navigate(['members']);
@@ -43,7 +45,7 @@ SignInUser(email: string, password: string ) {
 }
 
 signOutUser() {
-  firebase.auth().signOut().then(() => {
+  this.afauth.auth.signOut().then(() => {
     // Sign-out successful.
   }).catch((error) => {
     // An error happened.

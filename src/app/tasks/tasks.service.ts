@@ -2,8 +2,8 @@
 import { Injectable } from '@angular/core';
 import { Task } from './task';
 import { NgForm } from '@angular/forms';
-import * as firebase from 'firebase/app';
-import 'firebase/firestore';
+/*import * as firebase from 'firebase/app';
+import 'firebase/firestore';*/
 import { MemberService } from '../members/member.service';
 import { Subject } from 'rxjs';
 import { AngularFirestore } from '@angular/fire/firestore';
@@ -15,7 +15,7 @@ import { ProjectsService } from '../projects/projects.service';
 })
 export class TasksService {
 
-  db = firebase.firestore();
+  /*db = firebase.firestore();*/
   formData: Task;
   tasksSubject = new Subject<any[]>();
   allTasks: Task[];
@@ -24,7 +24,7 @@ export class TasksService {
   onsShowGrille: boolean;
 
   constructor(private membersService: MemberService,
-              private firestore: AngularFirestore,
+              private db: AngularFirestore,
               private usersService: UsersService,
               private projectsService: ProjectsService) { }
 
@@ -58,7 +58,7 @@ export class TasksService {
 
 
   createNewTask(form: NgForm) {
-    const batch = this.db.batch();
+    const batch = this.db.firestore.batch();
     const donneesFormulaire = form.value;
 
     if (this.projectsService.currentProject) {
@@ -69,16 +69,16 @@ export class TasksService {
       donneesFormulaire.memberid = this.membersService.sessionMember.memberid;
     }
 
-    const nextId = this.db.collection('tasks').doc().id;
-    const nextDocument1 = this.db.collection('tasks').doc(nextId);
+    const nextId = this.db.firestore.collection('tasks').doc().id;
+    const nextDocument1 = this.db.firestore.collection('tasks').doc(nextId);
 
     let data = Object.assign({}, donneesFormulaire);
 
     data = Object.assign(data, {taskid: nextId, location: 0, timestamp: new Date().getTime()});
-    const nextDocument2 = this.db.collection('members')
+    const nextDocument2 = this.db.firestore.collection('members')
                         .doc(data.memberid).collection('tasks')
                         .doc(nextId);
-    const nextDocument3 = this.db.collection('projects')
+    const nextDocument3 = this.db.firestore.collection('projects')
                         .doc(data.projectid).collection('tasks')
                         .doc(nextId);
 
@@ -99,12 +99,12 @@ export class TasksService {
     const memberid = data.memberid;
     const taskid = data.taskid;
 
-    const db = firebase.firestore();
-    const batch = this.db.batch();
+    /*const db = firebase.firestore();*/
+    const batch = this.db.firestore.batch();
 
-    const newsRef = db.collection('tasks').doc(taskid);
-    const sousRef = db.collection('members').doc(memberid).collection('tasks').doc(taskid);
-    const sousRef2 = db.collection('projects').doc(data.projectid).collection('tasks').doc(taskid);
+    const newsRef = this.db.firestore.collection('tasks').doc(taskid);
+    const sousRef = this.db.firestore.collection('members').doc(memberid).collection('tasks').doc(taskid);
+    const sousRef2 = this.db.firestore.collection('projects').doc(data.projectid).collection('tasks').doc(taskid);
 
     batch.update(newsRef,  data);
     batch.update(sousRef,  data);
@@ -121,11 +121,11 @@ export class TasksService {
   updateTaskStatut(form: NgForm) {
     const formData = form.value;
 
-    const db = firebase.firestore();
-    const batch = this.db.batch();
-    const newsRef = db.collection('tasks').doc(formData.taskid);
-    const sousRef = db.collection('members').doc(formData.memberid).collection('tasks').doc(formData.taskid);
-    const sousRef2 = db.collection('projects').doc(formData.projectid).collection('tasks').doc(formData.taskid);
+    /*const db = firebase.firestore();*/
+    const batch = this.db.firestore.batch();
+    const newsRef = this.db.firestore.collection('tasks').doc(formData.taskid);
+    const sousRef = this.db.firestore.collection('members').doc(formData.memberid).collection('tasks').doc(formData.taskid);
+    const sousRef2 = this.db.firestore.collection('projects').doc(formData.projectid).collection('tasks').doc(formData.taskid);
 
     let data = Object.assign({}, formData);
     data = Object.assign(data, {statut: true, timestampcomplete: new Date().toLocaleString()});
@@ -140,7 +140,7 @@ export class TasksService {
 
 
   getAllTasks() {
-    this.firestore.collection('tasks', ref => ref.orderBy('location', 'asc'))
+    this.db.collection('tasks', ref => ref.orderBy('location', 'asc'))
     .snapshotChanges().subscribe( data => {
       this.allTasks = data.map( e => {
         const anotherData = e.payload.doc.data() as Task;
@@ -155,7 +155,7 @@ export class TasksService {
 
 
   getAllTasksForProject(projectid: string) {
-    this.firestore.collection('projects', ref => ref.orderBy('location', 'asc'))
+    this.db.collection('projects', ref => ref.orderBy('location', 'asc'))
     .doc(projectid)
     .collection('tasks').snapshotChanges().subscribe( data => {
       this.allTasks = data.map( e => {
@@ -195,7 +195,7 @@ export class TasksService {
 
 getTasksForMember(idMember: string) {
   if (idMember) {
-    this.firestore.collection('members', ref => ref.orderBy('location', 'asc'))
+    this.db.collection('members', ref => ref.orderBy('location', 'asc'))
     .doc(idMember).collection('tasks')
     .snapshotChanges().subscribe( data => {
        this.allTasks = data.map( e => {

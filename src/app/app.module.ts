@@ -9,6 +9,7 @@ import { ReactiveFormsModule} from '@angular/forms';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { AngularFireStorageModule } from '@angular/fire/storage';
 
 import { AuthentificationComponent } from './authentification/authentification.component';
 import { HeaderComponent } from './header/header.component';
@@ -21,9 +22,8 @@ import { ProjectsModule } from './projects/projects.module';
 // import { environment } from '../environments/environment';
 import { environment } from '../environments/environment.prod';
 
-import * as firebase from 'firebase/app';
+
 import { EditCategorieComponent } from './members/categories/edit-categorie/edit-categorie.component';
-firebase.initializeApp(environment.firebaseConfig);
 
 @NgModule({
   declarations: [
@@ -39,6 +39,7 @@ firebase.initializeApp(environment.firebaseConfig);
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFirestoreModule,
     AngularFireAuthModule,
+    AngularFireStorageModule,
     BrowserAnimationsModule,
     ReactiveFormsModule,
     MembersModule,

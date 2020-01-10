@@ -10,10 +10,10 @@ import { Subscription } from 'rxjs';
   templateUrl: './categories.component.html',
   styleUrls: ['./categories.component.css']
 })
-export class CategoriesComponent implements OnInit, OnDestroy {
+export class CategoriesComponent implements OnInit/*, OnDestroy*/ {
 
 categories: Categorie[];
-subscriptionCategorie: Subscription;
+/*subscriptionCategorie: Subscription;*/
 
   constructor(private categoriesService: CategoriesService,
               private router: Router) { }
@@ -21,7 +21,7 @@ subscriptionCategorie: Subscription;
   ngOnInit() {
     this.resetForm();
     this.categoriesService.getAllCategories();
-    this.subscriptionCategorie = this.categoriesService.categoriesSubject.subscribe(data => {
+    this.categoriesService.categoriesSubject.subscribe(data => {
       this.categories = data;
     });
   }
@@ -50,8 +50,8 @@ subscriptionCategorie: Subscription;
          }
       }
 
-      ngOnDestroy(): void {
+      /*ngOnDestroy(): void {
         this.subscriptionCategorie.unsubscribe();
-      }
+      }*/
   }
 
