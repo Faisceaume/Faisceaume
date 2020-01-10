@@ -4,12 +4,13 @@ import { MembersComponent } from './members.component';
 import { EditComponent } from './edit/edit.component';
 import { CategoriesComponent } from './categories/categories.component';
 import { EditCategorieComponent } from './categories/edit-categorie/edit-categorie.component';
+import { AuthGuardService } from '../auth-guard.service';
 
 const routes: Routes = [
-    { path: '', component: MembersComponent },
-    { path : 'edit', component : EditComponent },
-    { path : 'categories', component : CategoriesComponent },
-    { path : 'categories_edit', component : EditCategorieComponent },
+    { path: '', canActivate: [AuthGuardService], component: MembersComponent },
+    { path : 'edit', canActivate: [AuthGuardService], component : EditComponent },
+    { path : 'categories', canActivate: [AuthGuardService],  component : CategoriesComponent },
+    { path : 'categories_edit', canActivate: [AuthGuardService], component : EditCategorieComponent },
   ];
 
 @NgModule({

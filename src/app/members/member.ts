@@ -5,5 +5,5 @@ export class Member {
     name: string;
     picture: string;
     location: number;
-    timestamp: string;
+    timestamp: number;
 }

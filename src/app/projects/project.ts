@@ -4,6 +4,6 @@ export class Project {
     projectid: string;
     title: string;
     picture: string;
-    timestamp: string;
+    timestamp: number;
     tasks: Task[];
 }

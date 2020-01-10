@@ -19,11 +19,6 @@
         <div fxLayout="column">
 
             <mat-form-field>
-                <input matInput name="timestamp" #timestamp="ngModel"
-                    [(ngModel)]="memberService.formData.timestamp" required>
-            </mat-form-field>
-
-            <mat-form-field>
                 <input matInput placeholder="Nom du nouveau membre"
                     name="name" #name="ngModel"
                     [(ngModel)]="memberService.formData.name" required>

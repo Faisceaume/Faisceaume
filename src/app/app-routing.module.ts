@@ -6,7 +6,7 @@ import { AuthGuardService } from './auth-guard.service';
 import { UsersComponent } from './users/users.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'members', pathMatch: 'full' },
+  { path: '', canActivate: [AuthGuardService], redirectTo: 'members', pathMatch: 'full' },
   { path : 'authentification', component : AuthentificationComponent },
   { path : 'members/:libelleSearch', component : MembersComponent },
   { path : 'users', canActivate: [AuthGuardService], component : UsersComponent },
@@ -23,6 +23,7 @@ const routes: Routes = [
     loadChildren: () => import('./projects/projects.module').then(mod => mod.ProjectsModule)
   },
 ];
+
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

@@ -16,12 +16,6 @@
 
         <div fxLayout="column">
 
-          <mat-form-field *ngIf="!tasksService.toUpdateTaskStatut">
-            <input matInput
-                name="timestamp" #timestamp="ngModel"
-                [(ngModel)]="tasksService.formData.timestamp" required>
-        </mat-form-field>
-
             <mat-form-field *ngIf="usersService.isAdministrateur && !tasksService.toEditForm()" >
                 <mat-label>Member</mat-label>
                     <mat-select name="memberid" #memberid="ngModel"

@@ -42,7 +42,7 @@ export class TasksService {
         time: 0,
         projectid: '',
         statut: false,
-        timestamp: new Date().toLocaleString(),
+        timestamp: 0,
         location: 0,
         timespent: 0
       };
@@ -74,7 +74,7 @@ export class TasksService {
 
     let data = Object.assign({}, donneesFormulaire);
 
-    data = Object.assign(data, {taskid: nextId, location: 0});
+    data = Object.assign(data, {taskid: nextId, location: 0, timestamp: new Date().getTime()});
     const nextDocument2 = this.db.collection('members')
                         .doc(data.memberid).collection('tasks')
                         .doc(nextId);
