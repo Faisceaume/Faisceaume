@@ -19,7 +19,7 @@ export class TasksViewComponent implements OnInit {
 
   @Input() tasksList?: Task[];
   dataSource: MatTableDataSource<Task>;
-  displayedColumns: string[] = ['created_at', 'title', 'description', 'member', 'action'];
+  displayedColumns: string[] = ['created_at', 'title', 'description', 'action'];
   members: Member[];
 
   @ViewChild(MatSort, {static: true}) sort: MatSort;
@@ -77,9 +77,18 @@ export class TasksViewComponent implements OnInit {
     this.matDialog.open(TaskFormComponent, dialogConfig);
   }
 
-  displayOnMember(member: Member): void {
+  displayOnMember(member: Member, index: number): void {
     this.tasksService.getTasksForMember(member.memberid);
     this.anotherFunction();
+    this.changeMemberSelectedCss(index);
+  }
+
+  changeMemberSelectedCss(index: number): void {
+    const pElt = document.querySelectorAll('img');
+    pElt.forEach(item => {
+      item.classList.remove('tab-thumbSelected');
+    });
+    pElt[index + 1].classList.add('tab-thumbSelected');
   }
 
 }

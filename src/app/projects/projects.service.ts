@@ -107,7 +107,8 @@ export class ProjectsService {
   }
 
   deleteAllProjectData(idProject: string) {
-    this.db.firestore.collection('projects').doc(idProject).collection('tasks').get().then((querySnapshot) => {
+    this.db.firestore.collection('projects').doc(idProject).collection('tasks')
+    .get().then((querySnapshot) => {
       querySnapshot.forEach( (doc) => {
 
           const data = doc.data();
