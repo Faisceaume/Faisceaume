@@ -2,8 +2,6 @@ import { Injectable } from '@angular/core';
 import { Project } from './project';
 import { NgForm } from '@angular/forms';
 
-/*import * as firebase from 'firebase/app';
-import 'firebase/firestore';*/
 import { MemberService } from '../members/member.service';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
