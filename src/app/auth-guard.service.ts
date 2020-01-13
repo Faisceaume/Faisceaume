@@ -1,18 +1,19 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import * as firebase from 'firebase/app';
+import { AngularFireAuth } from '@angular/fire/auth';
+/*import * as firebase from 'firebase/app';*/
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthGuardService implements CanActivate {
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private afauth: AngularFireAuth) { }
 
   canActivate(): Observable<boolean> | Promise<boolean> | boolean {
     return new Promise<boolean>((resolve, reject) => {
-      firebase.auth().onAuthStateChanged(
+      this.afauth.auth.onAuthStateChanged(
         (user) => {
           if (user) {
             resolve(true);

@@ -7,8 +7,8 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { Task } from '../../tasks/task';
 import { TasksService } from 'src/app/tasks/tasks.service';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import * as firebase from 'firebase/app';
-import 'firebase/storage';
+/*import * as firebase from 'firebase/app';
+import 'firebase/storage';*/
 import { MatDialogConfig, MatDialog } from '@angular/material';
 import { TaskFormComponent } from 'src/app/tasks/task-form/task-form.component';
 import { Subscription } from 'rxjs';
@@ -18,22 +18,22 @@ import { Subscription } from 'rxjs';
   templateUrl: './project.component.html',
   styleUrls: ['./project.component.css']
 })
-export class ProjectComponent implements OnInit, OnDestroy {
+export class ProjectComponent implements OnInit/*, OnDestroy */{
 
   @Input() project: Project;
   projectTasks: Task[];
-  subscription: Subscription;
+  /*subscription: Subscription;*/
 
 
   constructor(private projectsService: ProjectsService,
               private membersService: MemberService,
-              private router: Router, private firestore: AngularFirestore,
+              private router: Router, private db: AngularFirestore,
               private tasksService: TasksService,
               private matDialog: MatDialog) { }
 
   ngOnInit() {
     this.tasksService.getAllTasksForProject(this.project.projectid);
-    this.subscription = this.tasksService.tasksSubject.subscribe(
+    this.tasksService.tasksSubject.subscribe(
       data => {
         this.projectTasks = this.project.tasks;
       }
@@ -51,7 +51,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
     if (confirm('Vraiment supprimer ?')) {
       this.membersService.deletePhoto(project.picture);
       this.projectsService.deleteAllProjectData(project.projectid);
-      this.firestore.doc('projects/' + project.projectid).delete();
+      this.db.doc('projects/' + project.projectid).delete();
     }
   }
 
@@ -61,22 +61,22 @@ export class ProjectComponent implements OnInit, OnDestroy {
   }
 
   onRang() {
-    const db = firebase.firestore();
+    /*const db = firebase.firestore();*/
     // la position du personnage dans le tableau
     let i = 1;
     this.projectTasks.forEach(
       (item) => {
         item.location = i;
         // mise à jour  dans la collection racine
-        db.collection('tasks').doc(item.taskid).update(item);
+        this.db.collection('tasks').doc(item.taskid).update(item);
 
         // mise à jour  dans la sous collection des members
-        db.collection('members')
+        this.db.collection('members')
                     .doc(item.memberid).collection('tasks')
                     .doc(item.taskid).update(item);
 
         // mise à jour dans la sous collection des projets
-        db.collection('projects')
+        this.db.collection('projects')
                     .doc(item.projectid).collection('tasks')
                     .doc(item.taskid).update(item);
         i++;
@@ -97,8 +97,8 @@ export class ProjectComponent implements OnInit, OnDestroy {
     this.matDialog.open(TaskFormComponent, dialogConfig);
   }
 
-  ngOnDestroy(): void {
+  /*ngOnDestroy(): void {
     this.subscription.unsubscribe();
-  }
+  }*/
 
 }

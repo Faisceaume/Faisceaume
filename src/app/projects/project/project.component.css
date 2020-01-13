@@ -45,10 +45,9 @@ img {
 .gray { background: gray; text-decoration: line-through; }
 
 .mat-card-vignette {
-  width: 40px;
-  height: 40px;
-  border-radius: 80px;
-  border: 2px solid #000;
+  width: 30px;
+  height: 30px;
+  border-radius: 15px;
 }
 
 

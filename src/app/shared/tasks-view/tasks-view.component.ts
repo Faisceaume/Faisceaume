@@ -19,7 +19,8 @@ export class TasksViewComponent implements OnInit {
 
   @Input() tasksList?: Task[];
   dataSource: MatTableDataSource<Task>;
-  displayedColumns: string[] = ['created_at', 'title', 'description', 'time', 'member', 'action'];
+  displayedColumns: string[] = ['created_at', 'title', 'description', 'member', 'action'];
+  members: Member[];
 
   @ViewChild(MatSort, {static: true}) sort: MatSort;
 
@@ -30,15 +31,25 @@ export class TasksViewComponent implements OnInit {
               private tasksService: TasksService) { }
 
   ngOnInit() {
+
+    this.membersService.getAllMembers();
+    this.membersService.membersSubject.subscribe(
+      data => { this.members = data; }
+    );
+
     if (this.usersService.isAdministrateur && !this.membersService.editMemberSection) {
         this.tasksService.getAllTasks();
       } else {
         this.tasksService.getTasksForMember(this.membersService.sessionMember.memberid);
       }
+    this.anotherFunction();
+  }
+
+  anotherFunction(): void {
     this.tasksService.tasksSubject.subscribe(data => {
-        this.dataSource = new MatTableDataSource<Task>(data);
-        this.dataSource.sort = this.sort;
-      });
+      this.dataSource = new MatTableDataSource<Task>(data);
+      this.dataSource.sort = this.sort;
+    });
   }
 
   onEditMemberSection(task: Task) {
@@ -64,6 +75,11 @@ export class TasksViewComponent implements OnInit {
     dialogConfig.autoFocus = true;
     dialogConfig.width = '60%';
     this.matDialog.open(TaskFormComponent, dialogConfig);
+  }
+
+  displayOnMember(member: Member): void {
+    this.tasksService.getTasksForMember(member.memberid);
+    this.anotherFunction();
   }
 
 }

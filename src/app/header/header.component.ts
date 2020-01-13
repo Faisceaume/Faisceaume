@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AuthentificationService } from '../authentification/authentification.service';
-import * as firebase from 'firebase/app';
+/*import * as firebase from 'firebase/app';*/
 import { MemberService } from '../members/member.service';
 import { Router } from '@angular/router';
 import { FormControl } from '@angular/forms';
@@ -15,13 +15,14 @@ import { TasksService } from '../tasks/tasks.service';
 import { MatDialogConfig, MatDialog } from '@angular/material';
 import { TaskFormComponent } from '../tasks/task-form/task-form.component';
 import { ProjectsService } from '../projects/projects.service';
+import { AngularFireAuth } from '@angular/fire/auth';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
-export class HeaderComponent implements OnInit, OnDestroy {
+export class HeaderComponent implements OnInit /*, OnDestroy */ {
 
   myControl = new FormControl();
   options: Member[] = [];
@@ -34,8 +35,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   user: Users;
   userMember: Member;
-  subscriptionCategorie: Subscription;
-  subscriptionMember: Subscription;
+  /*subscriptionCategorie: Subscription;*/
+  /*subscriptionMember: Subscription;*/
 
   constructor(private authentificationService: AuthentificationService,
               public memberService: MemberService,
@@ -44,20 +45,21 @@ export class HeaderComponent implements OnInit, OnDestroy {
               public usersService: UsersService,
               public tasksService: TasksService,
               private matDialog: MatDialog,
-              public projectsService: ProjectsService) { }
+              public projectsService: ProjectsService,
+              private afauth: AngularFireAuth) { }
 
   ngOnInit() {
     this.categorieService.getAllCategories();
-    this.subscriptionCategorie = this.categorieService.categoriesSubject.subscribe(data => {
+    this.categorieService.categoriesSubject.subscribe(data => {
       this.categories = data;
     });
 
     this.memberService.getAllMembers();
-    this.subscriptionMember = this.memberService.membersSubject.subscribe(data => {
+    this.memberService.membersSubject.subscribe(data => {
       this.options = data;
     });
 
-    firebase.auth().onAuthStateChanged(
+    this.afauth.auth.onAuthStateChanged(
       (user) => {
         if (user) {
           this.isAuthentification = true;
@@ -147,9 +149,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.tasksService.setOnShowGrille(false);
   }
 
-  ngOnDestroy(): void {
+  /*ngOnDestroy(): void {
     this.subscriptionCategorie.unsubscribe();
     this.subscriptionMember.unsubscribe();
-  }
+  } */
 
 }

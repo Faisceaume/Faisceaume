@@ -3,8 +3,8 @@ import { Categorie } from './categorie';
 import { AngularFirestore} from '@angular/fire/firestore';
 import { NgForm } from '@angular/forms';
 import { Member} from '../member';
-import * as firebase from 'firebase/app';
-import 'firebase/firestore';
+/*import * as firebase from 'firebase/app';*/
+/*import 'firebase/firestore';*/
 import { Subject } from 'rxjs';
 
 @Injectable({
@@ -13,16 +13,16 @@ import { Subject } from 'rxjs';
 export class CategoriesService {
 
   formData: Categorie;
-  db = firebase.firestore();
+  /*db = firebase.firestore();*/
   categorieInconnuId: string;
 
   categoriesSubject = new Subject<any[]>();
   categories: Categorie[];
 
-  constructor(private firestore: AngularFirestore) { }
+  constructor(private db: AngularFirestore) { }
 
   getAllCategories() {
-    this.firestore.collection('categories').snapshotChanges().subscribe( data => {
+    this.db.collection('categories').snapshotChanges().subscribe( data => {
       this.categories = data.map( e => {
         const anotherData = e.payload.doc.data() as Categorie;
         return {
@@ -40,7 +40,7 @@ emitCategoriesSubject() {
 
   getCategoriePersonnages(idCategorie: string) {
     const member: Member[] = [];
-    this.db.collection('categories').doc(idCategorie).collection('members')
+    this.db.firestore.collection('categories').doc(idCategorie).collection('members')
     .orderBy('location', 'asc')
     .get().then((querySnapshot) => {
       querySnapshot.forEach((doc) => {
@@ -56,7 +56,7 @@ emitCategoriesSubject() {
 
   getCategorieInconnu() {
     return new Promise<any>((resolve, reject) => {
-      const museums = this.db.collection('categories').where('libelle', '==', 'inconnu');
+      const museums = this.db.firestore.collection('categories').where('libelle', '==', 'inconnu');
       museums.get().then( (querySnapshot) => {
         querySnapshot.forEach((doc) => {
           resolve(doc.id);
@@ -69,7 +69,7 @@ emitCategoriesSubject() {
   removeCategorie(idCurrentCategorie: string) {
     this.getCategorieInconnu().then(
       (id: string) => {
-        this.db.collection('categories').doc(idCurrentCategorie).collection('members')
+        this.db.firestore.collection('categories').doc(idCurrentCategorie).collection('members')
         .get().then((querySnapshot) => {
           querySnapshot.forEach((doc) => {
 
@@ -77,15 +77,15 @@ emitCategoriesSubject() {
               data.categorieId = id;
 
               // migration des members dans la catégorie Inconnu
-              firebase.firestore().collection('categories')
+              this.db.collection('categories')
               .doc(id).collection('members')
               .doc(doc.id).set(data);
 
               // mise à jour du personnage dans la collection racine
-              firebase.firestore().collection('members').doc(doc.id).update(data);
+              this.db.collection('members').doc(doc.id).update(data);
 
               // suppresion du personnages dans la catégorie encours de suppremion
-              firebase.firestore().collection('categories')
+              this.db.collection('categories')
               .doc(idCurrentCategorie).collection('members')
               .doc(doc.id).delete();
 
@@ -101,13 +101,13 @@ emitCategoriesSubject() {
   onSubmit(form: NgForm) {
     const data = form.value;
     data.isadmin = false;
-    this.firestore.collection('categories').add(data);
+    this.db.collection('categories').add(data);
     this.resetForm(form);
   }
 
   onSubmitUpdate(form: NgForm) {
     const data = form.value;
-    this.firestore.collection('categories').doc(data.id).update(data);
+    this.db.collection('categories').doc(data.id).update(data);
     this.resetForm(form);
   }
 

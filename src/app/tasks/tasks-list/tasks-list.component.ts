@@ -7,12 +7,13 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { Subscription } from 'rxjs';
 import { MemberService } from 'src/app/members/member.service';
 import { UsersService } from 'src/app/authentification/users.service';
-import * as firebase from 'firebase/app';
+/*import * as firebase from 'firebase/app';*/
 import { Users } from 'src/app/authentification/users';
 import { Member } from 'src/app/members/member';
 import { Categorie } from 'src/app/members/categories/categorie';
 import { CategoriesService } from 'src/app/members/categories/categories.service';
 import { DomSanitizer } from '@angular/platform-browser';
+import { AngularFireAuth } from '@angular/fire/auth';
 
 
 @Component({
@@ -37,7 +38,8 @@ export class TasksListComponent implements OnInit, OnDestroy {
               private membersService: MemberService,
               public usersService: UsersService,
               private categorieService: CategoriesService,
-              private sanitizer: DomSanitizer) { }
+              private sanitizer: DomSanitizer,
+              private afauth: AngularFireAuth) { }
 
   ngOnInit() {
     this.categorieService.getAllCategories();
@@ -57,7 +59,7 @@ export class TasksListComponent implements OnInit, OnDestroy {
       this.tasksService.setToUpdateTaskStatut(false);
     }
 
-    firebase.auth().onAuthStateChanged(
+    this.afauth.auth.onAuthStateChanged(
   (user) => {
     if (user) {
       this.usersService.getSingleUser(user.email).then(

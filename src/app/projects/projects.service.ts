@@ -2,8 +2,6 @@ import { Injectable } from '@angular/core';
 import { Project } from './project';
 import { NgForm } from '@angular/forms';
 
-import * as firebase from 'firebase/app';
-import 'firebase/firestore';
 import { MemberService } from '../members/member.service';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
@@ -15,7 +13,7 @@ import { Task } from '../tasks/task';
 })
 export class ProjectsService {
 
-  db = firebase.firestore();
+  /*db = firebase.firestore();*/
 
   formData: Project;
   isProjectsSection: boolean;
@@ -25,7 +23,7 @@ export class ProjectsService {
   currentProject: Project;
 
   constructor(private membersService: MemberService,
-              private router: Router, private firestore: AngularFirestore) { }
+              private router: Router, private db: AngularFirestore) { }
 
 
   setIsProjectsSectionValue(bool: boolean): void {
@@ -54,11 +52,11 @@ export class ProjectsService {
   }
 
   createNewProject(form: NgForm) {
-    const batch = this.db.batch();
+    const batch = this.db.firestore.batch();
     const donneesFormulaire = form.value;
 
-    const nextId = this.db.collection('projects').doc().id;
-    const nextDocument1 = this.db.collection('projects').doc(nextId);
+    const nextId = this.db.firestore.collection('projects').doc().id;
+    const nextDocument1 = this.db.firestore.collection('projects').doc(nextId);
     let data = Object.assign({}, donneesFormulaire);
     data = Object.assign(donneesFormulaire,
       {projectid: nextId, picture: this.membersService.fileUrl, timestamp: new Date().getTime()});
@@ -76,12 +74,12 @@ export class ProjectsService {
   updateProject(form: NgForm) {
     let data = form.value;
     const projectid = data.projectid;
-    const db = firebase.firestore();
-    const batch = this.db.batch();
+    /*const db = firebase.firestore();*/
+    const batch = this.db.firestore.batch();
 
     data = Object.assign(data, { picture: this.membersService.fileUrl });
 
-    const newsRef = db.collection('projects').doc(projectid);
+    const newsRef = this.db.firestore.collection('projects').doc(projectid);
     batch.update(newsRef,  data);
 
     batch.commit()
@@ -94,7 +92,7 @@ export class ProjectsService {
   }
 
   getAllProjects() {
-    this.firestore.collection('projects')
+    this.db.collection('projects')
                   .snapshotChanges().subscribe( data => {
        this.projects = data.map( e => {
         const anotherData = e.payload.doc.data() as Project;
@@ -109,7 +107,7 @@ export class ProjectsService {
   }
 
   deleteAllProjectData(idProject: string) {
-    this.db.collection('projects').doc(idProject).collection('tasks').get().then((querySnapshot) => {
+    this.db.firestore.collection('projects').doc(idProject).collection('tasks').get().then((querySnapshot) => {
       querySnapshot.forEach( (doc) => {
 
           const data = doc.data();
@@ -117,15 +115,15 @@ export class ProjectsService {
           const memberid = data.memberid;
 
           // suppression du task dans la sous collection members
-          firebase.firestore().collection('members')
+          this.db.collection('members')
           .doc(memberid).collection('tasks')
           .doc(taskid).delete();
 
           // suppression du task dans la collection racine
-          firebase.firestore().collection('tasks').doc(taskid).delete();
+          this.db.collection('tasks').doc(taskid).delete();
 
           // suppression du task dans la sous collection projects
-          firebase.firestore().collection('projects')
+          this.db.collection('projects')
           .doc(idProject).collection('tasks')
           .doc(taskid).delete();
 
@@ -135,7 +133,7 @@ export class ProjectsService {
 
   emitProjectsSubject() {
     this.projects.forEach(item => {
-      this.firestore.collection('projects').doc(item.projectid).collection('tasks')
+      this.db.collection('projects').doc(item.projectid).collection('tasks')
       .snapshotChanges().subscribe(tasksData => {
         item.tasks = tasksData.map(taskse => {
           const againData = taskse.payload.doc.data() as Task;
