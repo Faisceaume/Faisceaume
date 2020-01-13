@@ -4,16 +4,18 @@ import { Router } from '@angular/router';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Users } from './users';
+import { auth } from 'firebase/app';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthentificationService {
 
-  /*db = firebase.firestore();*/
   user: Utilisateur;
 
-  constructor(private afauth: AngularFireAuth, private router: Router, private db: AngularFirestore) { }
+  constructor(private afauth: AngularFireAuth,
+              private router: Router,
+              private db: AngularFirestore) { }
 
   createNewUser(mail: string, password: string) {
     return new Promise<any>((resolve, reject) => {
@@ -52,17 +54,17 @@ signOutUser() {
 }
 
 connectionWithGoogle(): void {
-  // const provider = new firebase.auth.GoogleAuthProvider();
-  // firebase.auth().signInWithPopup(provider).then(
-  //   (result) => {
-  //     const u = result.user;
-  //     const item = {
-  //       uid: u.uid,
-  //       email: u.email
-  //     } as Users;
-  //     this.router.navigate(['members']);
-  //   }
-  // );
+  const provider = new auth.GoogleAuthProvider();
+  this.afauth.auth.signInWithPopup(provider).then(
+     (result) => {
+       const u = result.user;
+       const item = {
+         uid: u.uid,
+         email: u.email
+       } as Users;
+       this.router.navigate(['members']);
+     }
+   );
 }
 
 }

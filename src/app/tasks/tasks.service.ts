@@ -137,7 +137,7 @@ export class TasksService {
 
 
   getAllTasks() {
-    this.db.collection('tasks', ref => ref.orderBy('location', 'asc'))
+    this.db.collection('tasks', ref => ref.orderBy('timestamp', 'desc'))
     .snapshotChanges().subscribe( data => {
       this.allTasks = data.map( e => {
         const anotherData = e.payload.doc.data() as Task;
@@ -152,7 +152,7 @@ export class TasksService {
 
 
   getAllTasksForProject(projectid: string) {
-    this.db.collection('projects', ref => ref.orderBy('location', 'asc'))
+    this.db.collection('projects', ref => ref.orderBy('timestamp', 'desc'))
     .doc(projectid)
     .collection('tasks').snapshotChanges().subscribe( data => {
       this.allTasks = data.map( e => {
@@ -192,7 +192,7 @@ export class TasksService {
 
 getTasksForMember(idMember: string) {
   if (idMember) {
-    this.db.collection('members', ref => ref.orderBy('location', 'asc'))
+    this.db.collection('members', ref => ref.orderBy('timestamp', 'desc'))
     .doc(idMember).collection('tasks')
     .snapshotChanges().subscribe( data => {
        this.allTasks = data.map( e => {
