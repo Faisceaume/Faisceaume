@@ -19,7 +19,7 @@ export class TasksViewComponent implements OnInit {
 
   @Input() tasksList?: Task[];
   dataSource: MatTableDataSource<Task>;
-  displayedColumns: string[] = ['created_at', 'title', 'description', 'time', 'member', 'action'];
+  displayedColumns: string[] = ['created_at', 'title', 'description', 'member', 'action'];
 
   @ViewChild(MatSort, {static: true}) sort: MatSort;
 
