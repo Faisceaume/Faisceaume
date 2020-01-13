@@ -30,6 +30,7 @@ export class TasksListComponent implements OnInit/*, OnDestroy*/ {
   subscriptionCategorie: Subscription;
   subscriptionMember: Subscription;*/
   isAdmin: boolean;
+  getTasksSubscription: boolean;
 
   constructor(public tasksService: TasksService,
               private matDialog: MatDialog,
@@ -73,6 +74,7 @@ export class TasksListComponent implements OnInit/*, OnDestroy*/ {
                 this.displayAll(false, userMember.memberid);
                 this.usersService.setIsAdministrateur(false);
               }
+            this.getTasksSubscription = true;
           }
        }
      );
@@ -131,7 +133,9 @@ export class TasksListComponent implements OnInit/*, OnDestroy*/ {
 
   /*ngOnDestroy(): void {
     this.tasksService.setTasksSectionValue(false);
-    this.subscriptionTask.unsubscribe();
+    if (this.getTasksSubscription) {
+      this.subscriptionTask.unsubscribe();
+    }
     this.subscriptionMember.unsubscribe();
     this.subscriptionCategorie.unsubscribe();
   }*/

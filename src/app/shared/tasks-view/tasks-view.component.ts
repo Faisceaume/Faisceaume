@@ -20,16 +20,23 @@ export class TasksViewComponent implements OnInit {
   @Input() tasksList?: Task[];
   dataSource: MatTableDataSource<Task>;
   displayedColumns: string[] = ['created_at', 'title', 'description', 'member', 'action'];
+  members: Member[];
 
   @ViewChild(MatSort, {static: true}) sort: MatSort;
 
-  constructor(private membersService: MemberService,
+  constructor(public membersService: MemberService,
               private router: Router,
               public usersService: UsersService,
               private matDialog: MatDialog,
               private tasksService: TasksService) { }
 
   ngOnInit() {
+
+    this.membersService.getAllMembers();
+    this.membersService.membersSubject.subscribe(
+      data => { this.members = data; }
+    );
+
     if (this.usersService.isAdministrateur && !this.membersService.editMemberSection) {
         this.tasksService.getAllTasks();
       } else {

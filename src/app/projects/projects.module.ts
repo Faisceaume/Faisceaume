@@ -8,7 +8,6 @@ import { SharedModule } from '../shared/shared.module';
 import { ProjectComponent } from './project/project.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 
-
 @NgModule({
   declarations: [ProjectsListComponent, ProjectFormComponent, ProjectComponent],
   imports: [
