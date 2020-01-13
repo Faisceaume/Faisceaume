@@ -5,8 +5,8 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { Categorie } from './categories/categorie';
 import { CategoriesService } from './categories/categories.service';
 import { Router, ActivatedRoute } from '@angular/router';
-import * as firebase from 'firebase/app';
-import 'firebase/storage';
+/*import * as firebase from 'firebase/app';
+import 'firebase/storage';*/
 import { UsersService } from '../authentification/users.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
@@ -17,7 +17,7 @@ import { Subscription } from 'rxjs';
   templateUrl: './members.component.html',
   styleUrls: ['./members.component.css']
 })
-export class MembersComponent implements OnInit, OnDestroy {
+export class MembersComponent implements OnInit/*, OnDestroy */{
 
   members: Member[];
   member: Member[];
@@ -25,11 +25,11 @@ export class MembersComponent implements OnInit, OnDestroy {
 
   conditionToDropped: boolean;
   dropped: boolean;
-  subscriptionMember: Subscription;
-  subscriptionCategorie: Subscription;
+  /*subscriptionMember: Subscription;
+  subscriptionCategorie: Subscription;*/
 
   constructor(private memberService: MemberService,
-              private firestore: AngularFirestore,
+              private db: AngularFirestore,
               private categorieService: CategoriesService,
               private router: Router,
               private route: ActivatedRoute,
@@ -40,7 +40,7 @@ export class MembersComponent implements OnInit, OnDestroy {
     this.memberService.resetForm();
 
     this.categorieService.getAllCategories();
-    this.subscriptionCategorie = this.categorieService.categoriesSubject.subscribe(data => {
+    this.categorieService.categoriesSubject.subscribe(data => {
       this.categories = data;
     });
 
@@ -54,7 +54,7 @@ export class MembersComponent implements OnInit, OnDestroy {
       } else {
         this.conditionToDropped = true;
         this.memberService.getAllMembers();
-        this.subscriptionMember = this.memberService.membersSubject.subscribe(data => {
+        this.memberService.membersSubject.subscribe(data => {
           this.members = data;
         });
       }
@@ -82,8 +82,8 @@ export class MembersComponent implements OnInit, OnDestroy {
       if (member.picture) {
         this.memberService.deletePhoto(member.picture);
       }
-      this.firestore.doc('members/' + member.memberid).delete();
-      this.firestore.collection('categories')
+      this.db.doc('members/' + member.memberid).delete();
+      this.db.collection('categories')
                     .doc(member.categoryid).collection('members')
                     .doc(member.memberid).delete();
     }
@@ -99,7 +99,7 @@ export class MembersComponent implements OnInit, OnDestroy {
   }
 
   onRang() {
-    const db = firebase.firestore();
+    /*const db = firebase.firestore();*/
     // la position du personnage dans le tableau
     let i = 1;
     this.members.forEach(
@@ -107,10 +107,10 @@ export class MembersComponent implements OnInit, OnDestroy {
         item.location = i;
 
         // mise à jour du personnage dans la collection racine
-        db.collection('members').doc(item.memberid).update(item);
+        this.db.collection('members').doc(item.memberid).update(item);
 
         // mise à jour du personnage dans la sous collection des catégories
-        db.collection('categories')
+        this.db.collection('categories')
                     .doc(item.categoryid).collection('members')
                     .doc(item.memberid).update(item);
         i++;
@@ -118,9 +118,9 @@ export class MembersComponent implements OnInit, OnDestroy {
     );
   }
 
-  ngOnDestroy(): void {
+  /*ngOnDestroy(): void {
     this.subscriptionMember.unsubscribe();
     this.subscriptionCategorie.unsubscribe();
-  }
+  }*/
 
 }

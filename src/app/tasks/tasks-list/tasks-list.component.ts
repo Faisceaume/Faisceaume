@@ -7,12 +7,13 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { Subscription } from 'rxjs';
 import { MemberService } from 'src/app/members/member.service';
 import { UsersService } from 'src/app/authentification/users.service';
-import * as firebase from 'firebase/app';
+/*import * as firebase from 'firebase/app';*/
 import { Users } from 'src/app/authentification/users';
 import { Member } from 'src/app/members/member';
 import { Categorie } from 'src/app/members/categories/categorie';
 import { CategoriesService } from 'src/app/members/categories/categories.service';
 import { DomSanitizer } from '@angular/platform-browser';
+import { AngularFireAuth } from '@angular/fire/auth';
 
 
 @Component({
@@ -20,14 +21,14 @@ import { DomSanitizer } from '@angular/platform-browser';
   templateUrl: './tasks-list.component.html',
   styleUrls: ['./tasks-list.component.css']
 })
-export class TasksListComponent implements OnInit, OnDestroy {
+export class TasksListComponent implements OnInit/*, OnDestroy*/ {
 
   tasks: Task[];
   options: Member[];
   categories: Categorie[];
-  subscriptionTask: Subscription;
+  /*subscriptionTask: Subscription;
   subscriptionCategorie: Subscription;
-  subscriptionMember: Subscription;
+  subscriptionMember: Subscription;*/
   isAdmin: boolean;
 
   constructor(public tasksService: TasksService,
@@ -36,16 +37,17 @@ export class TasksListComponent implements OnInit, OnDestroy {
               private membersService: MemberService,
               public usersService: UsersService,
               private categorieService: CategoriesService,
-              private sanitizer: DomSanitizer) { }
+              private sanitizer: DomSanitizer,
+              private afauth: AngularFireAuth) { }
 
   ngOnInit() {
     this.categorieService.getAllCategories();
-    this.subscriptionCategorie = this.categorieService.categoriesSubject.subscribe(data => {
+    this.categorieService.categoriesSubject.subscribe(data => {
       this.categories = data;
     });
 
     this.membersService.getAllMembers();
-    this.subscriptionMember = this.membersService.membersSubject.subscribe(data => {
+    this.membersService.membersSubject.subscribe(data => {
       this.options = data;
     });
 
@@ -56,7 +58,7 @@ export class TasksListComponent implements OnInit, OnDestroy {
       this.tasksService.setToUpdateTaskStatut(false);
     }
 
-    firebase.auth().onAuthStateChanged(
+    this.afauth.auth.onAuthStateChanged(
   (user) => {
     if (user) {
       this.usersService.getSingleUser(user.email).then(
@@ -87,7 +89,7 @@ export class TasksListComponent implements OnInit, OnDestroy {
     } else {
       this.tasksService.getTasksForMember(memberid);
     }
-    this.subscriptionTask = this.tasksService.tasksSubject.subscribe(data => {
+    this.tasksService.tasksSubject.subscribe(data => {
       this.tasks = data;
     });
   }
@@ -127,10 +129,10 @@ export class TasksListComponent implements OnInit, OnDestroy {
     return image ? this.sanitizer.bypassSecurityTrustStyle(`url('${image}')`) : null;
   }
 
-  ngOnDestroy(): void {
+  /*ngOnDestroy(): void {
     this.tasksService.setTasksSectionValue(false);
     this.subscriptionTask.unsubscribe();
     this.subscriptionMember.unsubscribe();
     this.subscriptionCategorie.unsubscribe();
-  }
+  }*/
 }
