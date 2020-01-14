@@ -12,13 +12,13 @@ import { ProjectsService } from '../projects/projects.service';
 })
 export class TasksService {
 
-  /*db = firebase.firestore();*/
   formData: Task;
   tasksSubject = new Subject<any[]>();
   allTasks: Task[];
   tasksSection: boolean;
   toUpdateTaskStatut: boolean;
   onsShowGrille: boolean;
+  onDisplayFilterByMember: boolean;
 
   constructor(private membersService: MemberService,
               private db: AngularFirestore,
@@ -208,6 +208,10 @@ getTasksForMember(idMember: string) {
 
 setOnShowGrille(bool: boolean) {
   this.onsShowGrille = bool;
+}
+
+setFilterByMemberValue(item: boolean): void {
+  this.onDisplayFilterByMember = item;
 }
 
 }

@@ -1,6 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AuthentificationService } from '../authentification/authentification.service';
-/*import * as firebase from 'firebase/app';*/
 import { MemberService } from '../members/member.service';
 import { Router } from '@angular/router';
 import { FormControl } from '@angular/forms';
@@ -22,7 +21,7 @@ import { AngularFireAuth } from '@angular/fire/auth';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
-export class HeaderComponent implements OnInit /*, OnDestroy */ {
+export class HeaderComponent implements OnInit , OnDestroy  {
 
   myControl = new FormControl();
   options: Member[] = [];
@@ -35,8 +34,8 @@ export class HeaderComponent implements OnInit /*, OnDestroy */ {
 
   user: Users;
   userMember: Member;
-  /*subscriptionCategorie: Subscription;*/
-  /*subscriptionMember: Subscription;*/
+  subscriptionCategorie: Subscription;
+  subscriptionMember: Subscription;
 
   constructor(private authentificationService: AuthentificationService,
               public memberService: MemberService,
@@ -50,12 +49,12 @@ export class HeaderComponent implements OnInit /*, OnDestroy */ {
 
   ngOnInit() {
     this.categorieService.getAllCategories();
-    this.categorieService.categoriesSubject.subscribe(data => {
+    this.subscriptionCategorie = this.categorieService.categoriesSubject.subscribe(data => {
       this.categories = data;
     });
 
     this.memberService.getAllMembers();
-    this.memberService.membersSubject.subscribe(data => {
+    this.subscriptionMember = this.memberService.membersSubject.subscribe(data => {
       this.options = data;
     });
 
@@ -149,9 +148,17 @@ export class HeaderComponent implements OnInit /*, OnDestroy */ {
     this.tasksService.setOnShowGrille(false);
   }
 
-  /*ngOnDestroy(): void {
+  closeFilterByMember(): void {
+    this.tasksService.setFilterByMemberValue(false);
+  }
+
+  openFilterByMember(): void {
+    this.tasksService.setFilterByMemberValue(true);
+  }
+
+  ngOnDestroy(): void {
     this.subscriptionCategorie.unsubscribe();
     this.subscriptionMember.unsubscribe();
-  } */
+  }
 
 }

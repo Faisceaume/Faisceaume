@@ -82,6 +82,14 @@
       matTooltip="logout" *ngIf="isAuthentification">
         <mat-icon>power_settings_new</mat-icon>
       </button>
+      <button mat-icon-button color="accent" (click)="closeFilterByMember()"
+      matTooltip="close" *ngIf="isAuthentification && tasksService.tasksSection && tasksService.onDisplayFilterByMember">
+        <mat-icon>clear</mat-icon>
+      </button>
+      <button mat-icon-button color="accent" (click)="openFilterByMember()"
+      matTooltip="open" *ngIf="isAuthentification && tasksService.tasksSection && !tasksService.onDisplayFilterByMember">
+        <mat-icon>remove_red_eye</mat-icon>
+      </button>
     </div>
 
   </div>

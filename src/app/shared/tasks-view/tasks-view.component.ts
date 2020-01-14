@@ -28,7 +28,7 @@ export class TasksViewComponent implements OnInit {
               private router: Router,
               public usersService: UsersService,
               private matDialog: MatDialog,
-              private tasksService: TasksService) { }
+              public tasksService: TasksService) { }
 
   ngOnInit() {
 
