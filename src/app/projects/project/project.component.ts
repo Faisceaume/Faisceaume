@@ -84,15 +84,21 @@ export class ProjectComponent implements OnInit, OnDestroy {
 
   onCreateTask() {
     this.projectsService.setCurrentProject(this.project);
+    this.tasksService.resetForm();
     this.openDialog();
   }
 
   openDialog() {
-    this.tasksService.resetForm();
     const dialogConfig = new MatDialogConfig();
     dialogConfig.autoFocus = true;
     dialogConfig.width = '60%';
     this.matDialog.open(TaskFormComponent, dialogConfig);
+  }
+
+  onEditTask(task: Task) {
+    this.tasksService.setToUpdateTaskStatut(true);
+    this.tasksService.setFormDataValue(task);
+    this.openDialog();
   }
 
   ngOnDestroy(): void {

@@ -192,8 +192,24 @@ export class TasksService {
 
 getTasksForMember(idMember: string) {
   if (idMember) {
-    this.db.collection('members', ref => ref.orderBy('timestamp', 'desc'))
-    .doc(idMember).collection('tasks')
+    this.db.collection('members')
+    .doc(idMember).collection('tasks' , ref => ref.orderBy('timestamp', 'desc'))
+    .snapshotChanges().subscribe( data => {
+       this.allTasks = data.map( e => {
+         return {
+           taskid : e.payload.doc.id,
+           ...e.payload.doc.data()
+         } as Task;
+       });
+       this.emitTasksSubject();
+     });
+  }
+}
+
+getTasksForMemberAndProject(idMember: string, idProject: string) {
+  if (idMember) {
+    this.db.collection('members')
+    .doc(idMember).collection('tasks' , ref => ref.where('projectid', '==', idProject))
     .snapshotChanges().subscribe( data => {
        this.allTasks = data.map( e => {
          return {

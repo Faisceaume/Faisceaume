@@ -9,6 +9,7 @@ import {Member} from '../../members/member';
 import { Router } from '@angular/router';
 import { MatDialog, MatDialogConfig } from '@angular/material';
 import { TaskFormComponent } from '../../tasks/task-form/task-form.component';
+import { ProjectsService } from 'src/app/projects/projects.service';
 
 @Component({
   selector: 'app-tasks-view',
@@ -28,7 +29,8 @@ export class TasksViewComponent implements OnInit {
               private router: Router,
               public usersService: UsersService,
               private matDialog: MatDialog,
-              public tasksService: TasksService) { }
+              public tasksService: TasksService,
+              private projectService: ProjectsService) { }
 
   ngOnInit() {
 
@@ -78,9 +80,14 @@ export class TasksViewComponent implements OnInit {
   }
 
   displayOnMember(member: Member, index: number): void {
-    this.tasksService.getTasksForMember(member.memberid);
-    this.anotherFunction();
-    this.changeMemberSelectedCss(index);
+    if (this.projectService.projectSelected) {
+      this.tasksService.
+    getTasksForMemberAndProject(member.memberid, this.projectService.projectSelected.projectid);
+      this.anotherFunction();
+      this.changeMemberSelectedCss(index);
+    } else {
+      alert('Veuillez selectionner le projet');
+    }
   }
 
   changeMemberSelectedCss(index: number): void {

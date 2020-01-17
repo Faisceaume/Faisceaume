@@ -15,6 +15,7 @@ import { MatDialogConfig, MatDialog } from '@angular/material';
 import { TaskFormComponent } from '../tasks/task-form/task-form.component';
 import { ProjectsService } from '../projects/projects.service';
 import { AngularFireAuth } from '@angular/fire/auth';
+import { Project } from '../projects/project';
 
 @Component({
   selector: 'app-header',
@@ -28,6 +29,7 @@ export class HeaderComponent implements OnInit , OnDestroy  {
   filteredOptions: Observable<Member[]>;
   libelleSearch: string;
   categories: Categorie[];
+  projects: Project[];
   categorieSelected: string;
   isAuthentification: boolean;
   showSearchTool = false;
@@ -36,6 +38,7 @@ export class HeaderComponent implements OnInit , OnDestroy  {
   userMember: Member;
   subscriptionCategorie: Subscription;
   subscriptionMember: Subscription;
+  subscriptionProject: Subscription;
 
   constructor(private authentificationService: AuthentificationService,
               public memberService: MemberService,
@@ -56,6 +59,11 @@ export class HeaderComponent implements OnInit , OnDestroy  {
     this.memberService.getAllMembers();
     this.subscriptionMember = this.memberService.membersSubject.subscribe(data => {
       this.options = data;
+    });
+
+    this.projectsService.getAllProjects();
+    this.subscriptionProject = this.projectsService.projectsSubject.subscribe(data => {
+      this.projects = data;
     });
 
     this.afauth.auth.onAuthStateChanged(
@@ -159,6 +167,7 @@ export class HeaderComponent implements OnInit , OnDestroy  {
   ngOnDestroy(): void {
     this.subscriptionCategorie.unsubscribe();
     this.subscriptionMember.unsubscribe();
+    this.subscriptionProject.unsubscribe();
   }
 
 }

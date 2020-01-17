@@ -13,14 +13,13 @@ import { Task } from '../tasks/task';
 })
 export class ProjectsService {
 
-  /*db = firebase.firestore();*/
-
   formData: Project;
   isProjectsSection: boolean;
 
   projectsSubject = new Subject<any[]>();
   projects: Project[];
   currentProject: Project;
+  projectSelected: Project;
 
   constructor(private membersService: MemberService,
               private router: Router, private db: AngularFirestore) { }

@@ -18,10 +18,11 @@
       <div
         class="inner-card"
         cdkDrag
-        *ngFor="let task of project.tasks">
+        *ngFor="let task of project.tasks" (click)="onEditTask(task)">
         <div class="capsule-task" fxLayout="row" fxLayoutAlign="start center">
           <div>
-            <img class="mat-card-vignette" mat-card-image src="{{ task.memberpicture }}">
+            <img class="mat-card-vignette" mat-card-image
+            src="{{ task.memberpicture? task.memberpicture : 'assets/images/default_user.jpeg' }}">
           </div>
           <div>
             <h6>{{ task.title }}</h6>
