@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ProjectsService } from '../projects.service';
 import { Project } from '../project';
 import { Subscription } from 'rxjs';
+import { MemberService } from 'src/app/members/member.service';
 
 @Component({
   selector: 'app-projects-list',
@@ -25,6 +26,7 @@ export class ProjectsListComponent implements OnInit, OnDestroy {
       this.projects = data;
     });
   }
+
 
   ngOnDestroy(): void {
     this.projectsService.setIsProjectsSectionValue(false);

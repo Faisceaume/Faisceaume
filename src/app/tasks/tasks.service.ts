@@ -12,13 +12,13 @@ import { ProjectsService } from '../projects/projects.service';
 })
 export class TasksService {
 
-  /*db = firebase.firestore();*/
   formData: Task;
   tasksSubject = new Subject<any[]>();
   allTasks: Task[];
   tasksSection: boolean;
   toUpdateTaskStatut: boolean;
   onsShowGrille: boolean;
+  onDisplayFilterByMember: boolean;
 
   constructor(private membersService: MemberService,
               private db: AngularFirestore,
@@ -192,8 +192,24 @@ export class TasksService {
 
 getTasksForMember(idMember: string) {
   if (idMember) {
-    this.db.collection('members', ref => ref.orderBy('timestamp', 'desc'))
-    .doc(idMember).collection('tasks')
+    this.db.collection('members')
+    .doc(idMember).collection('tasks' , ref => ref.orderBy('timestamp', 'desc'))
+    .snapshotChanges().subscribe( data => {
+       this.allTasks = data.map( e => {
+         return {
+           taskid : e.payload.doc.id,
+           ...e.payload.doc.data()
+         } as Task;
+       });
+       this.emitTasksSubject();
+     });
+  }
+}
+
+getTasksForMemberAndProject(idMember: string, idProject: string) {
+  if (idMember) {
+    this.db.collection('members')
+    .doc(idMember).collection('tasks' , ref => ref.where('projectid', '==', idProject))
     .snapshotChanges().subscribe( data => {
        this.allTasks = data.map( e => {
          return {
@@ -208,6 +224,10 @@ getTasksForMember(idMember: string) {
 
 setOnShowGrille(bool: boolean) {
   this.onsShowGrille = bool;
+}
+
+setFilterByMemberValue(item: boolean): void {
+  this.onDisplayFilterByMember = item;
 }
 
 }

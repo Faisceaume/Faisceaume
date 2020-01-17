@@ -1,9 +1,10 @@
-<div class="container">
+<div class="container" *ngIf="usersService.isAdministrateur && tasksService.onDisplayFilterByMember">
   <div fxLayout="row" [ngStyle]="{'padding':'20px 0 10px'}">
     <div fxFlex="20" fxLayoutAlign="center center" fxLayout="column"
-      *ngFor="let member of members"
-      (click)="displayOnMember(member)">
-        <img class="tab-thumb" src="{{ member.picture }}" [ngClass]="{'memberSelected': memberSelectedId === member.memberid }">
+      *ngFor="let member of members; let i = index"
+      (click)="displayOnMember(member,i)"
+      >
+        <img  class="tab-thumb" src="{{ member.picture }}">
         <p>{{ member.name }}</p>
     </div>
   </div>

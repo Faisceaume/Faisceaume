@@ -1,6 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AuthentificationService } from '../authentification/authentification.service';
-/*import * as firebase from 'firebase/app';*/
 import { MemberService } from '../members/member.service';
 import { Router } from '@angular/router';
 import { FormControl } from '@angular/forms';
@@ -16,27 +15,30 @@ import { MatDialogConfig, MatDialog } from '@angular/material';
 import { TaskFormComponent } from '../tasks/task-form/task-form.component';
 import { ProjectsService } from '../projects/projects.service';
 import { AngularFireAuth } from '@angular/fire/auth';
+import { Project } from '../projects/project';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
-export class HeaderComponent implements OnInit /*, OnDestroy */ {
+export class HeaderComponent implements OnInit , OnDestroy  {
 
   myControl = new FormControl();
   options: Member[] = [];
   filteredOptions: Observable<Member[]>;
   libelleSearch: string;
   categories: Categorie[];
+  projects: Project[];
   categorieSelected: string;
   isAuthentification: boolean;
   showSearchTool = false;
 
   user: Users;
   userMember: Member;
-  /*subscriptionCategorie: Subscription;*/
-  /*subscriptionMember: Subscription;*/
+  subscriptionCategorie: Subscription;
+  subscriptionMember: Subscription;
+  subscriptionProject: Subscription;
 
   constructor(private authentificationService: AuthentificationService,
               public memberService: MemberService,
@@ -50,13 +52,18 @@ export class HeaderComponent implements OnInit /*, OnDestroy */ {
 
   ngOnInit() {
     this.categorieService.getAllCategories();
-    this.categorieService.categoriesSubject.subscribe(data => {
+    this.subscriptionCategorie = this.categorieService.categoriesSubject.subscribe(data => {
       this.categories = data;
     });
 
     this.memberService.getAllMembers();
-    this.memberService.membersSubject.subscribe(data => {
+    this.subscriptionMember = this.memberService.membersSubject.subscribe(data => {
       this.options = data;
+    });
+
+    this.projectsService.getAllProjects();
+    this.subscriptionProject = this.projectsService.projectsSubject.subscribe(data => {
+      this.projects = data;
     });
 
     this.afauth.auth.onAuthStateChanged(
@@ -149,9 +156,18 @@ export class HeaderComponent implements OnInit /*, OnDestroy */ {
     this.tasksService.setOnShowGrille(false);
   }
 
-  /*ngOnDestroy(): void {
+  closeFilterByMember(): void {
+    this.tasksService.setFilterByMemberValue(false);
+  }
+
+  openFilterByMember(): void {
+    this.tasksService.setFilterByMemberValue(true);
+  }
+
+  ngOnDestroy(): void {
     this.subscriptionCategorie.unsubscribe();
     this.subscriptionMember.unsubscribe();
-  } */
+    this.subscriptionProject.unsubscribe();
+  }
 
 }

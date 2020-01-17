@@ -7,8 +7,6 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { Task } from '../../tasks/task';
 import { TasksService } from 'src/app/tasks/tasks.service';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-/*import * as firebase from 'firebase/app';
-import 'firebase/storage';*/
 import { MatDialogConfig, MatDialog } from '@angular/material';
 import { TaskFormComponent } from 'src/app/tasks/task-form/task-form.component';
 import { Subscription } from 'rxjs';
@@ -18,11 +16,11 @@ import { Subscription } from 'rxjs';
   templateUrl: './project.component.html',
   styleUrls: ['./project.component.css']
 })
-export class ProjectComponent implements OnInit/*, OnDestroy */{
+export class ProjectComponent implements OnInit, OnDestroy {
 
   @Input() project: Project;
   projectTasks: Task[];
-  /*subscription: Subscription;*/
+  subscription: Subscription;
 
 
   constructor(private projectsService: ProjectsService,
@@ -33,7 +31,7 @@ export class ProjectComponent implements OnInit/*, OnDestroy */{
 
   ngOnInit() {
     this.tasksService.getAllTasksForProject(this.project.projectid);
-    this.tasksService.tasksSubject.subscribe(
+    this.subscription = this.tasksService.tasksSubject.subscribe(
       data => {
         this.projectTasks = this.project.tasks;
       }
@@ -86,19 +84,25 @@ export class ProjectComponent implements OnInit/*, OnDestroy */{
 
   onCreateTask() {
     this.projectsService.setCurrentProject(this.project);
+    this.tasksService.resetForm();
     this.openDialog();
   }
 
   openDialog() {
-    this.tasksService.resetForm();
     const dialogConfig = new MatDialogConfig();
     dialogConfig.autoFocus = true;
     dialogConfig.width = '60%';
     this.matDialog.open(TaskFormComponent, dialogConfig);
   }
 
-  /*ngOnDestroy(): void {
+  onEditTask(task: Task) {
+    this.tasksService.setToUpdateTaskStatut(true);
+    this.tasksService.setFormDataValue(task);
+    this.openDialog();
+  }
+
+  ngOnDestroy(): void {
     this.subscription.unsubscribe();
-  }*/
+  }
 
 }

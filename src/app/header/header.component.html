@@ -82,6 +82,23 @@
       matTooltip="logout" *ngIf="isAuthentification">
         <mat-icon>power_settings_new</mat-icon>
       </button>
+      <button mat-icon-button color="accent" (click)="closeFilterByMember()"
+      matTooltip="close" *ngIf="isAuthentification && tasksService.tasksSection && tasksService.onDisplayFilterByMember">
+        <mat-icon>clear</mat-icon>
+      </button>
+      <button mat-icon-button color="accent" (click)="openFilterByMember()"
+      matTooltip="open" *ngIf="isAuthentification && tasksService.tasksSection && !tasksService.onDisplayFilterByMember">
+        <mat-icon>remove_red_eye</mat-icon>
+      </button>
+      &nbsp;
+      <mat-form-field *ngIf="isAuthentification && tasksService.tasksSection">
+        <mat-label>Project</mat-label>
+        <mat-select [(value)]="projectsService.projectSelected">
+          <mat-option *ngFor="let project of projects" [value]="project">
+                {{project.title}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
     </div>
 
   </div>

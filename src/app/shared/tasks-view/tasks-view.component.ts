@@ -9,6 +9,7 @@ import {Member} from '../../members/member';
 import { Router } from '@angular/router';
 import { MatDialog, MatDialogConfig } from '@angular/material';
 import { TaskFormComponent } from '../../tasks/task-form/task-form.component';
+import { ProjectsService } from 'src/app/projects/projects.service';
 
 @Component({
   selector: 'app-tasks-view',
@@ -28,7 +29,8 @@ export class TasksViewComponent implements OnInit {
               private router: Router,
               public usersService: UsersService,
               private matDialog: MatDialog,
-              private tasksService: TasksService) { }
+              public tasksService: TasksService,
+              private projectService: ProjectsService) { }
 
   ngOnInit() {
 
@@ -77,9 +79,23 @@ export class TasksViewComponent implements OnInit {
     this.matDialog.open(TaskFormComponent, dialogConfig);
   }
 
-  displayOnMember(member: Member): void {
-    this.tasksService.getTasksForMember(member.memberid);
-    this.anotherFunction();
+  displayOnMember(member: Member, index: number): void {
+    if (this.projectService.projectSelected) {
+      this.tasksService.
+    getTasksForMemberAndProject(member.memberid, this.projectService.projectSelected.projectid);
+      this.anotherFunction();
+      this.changeMemberSelectedCss(index);
+    } else {
+      alert('Veuillez selectionner le projet');
+    }
+  }
+
+  changeMemberSelectedCss(index: number): void {
+    const pElt = document.querySelectorAll('img');
+    pElt.forEach(item => {
+      item.classList.remove('tab-thumbSelected');
+    });
+    pElt[index + 1].classList.add('tab-thumbSelected');
   }
 
 }

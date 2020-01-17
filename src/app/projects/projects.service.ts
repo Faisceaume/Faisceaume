@@ -13,14 +13,13 @@ import { Task } from '../tasks/task';
 })
 export class ProjectsService {
 
-  /*db = firebase.firestore();*/
-
   formData: Project;
   isProjectsSection: boolean;
 
   projectsSubject = new Subject<any[]>();
   projects: Project[];
   currentProject: Project;
+  projectSelected: Project;
 
   constructor(private membersService: MemberService,
               private router: Router, private db: AngularFirestore) { }
@@ -107,7 +106,8 @@ export class ProjectsService {
   }
 
   deleteAllProjectData(idProject: string) {
-    this.db.firestore.collection('projects').doc(idProject).collection('tasks').get().then((querySnapshot) => {
+    this.db.firestore.collection('projects').doc(idProject).collection('tasks')
+    .get().then((querySnapshot) => {
       querySnapshot.forEach( (doc) => {
 
           const data = doc.data();

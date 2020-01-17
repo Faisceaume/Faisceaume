@@ -1,10 +1,6 @@
 {
   "hosting": {
-<<<<<<< HEAD
-    "public": "dist",
-=======
     "public": "dist/faisceaume",
->>>>>>> faisceaume-okoma
     "ignore": [
       "firebase.json",
       "**/.*",
@@ -16,14 +12,11 @@
         "destination": "/index.html"
       }
     ]
-<<<<<<< HEAD
-=======
   },
   "database": {
     "rules": "database.rules.json"
   },
   "storage": {
     "rules": "storage.rules"
->>>>>>> faisceaume-okoma
   }
 }
