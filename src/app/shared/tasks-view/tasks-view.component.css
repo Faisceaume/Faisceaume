@@ -20,11 +20,11 @@ img.tab-thumb {
 }
 
 img.tab-thumb:hover {
-  border: 2px solid #FFF;
+  border: 2px solid #ccc;
 }
 
 img.tab-thumbSelected {
-  border: 2px solid red;
+  border: 2px solid #FFF;
 }
 
 p {

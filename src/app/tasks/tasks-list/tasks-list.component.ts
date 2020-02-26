@@ -26,9 +26,6 @@ export class TasksListComponent implements OnInit, OnDestroy {
   tasks: Task[];
   options: Member[];
   categories: Categorie[];
-  subscriptionTask: Subscription;
-  subscriptionCategorie: Subscription;
-  subscriptionMember: Subscription;
   isAdmin: boolean;
   getTasksSubscription: boolean;
 
@@ -43,12 +40,12 @@ export class TasksListComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.categorieService.getAllCategories();
-    this.subscriptionCategorie = this.categorieService.categoriesSubject.subscribe(data => {
+    this.categorieService.categoriesSubject.subscribe(data => {
       this.categories = data;
     });
 
     this.membersService.getAllMembers();
-    this.subscriptionMember = this.membersService.membersSubject.subscribe(data => {
+    this.membersService.membersSubject.subscribe(data => {
       this.options = data;
     });
 
@@ -91,7 +88,7 @@ export class TasksListComponent implements OnInit, OnDestroy {
     } else {
       this.tasksService.getTasksForMember(memberid);
     }
-    this.subscriptionTask = this.tasksService.tasksSubject.subscribe(data => {
+    this.tasksService.tasksSubject.subscribe(data => {
       this.tasks = data;
     });
   }
@@ -133,10 +130,5 @@ export class TasksListComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.tasksService.setTasksSectionValue(false);
-    if (this.getTasksSubscription) {
-      this.subscriptionTask.unsubscribe();
-    }
-    this.subscriptionMember.unsubscribe();
-    this.subscriptionCategorie.unsubscribe();
   }
 }

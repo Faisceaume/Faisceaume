@@ -75,6 +75,7 @@ export class TasksViewComponent implements OnInit {
   openMatDialog() {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.autoFocus = true;
+    dialogConfig.backdropClass = 'dialogcss',
     dialogConfig.width = '60%';
     this.matDialog.open(TaskFormComponent, dialogConfig);
   }

@@ -145,6 +145,7 @@ export class HeaderComponent implements OnInit , OnDestroy  {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.autoFocus = true;
     dialogConfig.width = '60%';
+    dialogConfig.backdropClass = 'dialogcss';
     this.matDialog.open(TaskFormComponent, dialogConfig);
   }
 
