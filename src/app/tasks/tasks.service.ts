@@ -166,6 +166,21 @@ export class TasksService {
     });
   }
 
+  getAllTasksCompleteForProject(projectid: string) {
+    this.db.collection('projects', ref => ref.orderBy('timestamp', 'desc'))
+    .doc(projectid)
+    .collection('tasks').snapshotChanges().subscribe( data => {
+      this.allTasks = data.map( e => {
+        const anotherData = e.payload.doc.data() as Task;
+        return {
+          taskid : e.payload.doc.id,
+          ...anotherData
+        } as Task;
+      });
+      this.emitTasksSubject();
+    });
+  }
+
 
   emitTasksSubject() {
     this.tasksSubject.next(this.allTasks.slice());

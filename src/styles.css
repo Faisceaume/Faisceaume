@@ -7,3 +7,16 @@ body {
     background: rgb(2,0,36);
     background: linear-gradient(342deg, rgba(2,0,36,1) 0%, rgba(70,70,70,1) 100%, rgba(148,148,148,1) 100%);
 }
+
+
+.dialogcss {
+  background-color: rgba(0, 0, 0, 0.9);
+}
+
+.dialogcss mat-dialog-container {
+  background-color: #fff200;
+  background: #fff200;
+  color: #2e3192;
+  font-size: 1.5em;
+  font-weight: bold;
+}
