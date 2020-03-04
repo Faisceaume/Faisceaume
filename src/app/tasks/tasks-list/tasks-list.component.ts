@@ -26,9 +26,6 @@ export class TasksListComponent implements OnInit/*, OnDestroy*/ {
   tasks: Task[];
   options: Member[];
   categories: Categorie[];
-  /*subscriptionTask: Subscription;
-  subscriptionCategorie: Subscription;
-  subscriptionMember: Subscription;*/
   isAdmin: boolean;
   getTasksSubscription: boolean;
 
@@ -133,10 +130,14 @@ export class TasksListComponent implements OnInit/*, OnDestroy*/ {
 
   /*ngOnDestroy(): void {
     this.tasksService.setTasksSectionValue(false);
+<<<<<<< HEAD
     if (this.getTasksSubscription) {
       this.subscriptionTask.unsubscribe();
     }
     this.subscriptionMember.unsubscribe();
     this.subscriptionCategorie.unsubscribe();
   }*/
+=======
+  }
+>>>>>>> faisceaume-okoma
 }
