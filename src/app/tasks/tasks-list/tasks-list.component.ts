@@ -130,14 +130,5 @@ export class TasksListComponent implements OnInit/*, OnDestroy*/ {
 
   /*ngOnDestroy(): void {
     this.tasksService.setTasksSectionValue(false);
-<<<<<<< HEAD
-    if (this.getTasksSubscription) {
-      this.subscriptionTask.unsubscribe();
-    }
-    this.subscriptionMember.unsubscribe();
-    this.subscriptionCategorie.unsubscribe();
-  }*/
-=======
-  }
->>>>>>> faisceaume-okoma
+  } */
 }
