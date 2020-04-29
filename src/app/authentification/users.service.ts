@@ -25,7 +25,7 @@ export class UsersService {
       this.users = data.map( e => {
         const anotherData = e.payload.doc.data() as Users;
         return {
-          memberid : e.payload.doc.id,
+          uid : e.payload.doc.id,
           ...anotherData
         } as Users;
       });
@@ -39,7 +39,8 @@ export class UsersService {
       museums.get().then((querySnapshot) =>  {
         querySnapshot.forEach((doc) => {
           resolve(
-            {userid: doc.id,
+            {
+              uid: doc.id,
               ...doc.data()} as Users
             );
         });

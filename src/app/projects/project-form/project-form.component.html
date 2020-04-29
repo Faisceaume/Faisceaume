@@ -37,3 +37,43 @@
     </div>
 
 </div>
+
+
+<div class="container" *ngIf="currentProject && tasksFilter" >
+  <mat-accordion>
+    <mat-expansion-panel *ngFor="let item of [].constructor(tasksFilter.length); let i = index" >
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          {{mois[i]}}
+        </mat-panel-title>
+        <mat-panel-description>
+          Total TimeSpent : {{ tasksFilter[i].totalTimeSpent }} Heures
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+
+      <table mat-table [dataSource]="tasksFilter[i].listeTasks" class="mat-elevation-z8" *ngIf="tasksFilter[i]" >
+
+        <ng-container matColumnDef="title">
+          <th mat-header-cell *matHeaderCellDef> Title </th>
+          <td mat-cell *matCellDef="let element"> {{element.title}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="description">
+          <th mat-header-cell *matHeaderCellDef> Description </th>
+          <td mat-cell *matCellDef="let element">
+            {{element.description}}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="timespent">
+          <th mat-header-cell *matHeaderCellDef> TimeSpent </th>
+          <td mat-cell *matCellDef="let element"> {{element.timespent}} </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </mat-expansion-panel>
+  </mat-accordion>
+
+</div>

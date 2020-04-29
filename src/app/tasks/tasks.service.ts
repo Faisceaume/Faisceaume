@@ -1,9 +1,6 @@
-
 import { Injectable } from '@angular/core';
 import { Task } from './task';
 import { NgForm } from '@angular/forms';
-/*import * as firebase from 'firebase/app';
-import 'firebase/firestore';*/
 import { MemberService } from '../members/member.service';
 import { Subject } from 'rxjs';
 import { AngularFirestore } from '@angular/fire/firestore';
@@ -15,13 +12,13 @@ import { ProjectsService } from '../projects/projects.service';
 })
 export class TasksService {
 
-  /*db = firebase.firestore();*/
   formData: Task;
   tasksSubject = new Subject<any[]>();
   allTasks: Task[];
   tasksSection: boolean;
   toUpdateTaskStatut: boolean;
   onsShowGrille: boolean;
+  onDisplayFilterByMember: boolean;
 
   constructor(private membersService: MemberService,
               private db: AngularFirestore,
@@ -140,7 +137,7 @@ export class TasksService {
 
 
   getAllTasks() {
-    this.db.collection('tasks', ref => ref.orderBy('location', 'asc'))
+    this.db.collection('tasks', ref => ref.orderBy('timestamp', 'desc'))
     .snapshotChanges().subscribe( data => {
       this.allTasks = data.map( e => {
         const anotherData = e.payload.doc.data() as Task;
@@ -155,7 +152,22 @@ export class TasksService {
 
 
   getAllTasksForProject(projectid: string) {
-    this.db.collection('projects', ref => ref.orderBy('location', 'asc'))
+    this.db.collection('projects', ref => ref.orderBy('timestamp', 'desc'))
+    .doc(projectid)
+    .collection('tasks').snapshotChanges().subscribe( data => {
+      this.allTasks = data.map( e => {
+        const anotherData = e.payload.doc.data() as Task;
+        return {
+          taskid : e.payload.doc.id,
+          ...anotherData
+        } as Task;
+      });
+      this.emitTasksSubject();
+    });
+  }
+
+  getAllTasksCompleteForProject(projectid: string) {
+    this.db.collection('projects', ref => ref.orderBy('timestamp', 'desc'))
     .doc(projectid)
     .collection('tasks').snapshotChanges().subscribe( data => {
       this.allTasks = data.map( e => {
@@ -195,8 +207,24 @@ export class TasksService {
 
 getTasksForMember(idMember: string) {
   if (idMember) {
-    this.db.collection('members', ref => ref.orderBy('location', 'asc'))
-    .doc(idMember).collection('tasks')
+    this.db.collection('members')
+    .doc(idMember).collection('tasks' , ref => ref.orderBy('timestamp', 'desc'))
+    .snapshotChanges().subscribe( data => {
+       this.allTasks = data.map( e => {
+         return {
+           taskid : e.payload.doc.id,
+           ...e.payload.doc.data()
+         } as Task;
+       });
+       this.emitTasksSubject();
+     });
+  }
+}
+
+getTasksForMemberAndProject(idMember: string, idProject: string) {
+  if (idMember) {
+    this.db.collection('members')
+    .doc(idMember).collection('tasks' , ref => ref.where('projectid', '==', idProject))
     .snapshotChanges().subscribe( data => {
        this.allTasks = data.map( e => {
          return {
@@ -211,6 +239,10 @@ getTasksForMember(idMember: string) {
 
 setOnShowGrille(bool: boolean) {
   this.onsShowGrille = bool;
+}
+
+setFilterByMemberValue(item: boolean): void {
+  this.onDisplayFilterByMember = item;
 }
 
 }

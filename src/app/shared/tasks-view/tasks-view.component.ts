@@ -9,6 +9,7 @@ import {Member} from '../../members/member';
 import { Router } from '@angular/router';
 import { MatDialog, MatDialogConfig } from '@angular/material';
 import { TaskFormComponent } from '../../tasks/task-form/task-form.component';
+import { ProjectsService } from 'src/app/projects/projects.service';
 
 @Component({
   selector: 'app-tasks-view',
@@ -19,26 +20,38 @@ export class TasksViewComponent implements OnInit {
 
   @Input() tasksList?: Task[];
   dataSource: MatTableDataSource<Task>;
-  displayedColumns: string[] = ['created_at', 'title', 'description', 'time', 'member', 'action'];
+  displayedColumns: string[] = ['created_at', 'title', 'description', 'action'];
+  members: Member[];
 
   @ViewChild(MatSort, {static: true}) sort: MatSort;
 
-  constructor(private membersService: MemberService,
+  constructor(public membersService: MemberService,
               private router: Router,
               public usersService: UsersService,
               private matDialog: MatDialog,
-              private tasksService: TasksService) { }
+              public tasksService: TasksService,
+              private projectService: ProjectsService) { }
 
   ngOnInit() {
+
+    this.membersService.getAllMembers();
+    this.membersService.membersSubject.subscribe(
+      data => { this.members = data; }
+    );
+
     if (this.usersService.isAdministrateur && !this.membersService.editMemberSection) {
         this.tasksService.getAllTasks();
       } else {
         this.tasksService.getTasksForMember(this.membersService.sessionMember.memberid);
       }
+    this.anotherFunction();
+  }
+
+  anotherFunction(): void {
     this.tasksService.tasksSubject.subscribe(data => {
-        this.dataSource = new MatTableDataSource<Task>(data);
-        this.dataSource.sort = this.sort;
-      });
+      this.dataSource = new MatTableDataSource<Task>(data);
+      this.dataSource.sort = this.sort;
+    });
   }
 
   onEditMemberSection(task: Task) {
@@ -62,8 +75,28 @@ export class TasksViewComponent implements OnInit {
   openMatDialog() {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.autoFocus = true;
+    dialogConfig.backdropClass = 'dialogcss',
     dialogConfig.width = '60%';
     this.matDialog.open(TaskFormComponent, dialogConfig);
+  }
+
+  displayOnMember(member: Member, index: number): void {
+    if (this.projectService.projectSelected) {
+      this.tasksService.
+    getTasksForMemberAndProject(member.memberid, this.projectService.projectSelected.projectid);
+      this.anotherFunction();
+      this.changeMemberSelectedCss(index);
+    } else {
+      alert('Veuillez selectionner le projet');
+    }
+  }
+
+  changeMemberSelectedCss(index: number): void {
+    const pElt = document.querySelectorAll('img');
+    pElt.forEach(item => {
+      item.classList.remove('tab-thumbSelected');
+    });
+    pElt[index + 1].classList.add('tab-thumbSelected');
   }
 
 }

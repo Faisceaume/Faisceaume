@@ -138,12 +138,21 @@ createNewMember(form: NgForm) {
 
   batch.set(nextDocument2, data);
 
+
   if (this.singleUser) {
+<<<<<<< HEAD
     const userUrl = this.db.firestore.collection('users').doc(this.singleUser.userid);
     batch.update(userUrl, {memberid: nextId, createdat: data.createdat});
+=======
+    const content = Object.assign( {}, {uid: this.singleUser.uid, memberid: nextId, createdat: new Date().getTime()} );
+    const userUrl = this.db.collection('users').doc(this.singleUser.uid);
+    batch.update(userUrl, content);
+>>>>>>> 47d5915751f2199ab560fdd43ca09d8c65edbb2c
   }
 
-  batch.commit();
+  batch.commit()
+  .then(() => {console.log('Batch Commited'); })
+    .catch((error) => { console.error('Error Updating document: ', error); });
   this.resetForm(form);
 }
 

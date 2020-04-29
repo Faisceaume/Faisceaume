@@ -1,9 +1,9 @@
 
-<div fxLayout="column" fxLayoutAlign="start start" class="capsule-project" fxLayoutGap="10px">
+<div fxLayout="column" fxLayoutAlign="start start" class="capsule-project" fxLayoutGap="5px">
 
     <div>
       <h4>{{ project.title }}</h4>
-      <h5>{{ project.projectid }}</h5>
+      <!-- <h5>{{ project.projectid }}</h5> -->
     </div>
 
     <img src="{{ project.picture }}">
@@ -18,10 +18,11 @@
       <div
         class="inner-card"
         cdkDrag
-        *ngFor="let task of project.tasks">
+        *ngFor="let task of project.tasks" (click)="onEditTask(task)">
         <div class="capsule-task" fxLayout="row" fxLayoutAlign="start center">
           <div>
-            <img class="mat-card-vignette" mat-card-image src="{{ task.memberpicture }}">
+            <img class="mat-card-vignette" mat-card-image
+            src="{{ task.memberpicture ? task.memberpicture : 'assets/images/default_user.jpeg' }}">
           </div>
           <div>
             <h6>{{ task.title }}</h6>
@@ -34,10 +35,10 @@
        (click)="onEdit(project)">
         <mat-icon>edit</mat-icon>
       </button>
-      <button mat-icon-button color="accent" matTooltip="Supprimer"
+      <!-- <button mat-icon-button color="accent" matTooltip="Supprimer"
        (click)="onDelete(project)">
           <mat-icon>delete</mat-icon>
-      </button>
+      </button> -->
       <button mat-icon-button color="accent" matTooltip="Nouvelle Tâche"
        (click)="onCreateTask()">
         <mat-icon>add</mat-icon>
