@@ -21,7 +21,7 @@ import { ProjectsModule } from './projects/projects.module';
 import { EditCategorieComponent } from './members/categories/edit-categorie/edit-categorie.component';
 
 // import { environment } from '../environments/environment';
-import { environment } from '../environments/environment.prod';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [

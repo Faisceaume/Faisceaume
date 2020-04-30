@@ -41,17 +41,17 @@
 
 <div class="container" *ngIf="currentProject && tasksFilter" >
   <mat-accordion>
-    <mat-expansion-panel *ngFor="let item of [].constructor(tasksFilter.length); let i = index" >
+    <mat-expansion-panel *ngFor="let item of indexMois;">
       <mat-expansion-panel-header>
         <mat-panel-title>
-          {{mois[i]}}
+          {{mois[item]}}
         </mat-panel-title>
         <mat-panel-description>
-          Total TimeSpent : {{ tasksFilter[i].totalTimeSpent }} Heures
+          Total TimeSpent : {{ this.tasksFilter[item].totalTimeSpent }} Heures
         </mat-panel-description>
       </mat-expansion-panel-header>
 
-      <table mat-table [dataSource]="tasksFilter[i].listeTasks" class="mat-elevation-z8" *ngIf="tasksFilter[i]" >
+      <table mat-table [dataSource]="tasksFilter[item].listeTasks" class="mat-elevation-z8" *ngIf="tasksFilter[item]" >
 
         <ng-container matColumnDef="title">
           <th mat-header-cell *matHeaderCellDef> Title </th>
