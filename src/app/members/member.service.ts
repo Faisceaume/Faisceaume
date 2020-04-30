@@ -2,11 +2,12 @@ import { Injectable } from '@angular/core';
 import { Member } from './member';
 import { NgForm } from '@angular/forms';
 import * as firebase from 'firebase/app';
-import 'firebase/firestore';
-import 'firebase/storage';
+/*import 'firebase/firestore';
+import 'firebase/storage';*/
 import { Users } from '../authentification/users';
 import { Subject } from 'rxjs';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { AngularFireStorage } from '@angular/fire/storage';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +21,7 @@ export class MemberService {
   formData: Member;
   beforeCategorieId: string;
   beforePhotoUrl: string;
-  db = firebase.firestore();
+  /*db = firebase.firestore();*/
   isSearchByCategorie: boolean;
 
   sessionMember: Member;
@@ -28,10 +29,10 @@ export class MemberService {
   // data for upload-image component
   fileUrl: string;
 
-  constructor(private firestore: AngularFirestore) { }
+  constructor(private db: AngularFirestore, private angularStorage: AngularFireStorage) { }
 
   getAllMembers() {
-    this.firestore.collection('members', ref => ref.orderBy('location', 'asc'))
+    this.db.collection('members', ref => ref.orderBy('location', 'asc'))
                   .snapshotChanges().subscribe( data => {
       this.members = data.map( e => {
         const anotherData = e.payload.doc.data() as Member;
@@ -50,7 +51,7 @@ emitMembersSubject() {
 
 getMemberById(id: string) {
   return new Promise<Member>((resolve, reject) => {
-    const museums = this.db.collection('members').where('memberid', '==', id);
+    const museums = this.db.firestore.collection('members').where('memberid', '==', id);
     museums.get().then((querySnapshot) =>  {
       querySnapshot.forEach((doc) => {
         resolve(
@@ -76,7 +77,7 @@ resetSingleUser() {
 
 getMembersBySearchName(libelle: string) {
   const members: Member[] = [];
-  this.db.collection('members').orderBy('location', 'asc').onSnapshot((querySnapshot) => {
+  this.db.firestore.collection('members').orderBy('location', 'asc').onSnapshot((querySnapshot) => {
     querySnapshot.forEach((doc) => {
       if (doc.data().name.toLowerCase().startsWith(libelle.toLowerCase ())) {
         members.push(
@@ -114,10 +115,10 @@ setFormDataValue(member?: Member) {
 }
 
 createNewMember(form: NgForm) {
-  const batch = this.db.batch();
+  const batch = this.db.firestore.batch();
   const donneesFormulaire = form.value;
 
-  const nextId = this.db.collection('members').doc().id;
+  const nextId = this.db.firestore.collection('members').doc().id;
   let data = Object.assign({}, form.value);
   if (this.fileUrl) {
     data = Object.assign( data, {memberid: nextId, picture: this.fileUrl, location: 0} );
@@ -127,11 +128,11 @@ createNewMember(form: NgForm) {
 
   data = Object.assign( data, {timestamp: new Date().getTime()} );
 
-  const nextDocument1 = this.db.collection('members').doc(nextId);
+  const nextDocument1 = this.db.firestore.collection('members').doc(nextId);
 
   batch.set(nextDocument1, data);
 
-  const nextDocument2 = this.db.collection('categories')
+  const nextDocument2 = this.db.firestore.collection('categories')
                         .doc(donneesFormulaire.categoryid).collection('members')
                         .doc(nextId);
 
@@ -139,9 +140,14 @@ createNewMember(form: NgForm) {
 
 
   if (this.singleUser) {
+<<<<<<< HEAD
+    const userUrl = this.db.firestore.collection('users').doc(this.singleUser.userid);
+    batch.update(userUrl, {memberid: nextId, createdat: data.createdat});
+=======
     const content = Object.assign( {}, {uid: this.singleUser.uid, memberid: nextId, createdat: new Date().getTime()} );
     const userUrl = this.db.collection('users').doc(this.singleUser.uid);
     batch.update(userUrl, content);
+>>>>>>> 47d5915751f2199ab560fdd43ca09d8c65edbb2c
   }
 
   batch.commit()
@@ -164,13 +170,13 @@ createNewMember(form: NgForm) {
     const memberid = data.memberid;
     const categoryid = data.categoryid;
 
-    const db = firebase.firestore();
-    const batch = this.db.batch();
+    /*const db = firebase.firestore();*/
+    const batch = this.db.firestore.batch();
 
-    const newsRef = db.collection('members').doc(memberid);
+    const newsRef = this.db.firestore.collection('members').doc(memberid);
 
 
-    const sousRef = db.collection('categories').doc(categoryid).collection('members').doc(memberid);
+    const sousRef = this.db.firestore.collection('categories').doc(categoryid).collection('members').doc(memberid);
 
     if (this.beforePhotoUrl && this.fileUrl) {
       if (this.beforePhotoUrl !== this.fileUrl) {
@@ -185,7 +191,7 @@ createNewMember(form: NgForm) {
     if (this.beforeCategorieId === categoryid) {
       batch.update(sousRef,  data);
     } else {
-     const ref1 = db.collection('categories')
+     const ref1 = this.db.firestore.collection('categories')
                     .doc(this.beforeCategorieId).collection('members')
                     .doc(memberid);
      batch.delete(ref1);
@@ -201,7 +207,7 @@ createNewMember(form: NgForm) {
     uploadFile(file: File) {
       return new Promise<any>((resolve, reject) => {
           const uniqueFileName = Date.now().toString();
-          const  upload = firebase.storage().ref().child('membersImages/' + uniqueFileName + file.name).put(file);
+          const  upload = this.angularStorage.storage.ref().child('membersImages/' + uniqueFileName + file.name).put(file);
 
           upload.on('state_changed', (snapshot) => {
               const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
@@ -226,7 +232,7 @@ createNewMember(form: NgForm) {
     }
 
     deletePhoto(url: string) {
-      const storageRef = firebase.storage().refFromURL(url);
+      const storageRef = this.angularStorage.storage.refFromURL(url);
       storageRef.delete().then(
                 () => {
                   console.log('photo supprimée');
