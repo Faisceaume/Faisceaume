@@ -1,1 +1,39 @@
-<p>client-details works!</p>
+<div *ngIf="display" style="color: aliceblue;" fxLayout="row" fxLayoutAlign="space-between center">
+    <h2>Client : <strong>{{ formData.email }}</strong></h2>
+    <button mat-icon-button (click)="backToClientList()" type="button" class="button-right">
+        <mat-icon>close</mat-icon>
+    </button>
+</div>
+
+
+<div *ngIf="display" style="color: aliceblue;" fxLayout="column" fxLayoutAlign="center center">
+
+    <div>
+        <form #form="ngForm">
+            <div fxLayout="row" style="margin: 2%">
+                <div fxFlex="100" fxLayout="column">
+                    <mat-form-field style="margin: 0 3%">
+                        <input matInput placeholder="Nom" required [(ngModel)]="formData.nom"
+                        (ngModelChange)="updateField('nom', formData.nom)" name="nom">
+                    </mat-form-field>
+                    <mat-form-field style="margin: 0 3%">
+                    <input matInput placeholder="Prénoms" required [(ngModel)]="formData.prenom"
+                    (ngModelChange)="updateField('prenom', formData.prenom)" name="prenom">
+                    </mat-form-field>
+                    <mat-form-field style="margin: 0 3%">
+                        <input matInput placeholder="Phone" required [(ngModel)]="formData.phone"
+                        (ngModelChange)="updateField('phone', formData.phone)" name="phone">
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>Project</mat-label>
+                        <mat-select multiple name="projects"  (ngModelChange)="updateField('projects', formData.projects)">
+                          <mat-option *ngFor="let project of projects" [value]="project">
+                                {{project.title}}
+                          </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
