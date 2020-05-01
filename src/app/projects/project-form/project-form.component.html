@@ -1,6 +1,18 @@
 <div class="addform" fxLayout="column" [ngStyle]="{'padding':'20px'}">
-    <h2>New Project</h2>
-    <form #form="ngForm" autocomplete="off" (submit)="onSubmit(form)">
+
+
+  <form #form="ngForm" fxLayout="row wrap" autocomplete="off" (submit)="onSubmit(form)">
+
+      <h2 fxFlex="100">New Project</h2>
+
+      <div fxFlex="30" *ngIf="memberService.fileUrl != null">
+        <img mat-card-image [src]="memberService.fileUrl" class="imgproject">
+        <button mat-icon-button (click)="onDeleteDrapImage()">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
+
+      <div fxFlex="70" style="padding: 10px;" fxLayout="column">
         <input *ngIf="projectsService.formData ? projectsService.formData.projectid : null" type="hidden"
             name="projectid" #projectid="ngModel"
             [(ngModel)]="projectsService.formData.projectid"
@@ -9,23 +21,23 @@
             name="picture" #picture="ngModel"
             [(ngModel)]="projectsService.formData.picture"
             class="form-control">
-        <div fxLayout="column">
-
-            <mat-form-field>
-                <input matInput placeholder="project title"
-                    name="title" #title="ngModel"
-                    [(ngModel)]="projectsService.formData.title" required>
-            </mat-form-field>
+        <mat-form-field>
+          <input matInput placeholder="Project Title"
+            name="title" #title="ngModel"
+            [(ngModel)]="projectsService.formData.title" required>
+        </mat-form-field>
+        <div fxFlex="100">
+          <app-upload-image *ngIf="!memberService.fileUrl"></app-upload-image>
+          <button mat-raised-button color="primary" type="submit"
+          [disabled]="!memberService.fileUrl || form.invalid">
+          {{projectsService.formData.projectid ? 'Modifier': 'Ajouter'}}
+          </button>
         </div>
+      </div>
+  </form>
 
-        <app-upload-image *ngIf="!memberService.fileUrl"></app-upload-image>
-        <button mat-raised-button color="primary" type="submit"
-        [disabled]="!memberService.fileUrl || form.invalid">
-        {{projectsService.formData.projectid ? 'Modifier': 'Ajouter'}}
-        </button>
-    </form>
 
-    <div class="del" *ngIf="memberService.fileUrl != null">
+    <!-- <div class="del" *ngIf="memberService.fileUrl != null">
         <mat-card class="example-card" >
             <img mat-card-image [src]="memberService.fileUrl" height="200px">
             <mat-card-actions class="text-center">
@@ -34,7 +46,7 @@
                 </button>
             </mat-card-actions>
         </mat-card>
-    </div>
+    </div> -->
 
 </div>
 
@@ -51,7 +63,7 @@
         </mat-panel-description>
       </mat-expansion-panel-header>
 
-      <table mat-table [dataSource]="tasksFilter[item].listeTasks" class="mat-elevation-z8" *ngIf="tasksFilter[item]" >
+      <table mat-table [dataSource]="tasksFilter[item].listeTasks" *ngIf="tasksFilter[item]" style="box-shadow: none;">
 
         <ng-container matColumnDef="title">
           <th mat-header-cell *matHeaderCellDef> Title </th>

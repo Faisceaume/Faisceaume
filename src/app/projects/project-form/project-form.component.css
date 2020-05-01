@@ -26,3 +26,8 @@
   table {
     width: 100%;
   }
+
+  .imgproject {
+    max-width: 100%;
+    height: auto;
+  }
