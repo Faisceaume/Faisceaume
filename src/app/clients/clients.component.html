@@ -1,0 +1,65 @@
+<div fxLayout="row" fxLayoutAlign="space-between center">
+    <h2 style="color: aliceblue;">Liste des clients</h2>
+    <button mat-icon-button 
+        style="color: aliceblue;"
+        type="button"
+        class="button-right"
+        (click)="onCreate()">
+            <mat-icon>add</mat-icon>
+    </button>
+</div>
+
+
+
+<div>
+  <mat-table [dataSource]="dataSource" style="box-shadow: none;">
+
+    <ng-container matColumnDef="nom">
+      <mat-header-cell *matHeaderCellDef>Nom</mat-header-cell>
+      <mat-cell *matCellDef="let element;"> {{ element.nom }} </mat-cell>
+    </ng-container>
+
+    <!--<ng-container matColumnDef="prenom">
+      <mat-header-cell *matHeaderCellDef>Prénoms</mat-header-cell>
+      <mat-cell *matCellDef="let element;">
+        <img [routerLink]="['/trophees', element.$id]"
+          *ngIf="element.image"
+          [src]="element.image"
+          class="imgtrophee">
+      </mat-cell>
+    </ng-container> -->
+
+    <ng-container matColumnDef="prenom">
+      <mat-header-cell *matHeaderCellDef>Prénoms</mat-header-cell>
+      <mat-cell *matCellDef="let element;"> {{ element.prenom }} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="email">
+      <mat-header-cell *matHeaderCellDef>Email</mat-header-cell>
+      <mat-cell *matCellDef="let element;"> {{ element.email }} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="phone">
+      <mat-header-cell *matHeaderCellDef>Phone</mat-header-cell>
+      <mat-cell *matCellDef="let element;"> {{ element.phone }} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <mat-header-cell *matHeaderCellDef></mat-header-cell>
+        <mat-cell *matCellDef="let element;" [ngStyle]="{'text-align':'right'}">
+          <button type="button" mat-icon-button (click)="goToClientDetail(element.$id)" routerLinkActive="router-link-active" >
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button type="button" mat-icon-button (click)="onDelete(element.$id)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+
+    <!-- <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator> -->
+
+  </mat-table>
+</div>

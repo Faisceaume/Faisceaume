@@ -19,6 +19,10 @@ const routes: Routes = [
     loadChildren: () => import('./tasks/tasks.module').then(mod => mod.TasksModule)
   },
   {
+    path: 'clients', canActivate: [AuthGuardService],
+    loadChildren: () => import('./clients/clients.module').then(mod => mod.ClientsModule)
+  },
+  {
     path: 'projects', canActivate: [AuthGuardService],
     loadChildren: () => import('./projects/projects.module').then(mod => mod.ProjectsModule)
   },

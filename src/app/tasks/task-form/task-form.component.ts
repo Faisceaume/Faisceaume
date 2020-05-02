@@ -17,7 +17,7 @@ import { Subscription } from 'rxjs';
 export class TaskFormComponent implements OnInit/*, OnDestroy*/ {
 
   members: Member[];
-  timesTable = ['1', '3', '6', '12', '24'];
+  timesTable = ['1', '2', '3', '4', '6', '8', '12', '24', '48', '72'];
   projectsTable: Project[];
   statutsTable = [true, false];
   /*subscriptionMember: Subscription;

@@ -17,7 +17,7 @@ import { Subscription } from 'rxjs';
   templateUrl: './members.component.html',
   styleUrls: ['./members.component.css']
 })
-export class MembersComponent implements OnInit/*, OnDestroy */{
+export class MembersComponent implements OnInit, OnDestroy {
 
   members: Member[];
   member: Member[];
@@ -25,8 +25,8 @@ export class MembersComponent implements OnInit/*, OnDestroy */{
 
   conditionToDropped: boolean;
   dropped: boolean;
-  /*subscriptionMember: Subscription;
-  subscriptionCategorie: Subscription;*/
+  subscriptionMember: Subscription;
+  subscriptionCategorie: Subscription;
 
   constructor(private memberService: MemberService,
               private db: AngularFirestore,
@@ -118,9 +118,9 @@ export class MembersComponent implements OnInit/*, OnDestroy */{
     );
   }
 
-  /*ngOnDestroy(): void {
+  ngOnDestroy(): void {
     this.subscriptionMember.unsubscribe();
     this.subscriptionCategorie.unsubscribe();
-  }*/
+  }
 
 }

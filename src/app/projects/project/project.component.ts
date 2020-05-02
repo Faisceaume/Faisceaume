@@ -16,11 +16,11 @@ import { Subscription } from 'rxjs';
   templateUrl: './project.component.html',
   styleUrls: ['./project.component.css']
 })
-export class ProjectComponent implements OnInit, OnDestroy {
+export class ProjectComponent implements OnInit /*, OnDestroy*/ {
 
   @Input() project: Project;
   projectTasks: Task[];
-  subscription: Subscription;
+  /*subscription: Subscription;*/
 
 
   constructor(private projectsService: ProjectsService,
@@ -31,7 +31,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.tasksService.getAllTasksForProject(this.project.projectid);
-    this.subscription = this.tasksService.tasksSubject.subscribe(
+    /*this.subscription = */this.tasksService.tasksSubject.subscribe(
       data => {
         this.projectTasks = this.project.tasks;
       }
@@ -101,8 +101,9 @@ export class ProjectComponent implements OnInit, OnDestroy {
     this.openDialog();
   }
 
+  /*
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
-  }
+  }*/
 
 }

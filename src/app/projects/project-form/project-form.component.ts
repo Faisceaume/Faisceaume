@@ -13,6 +13,7 @@ export interface Classement {
 }
 
 
+
 @Component({
   selector: 'app-project-form',
   templateUrl: './project-form.component.html',
@@ -23,14 +24,34 @@ export class ProjectFormComponent implements OnInit {
   currentProject: Project;
   taskForOperation: Task[] = [];
   tasksFilter: Classement[] = [];
-  mois = ['Janvier', 'Fevrier', 'Mars', 'Avril', 'Mais'];
+  indexMois: number[] = [];
+  mois = [
+    'Janvier',
+    'Fevrier',
+    'Mars',
+    'Avril',
+    'Mai',
+    'Juin',
+    'Juillet',
+    'Août',
+    'Septembre',
+    'Octobre',
+    'Novembre',
+    'Décembre'
+  ];
+
+  moisAffiches: string[] = [];
+
+  indexs: number[] = []; 
 
   panelOpenState = false;
 
   displayedColumns: string[] = ['title', 'description', 'timespent'];
 
-  constructor(public projectsService: ProjectsService,
-              public memberService: MemberService) { }
+  constructor(
+    public projectsService: ProjectsService,
+    public memberService: MemberService
+              ) { }
 
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
 
@@ -40,22 +61,28 @@ export class ProjectFormComponent implements OnInit {
     } else {
       this.currentProject = this.projectsService.formData;
       this.currentProject.tasks.forEach((item: Task) => {
-        if (item.statut) {
+        if (item.statut === true) {
           item.description = item.description.slice(0, 300) + '...';
           this.taskForOperation.push(item);
         }
       });
 
       this.taskForOperation.forEach((item: Task) => {
-        this.tasksFilter[new Date(item.timestamp).getMonth()] = {
-          listeTasks: [],
-          totalTimeSpent: 0};
+          this.tasksFilter[new Date(item.timestamp).getMonth()] = {
+            listeTasks: [],
+            totalTimeSpent: 0
+          };
       });
-
-      this.taskForOperation.forEach((item: Task) => {
+      
+      this.taskForOperation.forEach((item: Task) => { 
         this.tasksFilter[new Date(item.timestamp).getMonth()].listeTasks.push(item);
+        this.indexs.push( new Date(item.timestamp).getMonth() );
         // tslint:disable-next-line: radix
         this.tasksFilter[new Date(item.timestamp).getMonth()].totalTimeSpent += parseInt(item.timespent);
+        //console.log( this.tasksFilter[new Date(item.timestamp).getMonth()].totalTimeSpent );
+      });
+      this.tasksFilter.forEach((element: Classement) => {
+        this.indexMois.push(this.tasksFilter.indexOf(element));
       });
     }
 
