@@ -5,6 +5,7 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Users } from './users';
 import { auth } from 'firebase/app';
+import { first } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -65,6 +66,9 @@ connectionWithGoogle(): void {
        this.router.navigate(['members']);
      }
    );
+}
+async getUser() {
+  return this.afauth.authState.pipe(first()).toPromise();
 }
 
 }

@@ -4,6 +4,8 @@ import { ClientsService } from '../clients.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProjectsService } from 'src/app/projects/projects.service';
 import { Project } from 'src/app/projects/project';
+import { AuthentificationService } from 'src/app/authentification/authentification.service';
+import { AngularFireFunctions } from '@angular/fire/functions';
 
 export interface ProjectClient {
   title: string;

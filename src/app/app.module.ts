@@ -10,6 +10,7 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireStorageModule } from '@angular/fire/storage';
+import { AngularFireFunctionsModule } from '@angular/fire/functions';
 
 import { AuthentificationComponent } from './authentification/authentification.component';
 import { HeaderComponent } from './header/header.component';
@@ -22,6 +23,7 @@ import { EditCategorieComponent } from './members/categories/edit-categorie/edit
 
 import { environment } from '../environments/environment';
 //import { environment } from '../environments/environment.prod';
+
 
 @NgModule({
   declarations: [
@@ -38,6 +40,7 @@ import { environment } from '../environments/environment';
     AngularFirestoreModule,
     AngularFireAuthModule,
     AngularFireStorageModule,
+    AngularFireFunctionsModule,
     BrowserAnimationsModule,
     ReactiveFormsModule,
     MembersModule,

@@ -2,7 +2,10 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "./out-tsc/app",
-    "types": []
+    "types": [
+      "stripe-checkout",
+      "stripe-v3"
+    ]
   },
   "files": [
     "src/main.ts",

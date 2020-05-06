@@ -5,11 +5,12 @@ import { ClientFormComponent } from './client-form/client-form.component';
 import { ClientsComponent } from './clients.component';
 import { SharedModule } from '../shared/shared.module';
 import { ClientsRoutingModule } from './clients-routing.module';
+import { CheckoutComponent } from './client-details/checkout/checkout.component';
 
 
 
 @NgModule({
-  declarations: [ClientDetailsComponent, ClientFormComponent, ClientsComponent],
+  declarations: [ClientDetailsComponent, ClientFormComponent, ClientsComponent, CheckoutComponent],
   imports: [
     CommonModule,
     SharedModule,
