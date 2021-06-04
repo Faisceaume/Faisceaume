@@ -1,22 +1,240 @@
-/* You can add global styles to this file, and also import other style files */
+:root {
+  --text-light-color: rgba(240, 240, 240);
+  --text-dark-color: rgb(20, 20, 20);
 
-* { outline: 0 }
-html, body { height: 100%; }
+  --bg-light-color: rgb(240, 240, 240);
+  --bg-dark-color: rgb(20, 20, 20);
+  
+  --bg-hover-color: rgb(220, 220, 220);
+
+  /* Colors for the tasks and bugs status list */
+  --success-text-color: rgb(60, 150, 60);
+  --success-bg-color: rgb(180, 250, 180);
+
+  --warning-text-color: rgb(220, 150, 0);
+  --warning-bg-color: rgb(250, 180, 120);
+
+  --danger-text-color: rgb(250, 30, 30);
+  --danger-bg-color: rgb(250, 180, 180);
+
+  /* Colors of Angular Material */
+  --primary-color: rgb(63, 81, 181);
+  --accent-color: rgb(255, 64, 129);
+  --warn-color: rgb(244, 67, 54);
+
+  --input-color: rgb(110, 110, 110);
+
+  /* General padding/margin of Angular Material elements */
+  --sm-length: 16px;
+  --lg-length: 1.25em;
+}
+
+
+/* ---------- GENERAL ---------- */
+
+* {
+  outline: 0
+}
+
+html,
 body {
-    margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif;
-    background: rgb(2,0,36);
-    background: linear-gradient(342deg, rgba(2,0,36,1) 0%, rgba(70,70,70,1) 100%, rgba(148,148,148,1) 100%);
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  background: rgb(2, 0, 36);
+  background: linear-gradient(342deg, rgba(2, 0, 36, 1) 0%, rgba(70, 70, 70, 1) 100%, rgba(148, 148, 148, 1) 100%);
+}
+
+main {
+  padding: var(--lg-length);
+  background-image: linear-gradient(to bottom, #ffffff, #eeeef2, #dbdde6, #c8cdda, #b3bece);
+}
+
+/* ---------- DEFAULT VALUES ---------- */
+
+/* Text on the right of a icon */
+.icon-text {
+  padding-left: var(--sm-length);
+}
+
+mat-card {
+  background-color: var(--bg-light-color) !important;
+}
+
+/* Remove default position: absolute of mat-divider to keep space below the mat-divider*/
+mat-card mat-divider {
+  width: unset !important;
+  position: unset !important;
+  margin: var(--sm-length) !important;
 }
 
 
-.dialogcss {
-  background-color: rgba(0, 0, 0, 0.9);
+/* ---------- UTILITY CLASSES ---------- */
+
+.center-flex {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.center-vertically-flex {
+  display: flex;
+  align-items: center;
+}
+.center-horizontally-flex {
+  display: flex;
+  justify-content: center;
 }
 
-.dialogcss mat-dialog-container {
-  background-color: #fff200;
-  background: #fff200;
-  color: #2e3192;
-  font-size: 1.5em;
-  font-weight: bold;
+
+/* ---------- GENERAL CONTAINERS ---------- */
+
+.cards-flex-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.element-card-flex {
+  width: 15rem;
+  margin: var(--sm-length);
+}
+
+
+.top-container {
+  padding: var(--lg-length);
+  padding-bottom: 0;
+}
+
+.bottom-container {
+  margin-top: var(--lg-length);
+}
+
+
+/* ---------- MAT DIALOG ---------- */
+
+mat-dialog-container {
+  background-color: var(--bg-light-color) !important;
+}
+
+mat-dialog-container form {
+  padding: 0;
+}
+
+
+/* ---------- TITLES & TEXT ---------- */
+
+/* Reset the default margin of browsers */
+h1, h2, h3, h4, h5, h6, p {
+  margin: var(--sm-length) 0;
+}
+
+h1 { font-size: 1.50rem; }
+h2 { font-size: 1.40rem; }
+h3 { font-size: 1.30rem; }
+h4 { font-size: 1.20rem; }
+h5 { font-size: 1.10rem; }
+h6 { font-size: 1.05rem; }
+
+
+/* ---------- TABLE ---------- */
+
+mat-table {
+  width: 100%;
+  background-color: var(--bg-light-color) !important;
+}
+
+.table-filter-container {
+  background-color: var(--bg-light-color) !important;
+  padding: var(--sm-length);
+  padding-bottom: 0;
+}
+.table-filter-container > mat-form-field {
+  width: auto;
+}
+
+/* Fill the card padding */
+.mat-card-table {
+  margin: 0 calc(var(--sm-length) * -1);
+}
+
+mat-row:hover {
+  background-color: var(--bg-hover-color);
+}
+
+
+/* ---------- PAGINATOR ---------- */
+
+.paginator-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: end;
+  align-items: center;
+
+  font-size: 12px;
+  color: var(--input-color)
+}
+.paginator-item {
+  padding: 0 var(--sm-length);
+  margin: 0;
+}
+.paginator-form {
+  width: 56px;
+}
+
+
+/* ---------- FORM ---------- */
+
+form {
+  padding: var(--lg-length);
+  background-color: var(--bg-light-color);
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+/* Field with a mat-hint under the line */
+.field-indication {
+  margin-bottom: var(--lg-length);
+}
+
+.field-no-user {
+  margin-bottom: var(--sm-length);
+}
+
+
+/* ---------- BUTTONS ---------- */
+
+.btn-group-container {
+  padding-top: var(--sm-length);
+}
+/* Add margin-bottom to avoid the buttons overlay on themselves when the screen width is small */
+.btn-group-container > * {
+  margin-bottom: var(--sm-length) !important;
+  margin-left: 0 !important;
+}
+/* The last button doesn't have margin-right to avoid a shift with the right border */
+.btn-group-container > *:not(:last-child) {
+  margin-right: var(--sm-length) !important;
+}
+
+button:hover:not(:disabled) {
+  opacity: 0.95;
+}
+
+
+/* ---------- ELEMENTS STATE---------- */
+
+.text-success {
+  color: var(--success-text-color);
+}
+.text-warning {
+  color: var(--warning-text-color);
+}
+.text-danger {
+  color: var(--danger-text-color);
 }
