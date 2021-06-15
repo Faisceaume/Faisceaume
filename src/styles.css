@@ -124,7 +124,6 @@ mat-dialog-container form {
   padding: 0;
 }
 
-
 /* ---------- TITLES & TEXT ---------- */
 
 /* Reset the default margin of browsers */
@@ -159,6 +158,11 @@ mat-table {
 /* Fill the card padding */
 .mat-card-table {
   margin: 0 calc(var(--sm-length) * -1);
+}
+
+/* Fill the dialog padding */
+.mat-dialog-table {
+  margin: 0 -24px;
 }
 
 mat-row:hover {
@@ -210,16 +214,10 @@ mat-form-field {
 /* ---------- BUTTONS ---------- */
 
 .btn-group-container {
-  padding-top: var(--sm-length);
-}
-/* Add margin-bottom to avoid the buttons overlay on themselves when the screen width is small */
-.btn-group-container > * {
-  margin-bottom: var(--sm-length) !important;
-  margin-left: 0 !important;
-}
-/* The last button doesn't have margin-right to avoid a shift with the right border */
-.btn-group-container > *:not(:last-child) {
-  margin-right: var(--sm-length) !important;
+  display: flex;
+  flex-direction: row;
+  padding: var(--sm-length) 0;
+  gap: var(--sm-length);
 }
 
 button:hover:not(:disabled) {
