@@ -1,0 +1,160 @@
+<main>
+  <header>
+    <h1>Liste des clients</h1>
+
+    <app-auth-user [rolesGranted]="rolesGranted" (isGrantedEvent)="isAuthUserGranted($event)"></app-auth-user>
+    
+    <div *ngIf="isGranted && isDataLoaded">
+      <div class="btn-group-container">
+        <button mat-raised-button color="primary"
+          (click)="onAddClient()">
+          <mat-icon>add</mat-icon>Ajouter un client
+        </button>
+      </div>
+
+      <div *ngIf="clients.length === 0">
+        <p>Aucun client n'existe en base.</p>
+      </div>
+    </div>
+  </header>
+
+  <div>
+    <app-data-loading [isDataLoaded]="isDataLoaded"></app-data-loading>
+
+    <div *ngIf="isDataLoaded && isGranted && clients.length !== 0">
+      
+      <!-- Cards grid display part -->
+      <div *ngIf="sharedService.isGridShown" class="cards-flex-container">
+        <mat-card *ngFor="let client of clients" class="mat-elevation-z8 element-card-flex">
+          <mat-card-header>
+            <div mat-card-avatar class="center-flex">
+              <mat-icon>face</mat-icon>
+            </div>
+            <mat-card-title>{{ client.firstname }} {{ client.lastname }}</mat-card-title>
+            <mat-card-subtitle>{{ client.clientid }}</mat-card-subtitle>
+          </mat-card-header>
+
+          <mat-card-content>
+            <p>Créé le {{ client.timestamp | date: 'dd/MM/yy' }}</p>
+            <h6>Coordonnées</h6>
+            <div class="center-vertically-flex">
+              <mat-icon>local_phone</mat-icon>
+              <span class="icon-text">{{ client.phone }}</span>
+            </div>
+            
+            <div *ngIf="client.email"  class="center-vertically-flex">
+              <mat-icon>email</mat-icon>
+              <span class="icon-text">{{ client.email }}</span>
+            </div>
+            <div *ngIf="!client.email" class="center-vertically-flex text-danger">
+              <mat-icon>email</mat-icon>
+              <span class="icon-text">Pas d'adresse mail.</span>
+            </div>  
+          </mat-card-content>
+
+          <mat-card-actions>
+            <button mat-icon-button color="warn"
+              *ngIf="!client.email"
+              matTooltip="Assigner un utilisateur"
+              (click)="onUpdateClientUser(client)">
+              <mat-icon>assignment_ind</mat-icon>
+            </button>
+            <button mat-icon-button color="primary"
+              matTooltip="Détails du client"
+              (click)="onDetailsClient(client)">
+              <mat-icon>find_in_page</mat-icon>
+            </button>
+          </mat-card-actions>
+
+        </mat-card>
+      </div>
+      
+      <!-- Table display part  -->
+      <div *ngIf="!sharedService.isGridShown" class="mat-elevation-z8">
+        <div class="table-filter-container">
+          <mat-form-field>
+            <mat-label>Filtrer</mat-label>
+            <input matInput placeholder="Filtrer" #input
+              (keyup)="applyTableFilter($event.target.value)">
+          </mat-form-field>
+        </div>
+
+        <mat-table [dataSource]="clientsTable" matSort>
+
+          <mat-header-row *matHeaderRowDef="columnsTable"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: columnsTable;"></mat-row>
+
+          <!-- Row shown when there is no matching data -->
+          <mat-row *matNoDataRow>
+            <mat-cell colspan="4">Aucune correspondance avec le filtre {{ input.value }}</mat-cell>
+          </mat-row>
+
+          <!-- Firstname column -->
+          <ng-container matColumnDef="firstname">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Prénom</mat-header-cell>
+            <mat-cell *matCellDef="let client"
+              [ngStyle]="{'background-color': client.statusbackgroundcolor }">
+              {{ client.firstname }}
+            </mat-cell>
+          </ng-container>
+
+          <!-- Lastname column -->
+          <ng-container matColumnDef="lastname">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Nom</mat-header-cell>
+            <mat-cell *matCellDef="let client"
+              [ngStyle]="{'background-color': client.statusbackgroundcolor }">
+              {{ client.lastname }}
+            </mat-cell>
+          </ng-container>
+
+          <!-- Email column -->
+          <ng-container matColumnDef="email">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Email</mat-header-cell>
+            <mat-cell *matCellDef="let client"
+              [ngStyle]="{'background-color': client.statusbackgroundcolor }">
+              <p *ngIf="client.email">
+                {{ client.email }}
+              </p>
+              <button mat-icon-button color="warn"
+                *ngIf="!client.email"
+                matTooltip="Assigner un utilisateur"
+                (click)="onUpdateClientUser(client)">
+                <mat-icon>assignment_ind</mat-icon>
+              </button>
+            </mat-cell>
+          </ng-container>
+
+          <!-- Phone column -->
+          <ng-container matColumnDef="phone">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Téléphone</mat-header-cell>
+            <mat-cell *matCellDef="let client"
+              [ngStyle]="{'background-color': client.statusbackgroundcolor }">
+              {{ client.phone }}
+            </mat-cell>
+          </ng-container>
+
+          <!-- Operations column -->
+          <ng-container matColumnDef="operations">
+            <mat-header-cell *matHeaderCellDef>Opérations</mat-header-cell>
+            <mat-cell *matCellDef="let client"
+              [ngStyle]="{'background-color': client.statusbackgroundcolor }">
+              <button mat-icon-button color="primary"
+                matTooltip="Détails du client"
+                (click)="onDetailsClient(client)">
+                <mat-icon>find_in_page</mat-icon>
+              </button>
+              <button mat-icon-button color="accent"
+                matTooltip="Modifier le client"
+                (click)="onEditClient(client)">
+                <mat-icon>edit</mat-icon>
+              </button>
+            </mat-cell>
+          </ng-container>
+
+        </mat-table>
+        <mat-paginator [pageSizeOptions]="[5, 10, 15, 20]"></mat-paginator>
+        
+      </div>
+    </div>
+  </div>
+</main>

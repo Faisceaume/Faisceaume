@@ -1,0 +1,74 @@
+<main>
+  <header>
+    <h1>{{ operationType }} un membre</h1>
+
+    <app-auth-user [rolesGranted]="rolesGranted" (isGrantedEvent)="isAuthUserGranted($event)"></app-auth-user>
+  </header>
+
+  <form class="mat-elevation-z8"
+    *ngIf="isGranted"
+    #form="ngForm" autocomplete="off"
+    (ngSubmit)="onSubmit(form)">
+
+    <input type="hidden"
+      *ngIf="previousFormData.memberid"
+      #memberid="ngModel" name="memberid"
+      [(ngModel)]="previousFormData.memberid">
+
+    <input type="hidden"
+      *ngIf="previousFormData.memberid"
+      #picture="ngModel" name="picture"
+      [(ngModel)]="previousFormData.picture">
+      
+    <mat-form-field>
+      <mat-label>Prénom</mat-label>
+      <input matInput
+        placeholder="Prénom"
+        #firstname="ngModel" name="firstname"
+        [(ngModel)]="previousFormData.firstname"
+        required>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Nom de famille</mat-label>
+      <input matInput
+        placeholder="Nom de famille"
+        #lastname="ngModel" name="lastname"
+        [(ngModel)]="previousFormData.lastname"
+        required>
+    </mat-form-field>
+
+    <!-- !previousFormData.uid -> member already associated with an user (so only form-edit)-->
+    <mat-form-field *ngIf="usersTable.length !== 0 && !previousFormData.uid">
+      <mat-label>Utilisateur correspondant</mat-label>
+      <mat-select #user="ngModel" name="user"
+        [(ngModel)]="previousFormData.uid"
+        required>
+        <mat-option *ngFor="let user of usersTable" [value]="user">
+          {{ user.email }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    
+    <div *ngIf="usersTable.length === 0 && !previousFormData.uid">
+      <p class="text-warning">Aucun utilisateur anonyme libre ! Veuillez en créer un nouveau.</p>
+      <button mat-raised-button color="primary"
+        (click)="onAddUser()">
+        <mat-icon>add</mat-icon>Ajouter un utilisateur
+      </button>
+    </div>
+
+    <app-upload-image [title]="uploadImgTitle"></app-upload-image>
+
+    <div class="btn-group-container">
+      <button mat-raised-button color="basic" type="button"
+        (click)="onRedirectBack()">
+        Annuler
+      </button>
+      <button mat-raised-button color="primary" type="submit"
+        [disabled]="form.invalid">
+        {{ operationType }}
+      </button>
+    </div>
+  </form>
+</main>

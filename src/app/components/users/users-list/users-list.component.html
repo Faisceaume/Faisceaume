@@ -1,0 +1,84 @@
+<main>
+  <header>
+    <h1>Liste des utilisateurs</h1>
+
+    <app-auth-user [rolesGranted]="rolesGranted" (isGrantedEvent)="isAuthUserGranted($event)"></app-auth-user>
+
+    <div *ngIf="isGranted && isDataLoaded">
+      <div class="btn-group-container">
+        <button mat-raised-button color="primary"
+          (click)="onAddUser()">
+          <mat-icon>add</mat-icon>Ajouter un utilisateur
+        </button>
+      </div>
+
+      <div *ngIf="users.length === 0">
+        <p class="text-danger">Aucun utilisateur n'existe en base.</p>
+      </div>
+    </div>
+  </header>
+
+  <div class="mat-elevation-z8">
+    <app-data-loading [isDataLoaded]="isDataLoaded"></app-data-loading>
+    
+    <div *ngIf="isDataLoaded && isGranted && users.length !== 0">
+      <div class="table-filter-container">
+        <mat-form-field>
+          <mat-label>Filtrer</mat-label>
+          <input matInput placeholder="Filtrer" #input
+            (keyup)="applyTableFilter($event.target.value)">
+        </mat-form-field>
+      </div>
+
+      <mat-table [dataSource]="usersTable" matSort>
+
+        <mat-header-row *matHeaderRowDef="columnsTable"></mat-header-row>
+        <mat-row *matRowDef="let user; columns: columnsTable;" (click)="onEditUserRole(user)"></mat-row>
+
+        <!-- Row shown when there is no matching data -->
+        <mat-row *matNoDataRow>
+          <mat-cell colspan="4">Aucune correspondance avec le filtre {{ input.value }}</mat-cell>
+        </mat-row>
+
+        <!-- User ID column -->
+        <ng-container matColumnDef="uid">
+          <mat-header-cell *matHeaderCellDef mat-sort-header>ID utilisateur</mat-header-cell>
+          <mat-cell *matCellDef="let user"
+            [ngStyle]="{'background-color': user.roletypebackground }">
+            {{ user.uid }}
+          </mat-cell>
+        </ng-container>
+
+        <!-- Email column -->
+        <ng-container matColumnDef="email">
+          <mat-header-cell *matHeaderCellDef mat-sort-header>Email</mat-header-cell>
+          <mat-cell *matCellDef="let user"
+            [ngStyle]="{'background-color': user.roletypebackground }">
+            {{ user.email }}
+          </mat-cell>
+        </ng-container>
+
+        <!-- Creation date column -->
+        <ng-container matColumnDef="timestamp">
+          <mat-header-cell *matHeaderCellDef mat-sort-header>Date de création</mat-header-cell>
+          <mat-cell *matCellDef="let user"
+            [ngStyle]="{'background-color': user.roletypebackground }">
+            {{ user.timestamp | date: 'dd/MM/yy' }}
+          </mat-cell>
+        </ng-container>
+
+        <!-- Role column -->
+        <ng-container matColumnDef="roletypefrench">
+          <mat-header-cell *matHeaderCellDef mat-sort-header>Rôle</mat-header-cell>
+          <mat-cell *matCellDef="let user"
+            [ngStyle]="{'background-color': user.roletypebackground }">
+            {{ user.roletypefrench }}
+          </mat-cell>
+        </ng-container>
+
+      </mat-table>
+      <mat-paginator [pageSizeOptions]="[5, 10, 15, 20]"></mat-paginator>
+    
+    </div>
+  </div>
+</main>

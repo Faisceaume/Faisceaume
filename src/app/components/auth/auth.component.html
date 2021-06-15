@@ -1,0 +1,117 @@
+<div class="auth-bg-color center-flex">
+  <img src="/assets/logo.png" alt="Logo Faisceaume" class="logo-header">
+</div>
+
+<div class="mat-tab">
+
+  <mat-tab-group mat-align-tabs="center">
+
+    <mat-tab label="Connexion">
+      <form autocomplete="off"
+        fxLayout="column"
+        fxLayoutAlign="start center"
+        #formConnexion="ngForm"
+        [formGroup]="form"
+        (ngSubmit)="onSubmitConnection()">
+
+        <div class="field-form">
+          <mat-form-field>
+            <mat-label>Email</mat-label>
+            <input matInput type="email"
+              formControlName="email"
+              placeholder="Email"
+              required>
+
+            <mat-error *ngIf="email.invalid && email.dirty">
+              Vous devez saisir une adresse mail valide.
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="field-form">
+          <mat-form-field>
+            <mat-label>Mot de passe</mat-label>
+            <input matInput
+              [type]="hideLogin ? 'password' : 'text'"
+              formControlName="password"
+              placeholder="Mot de passe"
+              required>
+
+            <mat-icon matSuffix class="toggle-password" (click)="hideLogin = !hideLogin">
+              {{ hideLogin ? 'visibility_off' : 'visibility' }}
+            </mat-icon>
+                
+            <mat-error *ngIf="password.invalid && password.dirty">
+              Le mot de passe doit contenir au moins 6 caractères.
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <button  mat-raised-button  color="primary" type="submit"
+          [disabled]="formConnexion.invalid">
+          Se connecter
+        </button>
+      </form>
+    </mat-tab>
+
+    <mat-tab label="Inscription">
+      <form autocomplete="off"
+        fxLayout="column"
+        fxLayoutAlign="start center"
+        #formSignUp="ngForm"
+        [formGroup]="form"
+        (ngSubmit)="onSubmitSignUp(formSignUp)">
+
+        <div class="field-form">
+          <mat-form-field>
+            <mat-label>Email</mat-label>
+            <input matInput type="email"
+              formControlName="email"
+              placeholder="Email"
+              required>
+
+            <mat-error *ngIf="email.invalid && email.dirty">
+              Vous devez saisir une adresse mail valide.
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="field-form">
+          <mat-form-field>
+            <mat-label>Mot de passe</mat-label>
+            <input matInput
+              [type]="hideSignup ? 'password' : 'text'"
+              formControlName="password"
+              placeholder="Mot de passe"
+              required>
+
+            <mat-icon matSuffix class="toggle-password" (click)="hideSignup = !hideSignup">
+              {{ hideSignup ? 'visibility_off' : 'visibility' }}
+            </mat-icon>
+
+            <mat-error *ngIf="password.invalid && password.dirty">
+              Le mot de passe doit contenir au moins 6 caractères.
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <button mat-raised-button color="primary" type="submit"
+          [disabled]="formSignUp.invalid">
+          S'inscrire
+        </button>
+      </form>
+    </mat-tab>
+
+    <mat-tab label="Connexion via Google">
+      <div class="auth-form"
+        fxLayout="column"
+        fxLayoutAlign="start center">
+        <button mat-raised-button color="primary"
+          (click)="connectionWithGoogle()">
+          Se connecter
+        </button>
+      </div>
+    </mat-tab>
+
+  </mat-tab-group>
+</div>

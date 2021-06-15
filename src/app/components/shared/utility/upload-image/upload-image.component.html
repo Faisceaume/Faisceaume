@@ -1,0 +1,31 @@
+<div *ngIf="!fileUrl" class="upload-img-container">
+  <mat-label class="field-color">{{ title }}</mat-label>
+  <div class="input-file-container">
+    <!-- Cheat to custom the input file button by creating an associated label with CSS -->
+    <label for="file" class="mat-raised-button label-file">
+      <mat-icon>note_add</mat-icon>Sélectionner un fichier
+    </label>
+    <input type="file" id="file" class="input-file"
+      (change)="detectFile($event)" accept="image/*">
+    <p *ngIf="isFileUploaded">Fichier chargé !</p>
+    <p *ngIf="!isFileOK" class="text-danger">Impossible de charger l'image.</p>
+  </div>
+  <div>
+    <div class="drop-zone" (dragover)="false" (dragend)="false"
+      (drop)="handleDrop($event)">
+      <p class="center-flex"><strong>Déposez votre image ici.</strong></p>
+    </div>
+  </div>
+  <ul *ngIf="errorMessages">
+    <li *ngFor='let error of errorMessages' class="text-danger">{{ error }}</li>
+  </ul>
+</div>
+
+<div *ngIf="fileUrl" class="upload-img-container">
+  <img mat-card-image [src]="fileUrl">
+  <button mat-icon-button
+    matTooltip="Supprimer l'image"
+    (click)="onDeleteDrapImage()">
+    <mat-icon>delete</mat-icon>
+  </button>
+</div>

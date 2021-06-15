@@ -1,0 +1,216 @@
+<main>
+  <header>
+    <h1>Détails du membre {{ member.firstname }} {{ member.lastname }}</h1>
+
+    <app-auth-user [rolesGranted]="rolesGranted" (isGrantedEvent)="isAuthUserGranted($event)"></app-auth-user>
+
+    <div *ngIf="isGranted && isDataLoaded">
+      <div class="btn-group-container">
+        <button mat-raised-button color="accent"
+          (click)="onMembersList()">
+          <mat-icon>arrow_back</mat-icon>Retourner à la liste des membres
+        </button>
+      </div>
+
+      <div *ngIf="isWrongMemberId">
+        <p class="text-danger">L'identifiant du membre présent dans l'URL est incorrect. Aucun membre n'a été trouvé en base avec cet ID.</p>
+      </div>
+    </div>
+  </header>
+
+  <div *ngIf="!isWrongMemberId" class="mat-elevation-z8">
+    <app-data-loading [isDataLoaded]="isDataLoaded"></app-data-loading>
+
+    <mat-card *ngIf="isDataLoaded && isGranted">
+      <mat-card-header>
+        <img mat-card-avatar class="center-flex"
+          [src]="member.picture ? member.picture : 'assets/images/default_user.jpeg'"
+          alt="Image du membre">
+        <mat-card-title>{{ member.firstname }} {{ member.lastname }}</mat-card-title>
+        <mat-card-subtitle>{{ member.memberid }}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <p>Créé le {{ member.timestamp | date: 'dd/MM/yy' }}</p>
+        <p>{{ member.email }}</p>
+
+        <mat-divider></mat-divider>
+
+        <!-- Bugs part -->
+
+        <div *ngIf="member.bugs.length === 0">
+          <p>Aucun bug n'est assigné à ce membre.</p>
+        </div>
+
+        <div *ngIf="member.bugs.length !== 0">
+          <h3>Bug(s) assigné(s)</h3>
+          <div class="mat-card-table">
+            <div class="table-filter-container">
+              <mat-form-field>
+                <mat-label>Filtrer</mat-label>
+                <input matInput placeholder="Filtrer" #bugsInput
+                  (keyup)="applyBugsTableFilter($event.target.value)">
+              </mat-form-field>
+            </div>
+
+            <mat-table [dataSource]="bugsTable" #bugsSort="matSort" matSort>
+
+              <mat-header-row *matHeaderRowDef="columnsTable"></mat-header-row>
+              <mat-row *matRowDef="let row; columns: columnsTable;"></mat-row>
+
+              <!-- Row shown when there is no matching data -->
+              <mat-row *matNoDataRow>
+                <mat-cell colspan="4">Aucune correspondance avec le filtre {{ bugsInput.value }}</mat-cell>
+              </mat-row>
+
+              <!-- Title column -->
+              <ng-container matColumnDef="title">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Titre</mat-header-cell>
+                <mat-cell *matCellDef="let bug"
+                  [ngStyle]="{'background-color': bug.statusbackgroundcolor }">
+                  {{ bug.title }}
+                </mat-cell>
+              </ng-container>
+
+              <!-- Description column -->
+              <ng-container matColumnDef="description">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Description</mat-header-cell>
+                <mat-cell *matCellDef="let bug"
+                  [ngStyle]="{'background-color': bug.statusbackgroundcolor }">
+                  {{ bug.description }}
+                </mat-cell>
+              </ng-container>
+
+              <!-- Status column -->
+              <ng-container matColumnDef="status">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Statut</mat-header-cell>
+                <mat-cell *matCellDef="let bug"
+                  [ngStyle]="{'background-color': bug.statusbackgroundcolor }">
+                  <mat-icon matTooltip="{{ bug.statusfrench }}">{{ bug.statusicon }}</mat-icon>
+                </mat-cell>
+              </ng-container>
+
+              <!-- Project column -->
+              <ng-container matColumnDef="project">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Projet</mat-header-cell>
+                <mat-cell *matCellDef="let bug"
+                  [ngStyle]="{'background-color': bug.statusbackgroundcolor }">
+                  {{ bug.project.title }}
+                </mat-cell>
+              </ng-container>
+
+              <!-- Operations column -->
+              <ng-container matColumnDef="operations">
+                <mat-header-cell *matHeaderCellDef>Opérations</mat-header-cell>
+                <mat-cell *matCellDef="let bug"
+                  [ngStyle]="{'background-color': bug.statusbackgroundcolor }">
+                  <button mat-icon-button color="primary"
+                    matTooltip="Détails du bug"
+                    (click)="onBugDetails(bug)">
+                    <mat-icon>find_in_page</mat-icon>
+                  </button>
+                </mat-cell>
+              </ng-container>
+
+            </mat-table>
+            <mat-paginator [pageSizeOptions]="[5, 10, 15, 20]"></mat-paginator>
+          
+          </div>
+        </div>
+          
+        <mat-divider></mat-divider>
+
+        <!-- Tasks part -->
+
+        <div *ngIf="member.tasks.length === 0">
+          <p>Aucune tâche n'est assignée à ce membre.</p>
+        </div>
+
+        <div *ngIf="member.tasks.length !== 0">
+          <h3>Tâche(s) assignée(s)</h3>
+          <div class="mat-card-table">
+            <div class="table-filter-container">
+              <mat-form-field>
+                <mat-label>Filtrer</mat-label>
+                <input matInput placeholder="Filtrer" #tasksInput
+                  (keyup)="applyTasksTableFilter($event.target.value)">
+              </mat-form-field>
+            </div>
+
+            <mat-table [dataSource]="tasksTable" #tasksSort="matSort" matSort>
+
+              <mat-header-row *matHeaderRowDef="columnsTable"></mat-header-row>
+              <mat-row *matRowDef="let row; columns: columnsTable;"></mat-row>
+
+              <!-- Row shown when there is no matching data -->
+              <mat-row *matNoDataRow>
+                <mat-cell colspan="4">Aucune correspondance avec le filtre {{ tasksInput.value }}</mat-cell>
+              </mat-row>
+
+              <!-- Title column -->
+              <ng-container matColumnDef="title">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Titre</mat-header-cell>
+                <mat-cell *matCellDef="let task"
+                  [ngStyle]="{'background-color': task.statusbackgroundcolor }">
+                  {{ task.title }}
+                </mat-cell>
+              </ng-container>
+
+              <!-- Description column -->
+              <ng-container matColumnDef="description">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Description</mat-header-cell>
+                <mat-cell *matCellDef="let task"
+                  [ngStyle]="{'background-color': task.statusbackgroundcolor }">
+                  {{ task.description }}
+                </mat-cell>
+              </ng-container>
+
+              <!-- Status column -->
+              <ng-container matColumnDef="status">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Statut</mat-header-cell>
+                <mat-cell *matCellDef="let task"
+                  [ngStyle]="{'background-color': task.statusbackgroundcolor }">
+                  <mat-icon matTooltip="{{ task.statusfrench }}">{{ task.statusicon }}</mat-icon>
+                </mat-cell>
+              </ng-container>
+
+              <!-- Project column -->
+              <ng-container matColumnDef="project">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Projet</mat-header-cell>
+                <mat-cell *matCellDef="let task"
+                  [ngStyle]="{'background-color': task.statusbackgroundcolor }">
+                  {{ task.project.title }}
+                </mat-cell>
+              </ng-container>
+
+              <!-- Operations column -->
+              <ng-container matColumnDef="operations">
+                <mat-header-cell *matHeaderCellDef>Opérations</mat-header-cell>
+                <mat-cell *matCellDef="let task"
+                  [ngStyle]="{'background-color': task.statusbackgroundcolor }">
+                  <button mat-icon-button color="primary"
+                    matTooltip="Détails du bug"
+                    (click)="onTaskDetails(task)">
+                    <mat-icon>find_in_page</mat-icon>
+                  </button>
+                </mat-cell>
+              </ng-container>
+
+            </mat-table>
+            <mat-paginator [pageSizeOptions]="[5, 10, 15, 20]"></mat-paginator>
+
+          </div>
+        </div>
+      </mat-card-content>
+
+      <mat-card-actions>
+        <button mat-raised-button color="primary" (click)="onEditMember(member)">
+          <mat-icon>edit</mat-icon>Modifier ce membre
+        </button>
+        <button mat-raised-button color="warn" (click)="onEditMember(member)">
+          <mat-icon>delete_forever</mat-icon>Supprimer ce membre
+        </button>
+      </mat-card-actions>
+
+    </mat-card>
+  </div>
+</main>

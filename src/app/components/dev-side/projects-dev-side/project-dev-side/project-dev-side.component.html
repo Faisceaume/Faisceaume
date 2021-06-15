@@ -1,0 +1,195 @@
+<mat-card class="project-card">
+  <mat-card-header>
+    <img mat-card-avatar [src]="project.picture" alt="Image du projet">
+    <mat-card-title>{{ project.title }}</mat-card-title>
+    <mat-card-subtitle>{{ project.projectid }}</mat-card-subtitle>
+  </mat-card-header>
+
+  <mat-card-content>
+    <p *ngIf="project.client">{{ project.client.firstname }} {{ project.client.lastname }}</p>
+    <p>Créé le {{ project.timestamp | date: 'EEEE, dd/MM/yy'}}</p>
+  
+    <div *ngIf="project.bugs">
+      <div class="project-card-header">
+        <h6>Bugs</h6>
+        <div *ngIf="bugsCurrentPage.length !== 0">
+          <button mat-icon-button color="accent">
+            <mat-icon matTooltip="Trier selon la date de report des bugs"
+              (click)="sortBugsByTimestamp()">
+              calendar_today
+            </mat-icon>
+          </button>
+          <button mat-icon-button color="primary">
+            <mat-icon matTooltip="Trier selon la position des bugs"
+              (click)="sortBugsByLocation()">
+              location_on
+            </mat-icon>
+          </button>
+          <button mat-icon-button color="warn">
+            <mat-icon class="toggle-elements"
+              matTooltip="Trier selon le statut des bugs"
+              (click)="sortBugsByStatus()">
+              loop
+            </mat-icon>
+          </button>
+          <button mat-icon-button color="basic">
+            <mat-icon [matTooltip]="isTasksHidden ? 'Afficher les bugs' : 'Masquer les bugs'"
+              (click)="isBugsHidden = !isBugsHidden">
+              {{ isBugsHidden ? 'visibility_off' : 'visibility' }}
+            </mat-icon>
+          </button>
+        </div>
+      </div>
+
+      <div *ngIf="bugsCurrentPage.length === 0">
+        <p>Aucun bug n'est reporté.</p>
+      </div>
+
+      <div *ngIf="bugsCurrentPage.length !== 0 && !isBugsHidden">
+
+        <mat-card class="element-card" *ngFor="let bug of bugsCurrentPage"
+          [ngStyle]="{'color': bug.statustextcolor }">
+          <div class="element-card-content">
+            <button mat-card-avatar mat-icon-button color="primary" 
+              matTooltip="Détails du bug"
+              (click)="onBugDetails(bug)">
+              <mat-icon>bug_report</mat-icon>
+            </button>
+            <span class="element-card-title" matBadgeColor="accent"
+              [matBadge]="bug.location" matBadgeOverlap="false">
+              {{ bug.title }}
+            </span>
+            <img *ngIf="bug.member" class="member-img-card" alt="Image du membre"
+              [src]="bug.member.picture ? bug.member.picture : 'assets/images/default_user.jpeg'">
+            <img *ngIf="!bug.member" class="member-img-card" alt="Image du membre"
+              [src]="'assets/images/default_user.jpeg'">
+          </div>
+        </mat-card>
+        
+        <div class="paginator-container">
+          <p class="paginator-item">Bugs par page :</p>
+          <mat-form-field class="paginator-form">
+            <mat-select [(ngModel)]="bugsPerPage" (selectionChange)="onChangeBugsPerPage($event.value)">
+              <mat-option *ngFor="let itemsNumber of itemsPerPage" [value]="itemsNumber">
+                {{ itemsNumber }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <p class="paginator-item">Page {{ bugsActivePage }} sur {{ bugsTotalPages }}</p>
+
+          <button mat-icon-button color="basic"
+            matTooltip="Page précédente"
+            [disabled]="bugsActivePage === 1"
+            (click)="onClickBugPage(bugsActivePage - 1)">
+            <mat-icon>arrow_back_ios</mat-icon>
+          </button>
+
+          <button mat-icon-button color="basic"
+            matTooltip="Page suivante"
+            [disabled]="bugsActivePage === bugsActivePage"
+            (click)="onClickBugPage(bugsActivePage + 1)">
+            <mat-icon>arrow_forward_ios</mat-icon>
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+    <mat-divider></mat-divider>
+
+    <div *ngIf="tasksCurrentPage">
+      <div class="project-card-header">
+        <h6>Tâches</h6>
+        <div *ngIf="tasksCurrentPage.length !== 0">
+          <button mat-icon-button color="accent">
+            <mat-icon matTooltip="Trier selon la date de publication des tâches"
+              (click)="sortTasksByTimestamp()">
+              calendar_today
+            </mat-icon>
+          </button>
+          <button mat-icon-button color="primary">
+            <mat-icon matTooltip="Trier selon la position des tâches"
+              (click)="sortTasksByLocation()">
+              location_on
+            </mat-icon>
+          </button>
+          <button mat-icon-button color="warn">
+            <mat-icon class="toggle-elements"
+              matTooltip="Trier selon le statut des tâches"
+              (click)="sortTasksByStatus()">
+              loop
+            </mat-icon>
+          </button>
+          <button mat-icon-button color="basic">
+            <mat-icon [matTooltip]="isTasksHidden ? 'Afficher les tâches' : 'Masquer les tâches'"
+              (click)="isTasksHidden = !isTasksHidden">
+              {{ isTasksHidden ? 'visibility_off' : 'visibility' }}
+            </mat-icon>
+          </button>
+        </div>
+      </div>
+
+      <div *ngIf="tasksCurrentPage.length === 0">
+        <p>Aucune tâche n'est prévue.</p>
+      </div>
+      
+      <div *ngIf="tasksCurrentPage.length !== 0 && !isTasksHidden">
+
+        <mat-card class="element-card" *ngFor="let task of tasksCurrentPage"
+          [ngStyle]="{'color': task.statustextcolor }">
+          <div class="element-card-content">
+            <button mat-card-avatar mat-icon-button color="primary" 
+              matTooltip="Détails de la tâche"
+              (click)="onTaskDetails(task)">
+              <mat-icon>ballot</mat-icon>
+            </button>
+            <span class="element-card-title" matBadgeColor="accent"
+              [matBadge]="task.location" matBadgeOverlap="false">
+              {{ task.title }}
+            </span>
+            <img *ngIf="task.member" class="member-img-card" alt="Image du membre"
+              [src]="task.member.picture ? task.member.picture : 'assets/images/default_user.jpeg'">
+            <img *ngIf="!task.member" class="member-img-card" alt="Image du membre"
+              [src]="'assets/images/default_user.jpeg'">
+          </div>
+        </mat-card>
+
+        <div class="paginator-container">
+          <p class="paginator-item">Tâches par page :</p>
+          <mat-form-field class="paginator-form">
+            <mat-select [(ngModel)]="tasksPerPage" (selectionChange)="onChangeTasksPerPage($event.value)">
+              <mat-option *ngFor="let itemsNumber of itemsPerPage" [value]="itemsNumber">
+                {{ itemsNumber }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <p class="paginator-item">Page {{ tasksActivePage }} sur {{ tasksTotalPages }}</p>
+
+          <button mat-icon-button color="basic"
+            matTooltip="Page précédente"
+            [disabled]="tasksActivePage === 1"
+            (click)="onClickTaskPage(tasksActivePage - 1)">
+            <mat-icon>arrow_back_ios</mat-icon>
+          </button>
+
+          <button mat-icon-button color="basic"
+            matTooltip="Page suivante"
+            [disabled]="tasksActivePage === tasksTotalPages"
+            (click)="onClickTaskPage(tasksActivePage + 1)">
+            <mat-icon>arrow_forward_ios</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+  </mat-card-content>
+
+  <mat-card-actions>
+    <button mat-icon-button color="basic"
+      matTooltip="Signaler un bug"
+      (click)="onAddBug()">
+      <mat-icon>add_alert</mat-icon>
+    </button>
+  </mat-card-actions>
+</mat-card>

@@ -1,0 +1,7 @@
+<div *ngIf="!isDataLoaded" class="center-flex spinner-container">
+  <mat-spinner color="primary"></mat-spinner>
+  
+  <div *ngIf="isLoadingTooLong">
+    <p>Si le chargement prend trop de temps, essayez de recharger la page ou il y a un bug.</p>
+  </div>
+</div>

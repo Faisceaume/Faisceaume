@@ -1,0 +1,79 @@
+<main>
+  <header>
+    <h1>{{ operationType }} un client</h1>
+    
+    <app-auth-user [rolesGranted]="rolesGranted" (isGrantedEvent)="isAuthUserGranted($event)"></app-auth-user>
+  </header>
+        
+  <form class="mat-elevation-z8"
+    *ngIf="isGranted"
+    #form="ngForm" autocomplete="off" 
+    (ngSubmit)="onSubmit(form)">
+
+    <input type="hidden"
+      *ngIf="previousFormData.clientid"
+      #clientid="ngModel" name="clientid"
+      [(ngModel)]="previousFormData.clientid">
+
+    <mat-form-field>
+      <mat-label>Prénom</mat-label>
+      <input matInput type="text"
+        placeholder="Prénom"
+        #firstname="ngModel" name="firstname"
+        [(ngModel)]="previousFormData.firstname"
+        required>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Nom de famille</mat-label>
+      <input matInput type="text"
+        placeholder="Nom de famille"
+        #lastname="ngModel" name="lastname"
+        [(ngModel)]="previousFormData.lastname"
+        required> 
+    </mat-form-field>
+
+    <mat-form-field class="field-indication">
+      <mat-label>Numéro de téléphone</mat-label>
+      <input matInput type="tel"
+        pattern="(\d\d\s){4}(\d\d){1}"
+        placeholder="01 23 45 67 89"
+        #phone="ngModel" name="phone"
+        [(ngModel)]="previousFormData.phone"
+        required>
+      <mat-hint>Format : 01 23 45 67 89</mat-hint>
+    </mat-form-field>
+
+    <!-- !previousFormData.uid -> client already associated with an user (so only form-edit)-->
+    <mat-form-field *ngIf="usersTable.length !== 0 && !previousFormData.uid">
+      <mat-label>Utilisateur correspondant</mat-label>
+      <mat-select #user="ngModel" name="user"
+        [(ngModel)]="previousFormData.uid"
+        required>
+        <mat-option *ngFor="let user of usersTable" [value]="user">
+          {{ user.email }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    
+    <div class="field-no-user"
+      *ngIf="usersTable.length === 0  && !previousFormData.uid">
+      <p class="text-warning">Aucun utilisateur anonyme libre ! Veuillez en créer un nouveau.</p>
+      <button mat-raised-button color="primary"
+        (click)="onAddUser()">
+      <mat-icon>add</mat-icon>Ajouter un utilisateur
+    </button>
+    </div>
+
+    <div class="btn-group-container">
+      <button mat-raised-button color="basic" type="button"
+        (click)="onRedirectBack()">
+        Annuler
+      </button>
+      <button mat-raised-button color="primary" type="submit"
+        [disabled]="form.invalid">
+        {{ operationType }}
+      </button>
+    </div>
+  </form>
+</main>

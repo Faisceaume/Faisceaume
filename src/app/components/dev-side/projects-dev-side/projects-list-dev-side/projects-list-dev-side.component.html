@@ -1,0 +1,23 @@
+<main>
+  <header class="top-container">
+    <h1>Liste des projets</h1>
+
+    <app-auth-user [rolesGranted]="rolesGranted" (isGrantedEvent)="isAuthUserGranted($event)"></app-auth-user>
+    
+    <div *ngIf="isGranted && isDataLoaded">
+      <div *ngIf="projects.length === 0">
+        <p>Aucun projet en cours.</p>
+      </div>
+    </div>
+  </header>
+
+  <div>
+    <app-data-loading [isDataLoaded]="isDataLoaded"></app-data-loading>
+
+    <div class="projects-container" *ngIf="isDataLoaded && isGranted && projects.length !== 0">
+
+      <app-project-dev-side [project]="project" *ngFor="let project of projects" class="project-card"></app-project-dev-side>
+
+    </div>
+  </div>
+</main>

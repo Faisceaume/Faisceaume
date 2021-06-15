@@ -1,0 +1,154 @@
+:host {
+  --calender-border-value: solid 1.5px var(--bg-dark-color);
+}
+
+
+.mat-column-month {
+  max-width: 5rem;
+}
+
+
+.elements-cell {
+  display: flex;
+  flex-direction: row;
+}
+
+.element-icon {
+  display: flex;
+  align-items: center;
+  padding: 0 var(--lg-length);
+}
+
+
+.parent-row {
+  border-bottom-width: 0 !important;
+}
+
+.expanded-row {
+  width: 100%;
+  min-height: inherit !important;
+}
+.expanded-row:hover {
+  background-color: inherit; /* Remove the default bg hover effect */
+}
+.expanded-row > td {
+  width: 100%;
+}
+
+.expanded-row-block {
+  overflow: hidden;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+
+.expanded-row-member {
+  width: 10rem;
+  margin: var(--sm-length);
+}
+
+.expanded-row-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.expanded-row-header-member-img {
+  max-height: 2rem;
+  width: auto;
+  border-radius: 50%;
+}
+.expanded-row-header-text {
+  margin-left: 5px; /* Make the member-img is not too close of the name */
+  white-space: nowrap; /* If the name is too long, it doesn't wrap and therefore doesn't change the height (same header height for every members) */
+}
+
+
+.expanded-row-main-infos {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.expand-row-icon {
+  padding: 0 var(--sm-length);
+}
+
+.expanded-row-elements-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.expanded-row-element {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin: var(--sm-length) 0;
+}
+
+.expanded-row-text-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.expanded-row-text,
+.expanded-row-sub-text {
+  margin: 0;
+}
+.expanded-row-sub-text {
+  font-size: 0.80rem;
+  color: var(--input-color);
+}
+
+
+.calender-toggle-icon {
+  width: 100%;
+}
+
+.calender-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  border: var(--calender-border-value);
+}
+
+.calender-title-container {
+  width: 100%;
+  overflow: hidden;
+}
+.calender-title {
+  margin: 0;
+  padding: var(--sm-length);
+  text-align: center;
+  border: var(--calender-border-value);
+}
+
+.calender-content {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.calender-cell-container {
+  width: 20%; /* Days per row (week): 5 (100 / 5) = 20 */
+}
+
+.calender-cell {
+  padding: 5px;
+  height: 5rem;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  border: var(--calender-border-value);
+}
+
+.calender-cell-date {
+  margin: 0;
+}
+
+.calender-cell-members {
+  margin: 5px 0;
+}
+.calender-cell-members > p {
+  margin: 0;
+}

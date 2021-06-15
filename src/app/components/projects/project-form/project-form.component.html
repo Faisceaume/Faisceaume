@@ -1,0 +1,53 @@
+<main>
+  <header>
+    <h1>{{ operationType }} un projet</h1>
+
+    <app-auth-user [rolesGranted]="rolesGranted" (isGrantedEvent)="isAuthUserGranted($event)"></app-auth-user>
+  </header>
+
+  <form class="mat-elevation-z8"
+    *ngIf="isGranted"
+    #form="ngForm" autocomplete="off"
+    (ngSubmit)="onSubmit(form)">
+    
+    <input type="hidden"
+      *ngIf="previousFormData.projectid" 
+      #projectid="ngModel"name="projectid"
+      [(ngModel)]="previousFormData.projectid">
+    <input type="hidden"
+      *ngIf="previousFormData.picture" 
+      #picture="ngModel"name="picture"
+      [(ngModel)]="previousFormData.picture">
+
+      <mat-form-field>
+        <mat-label>Titre</mat-label>
+        <input matInput placeholder="Titre"
+          #title="ngModel" name="title"
+          [(ngModel)]="previousFormData.title"
+          required>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Client</mat-label>
+        <mat-select #client="ngModel" name="client"
+          [(ngModel)]="previousFormData.clientid">
+          <mat-option *ngFor="let client of clientsTable" [value]="client">
+            {{ client.firstname }} {{ client.lastname }} 
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+        
+      <app-upload-image [title]="uploadImgTitle"></app-upload-image>
+
+      <div class="btn-group-container">
+        <button mat-raised-button color="basic" type="button"
+          (click)="onRedirectBack()">
+          Annuler
+        </button>
+        <button mat-raised-button color="primary" type="submit"
+          [disabled]="form.invalid">
+          {{ operationType }}
+        </button>
+      </div>
+  </form>
+</main>

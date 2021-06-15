@@ -1,0 +1,15 @@
+<main>
+  <div class="center-horizontally-flex">
+    <img src="/assets/logo.png" alt="Logo Faisceaume">
+  </div>
+  <div class="bottom-container">
+    <app-data-loading [isDataLoaded]="isDataLoaded"></app-data-loading>
+    <div *ngIf="isDataLoaded">
+      <h1 *ngIf="authUser">Bienvenue {{ authUser.email }}.</h1>
+      <h1 *ngIf="!authUser" class="text-danger">Vous n'êtes pas connecté !</h1>
+
+      <h3 *ngIf="authUser.roletype">Vous disposez des droits accordés par le rôle {{ authUser.roletypefrench | lowercase }}.</h3>
+      <h3 *ngIf="!authUser.roletype" class="text-danger">Vous n'êtes pas assigné à un rôle !</h3>
+    </div>
+  </div>
+</main>

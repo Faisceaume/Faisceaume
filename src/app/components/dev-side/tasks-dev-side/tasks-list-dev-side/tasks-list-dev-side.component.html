@@ -1,0 +1,143 @@
+<main>
+  <header>
+    <h1>Mes tâches</h1>
+
+    <app-auth-user [rolesGranted]="rolesGranted" (isGrantedEvent)="isAuthUserGranted($event)"></app-auth-user>
+    
+    <div *ngIf="isGranted && isDataLoaded">
+      <div class="btn-group-container">
+        <button mat-raised-button color="accent"
+          (click)="onProjectsList()">
+          <mat-icon>arrow_back</mat-icon>Retourner à liste des projets
+        </button>
+      </div>
+
+      <div *ngIf="isGranted && isDataLoaded">
+        <div *ngIf="tasks.length === 0">
+          <p>Aucune tâche ne vous est assignée.</p>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div>
+    <app-data-loading [isDataLoaded]="isDataLoaded"></app-data-loading>
+
+    <div *ngIf="isDataLoaded && isGranted && tasks.length !== 0">
+      <!-- Cards grid display part -->
+      <div *ngIf="sharedService.isGridShown" class="cards-flex-container">
+        <mat-card *ngFor="let task of tasks" class="mat-elevation-z8 element-card-flex">
+          <mat-card-header>
+            <div mat-card-avatar class="center-flex">
+              <mat-icon>ballot</mat-icon>
+            </div>
+            <mat-card-title>{{ task.title }}</mat-card-title>
+            <mat-card-subtitle>{{ task.taskid }}</mat-card-subtitle>
+          </mat-card-header>
+
+          <mat-card-content>
+            <p *ngIf="task.component">Composant concerné : {{ task.component }}.</p>
+            <p *ngIf="!task.component" class="text-warning">Aucun composant n'est associé à ce task.</p>
+
+            <p [ngStyle]="{'color': task.statustextcolor }">Statut : {{ task.statusfrench }}.</p>
+
+            <p>Projet associé : {{ task.project.title }}.</p>
+
+            <p>Ajouté le : {{ task.timestamp | date: 'EEEE, dd/MM/yy' }}.</p>
+            
+            <p *ngIf="task.timecompleted">Terminée le {{ task.timecompleted | date: 'EEEE, dd/MM/yy' }}.</p>
+          </mat-card-content>
+
+          <mat-card-actions>
+            <button mat-icon-button color="primary"
+              matTooltip="Détails de la tâche"
+              (click)="onTaskDetails(task)">
+              <mat-icon>find_in_page</mat-icon>
+            </button>
+            <button mat-icon-button
+              matTooltip="{{ task.statusfrench }}">
+              <mat-icon>{{ task.statusicon }}</mat-icon>
+            </button>
+          </mat-card-actions>
+
+        </mat-card>
+      </div>
+      
+      <!-- Table display part -->
+      <div *ngIf="!sharedService.isGridShown" class="cards-flex-container">
+        <div class="table-filter-container">
+          <mat-form-field>
+            <mat-label>Filtrer</mat-label>
+            <input matInput placeholder="Filtrer" #input
+              (keyup)="applyTableFilter($event.target.value)">
+          </mat-form-field>
+        </div>
+
+        <mat-table [dataSource]="tasksTable" matSort>
+
+          <mat-header-row *matHeaderRowDef="columnsTable"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: columnsTable;"></mat-row>
+
+          <!-- Row shown when there is no matching data -->
+          <mat-row *matNoDataRow>
+            <mat-cell colspan="4">Aucune correspondance avec le filtre {{ input.value }}</mat-cell>
+          </mat-row>
+
+          <!-- Title column -->
+          <ng-container matColumnDef="title">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Titre</mat-header-cell>
+            <mat-cell *matCellDef="let task"
+              [ngStyle]="{'background-color': task.statusbackgroundcolor }">
+              {{ task.title }}
+            </mat-cell>
+          </ng-container>
+
+          <!-- Date of creation column -->
+          <ng-container matColumnDef="timestamp">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Date d'ajout</mat-header-cell>
+            <mat-cell *matCellDef="let task"
+              [ngStyle]="{'background-color': task.statusbackgroundcolor }">
+              {{ task.timestamp | date: 'dd/MM/yy' }}
+            </mat-cell>
+          </ng-container>
+
+          <!-- Status column -->
+          <ng-container matColumnDef="status">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Statut</mat-header-cell>
+            <mat-cell *matCellDef="let task"
+              [ngStyle]="{'background-color': task.statusbackgroundcolor }">
+              <mat-icon matTooltip="{{ task.statusfrench }}">
+                {{ task.statusicon }}
+              </mat-icon>
+            </mat-cell>
+          </ng-container>
+
+          <!-- Project column -->
+          <ng-container matColumnDef="project">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Projet</mat-header-cell>
+            <mat-cell *matCellDef="let task"
+              [ngStyle]="{'background-color': task.statusbackgroundcolor }">
+              {{ task.project.title }}
+            </mat-cell>
+        </ng-container>
+
+          <!-- Operations column -->
+          <ng-container matColumnDef="operations">
+            <mat-header-cell *matHeaderCellDef>Opérations</mat-header-cell>
+            <mat-cell *matCellDef="let task"
+              [ngStyle]="{'background-color': task.statusbackgroundcolor }">
+              <button mat-icon-button color="primary"
+                matTooltip="Détails de la tâche"
+                (click)="onTaskDetails(task)">
+                <mat-icon>find_in_page</mat-icon>
+              </button>
+            </mat-cell>
+          </ng-container>
+
+        </mat-table>
+        <mat-paginator [pageSizeOptions]="[5, 10, 15, 20]"></mat-paginator>
+        
+      </div>
+    </div>
+  </div>
+</main>

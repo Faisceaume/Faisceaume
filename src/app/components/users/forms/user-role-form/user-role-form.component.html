@@ -1,0 +1,35 @@
+<h1>Modifier le rôle de l'utilisateur {{ previousFormData.email }}</h1>
+<form autocomplete="off" 
+  #form="ngForm"
+  (ngSubmit)="onSubmit(form)">
+
+  <input type="hidden"
+    #uid="ngModel"name="uid"
+    [(ngModel)]="previousFormData.uid">
+    <input type="hidden"
+      #email="ngModel" name="email"
+      [(ngModel)]="previousFormData.email">
+    <input type="hidden"
+      #timestamp="ngModel" name="timestamp"
+      [(ngModel)]="previousFormData.timestamp">
+
+    <mat-form-field>
+      <mat-label>Nouveau rôle</mat-label>
+      <mat-select
+        #roletype="ngModel" name="roletype"
+        [(ngModel)]="previousFormData.roletypefrench"
+        required>
+        <mat-option *ngFor="let roleType of rolesTable" [value]="roleType">
+          {{ roleType }} 
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <div class="btn-group-container">
+      <button mat-raised-button mat-dialog-close>Retour</button>
+      <button mat-raised-button color="primary" type="submit"
+        [disabled]="form.invalid">
+        Modifier le rôle
+      </button>
+    </div>
+</form>

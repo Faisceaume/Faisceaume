@@ -1,0 +1,12 @@
+.infos-sidenav {
+  padding-left: var(--sm-length);
+}
+
+.logout-text {
+  color: var(--accent-color);
+}
+
+.mat-list-item:hover {
+  background-color: var(--bg-hover-color);
+  border-left: 5px solid rgb(0, 125, 250);
+}

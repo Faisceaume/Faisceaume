@@ -1,0 +1,196 @@
+<header>
+  <h1>Informations sur le projet {{ project.title }}</h1>
+
+  <div *ngIf="isDataLoaded">
+    <h2>Année {{ currentYear.year }}</h2>
+    <p>Nombre total de bugs : {{ currentYear.bugsnumber }}.</p>
+    <p>Durée totale consacrée à la correction des bugs : {{ currentYear.timespentbugs }} heure(s).</p>
+    <mat-divider></mat-divider>
+    <p>Nombre total de tâches : {{ currentYear.tasksnumber }}.</p>
+    <p>Durée totale consacrée à la réalisation des tâches : {{ currentYear.timespenttasks }} heure(s).</p>
+  </div>
+</header>
+
+<div>
+  <app-data-loading [isDataLoaded]="isDataLoaded"></app-data-loading>
+
+  <div *ngIf="isDataLoaded" class="mat-dialog-table">
+    <div class="table-filter-container">
+      <mat-form-field>
+        <mat-label>Filtrer</mat-label>
+        <input matInput placeholder="Filtrer" #input
+          (keyup)="applyTableFilter($event.target.value)">
+      </mat-form-field>
+      <!-- Useless to show the select if there are only one year to choose -->
+      <mat-form-field *ngIf="yearsArray.length > 1">
+        <mat-label>Année</mat-label>
+        <mat-select [(ngModel)]="selectedYear" (selectionChange)="onChangeYear($event.value)">
+          <mat-option *ngFor="let year of yearsArray" [value]="year.year">
+            {{ year.year }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <mat-table [dataSource]="monthsTable" multiTemplateDataRows>
+
+      <mat-header-row *matHeaderRowDef="columnsTable"></mat-header-row>
+      <!-- Conventional row -->
+      <mat-row *matRowDef="let month; columns: columnsTable; let index = dataIndex"
+        [ngClass]="month.isexpanded ? 'parent-row' : ''"
+        (click)="onClickRow(index)">
+      </mat-row>
+      <!-- Extend row -->
+      <mat-row *matRowDef="let row; columns: ['expandedRow']" class="expanded-row"></mat-row>
+
+      <!-- Row shown when there is no matching data -->
+      <mat-row *matNoDataRow>
+        <mat-cell colspan="4">Aucune correspondance avec le filtre {{ input.value }}</mat-cell>
+      </mat-row>
+
+      <!-- Expanded column -->
+      <ng-container matColumnDef="expandedRow" >
+        <td mat-cell *matCellDef="let month">
+          <div [@expandedRow]="month.isexpanded ? 'expanded' : 'collapsed'" class="expanded-row-block">
+
+            <!-- Calender -->
+            <div class="calender-toggle-icon">
+              <button mat-icon-button color="basic">
+                <mat-icon (click)="month.isCalendarHidden = !month.isCalendarHidden"
+                  [matTooltip]="month.isCalendarHidden ? 'Afficher le calendrier' : 'Masquer le calendrier'">
+                  {{ month.ishidden ? 'visibility_off' : 'visibility' }}
+                </mat-icon>
+              </button>
+            </div>
+            <div *ngIf="!month.isCalendarHidden" class="calender-container">
+              <div class="calender-title-container">
+                <p class="calender-title">{{ month.name }} {{ currentYear.year }}</p>
+              </div>
+              <div class="calender-content">
+                <div *ngFor="let day of month.days" class="calender-cell-container">
+                  <div class="calender-cell">
+                    <p class="calender-cell-date">{{ day.name }} {{ day.index }}</p>
+                    <div *ngFor="let member of day.members" class="calender-cell-members">
+                      <p>{{ member.firstnameinitials }}. {{ member.lastnameinitials }}. : {{ member.timespent }} h</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div *ngFor="let member of month.members" class="expanded-row-member">
+              <div class="expanded-row-header">
+                <img *ngIf="member" class="expanded-row-header-member-img" alt="Image du membre"
+                [src]="member.picture ? member.picture : 'assets/images/default_user.jpeg'">
+                <img *ngIf="!member" class="expanded-row-member-img" alt="Image du membre"
+                  [src]="'assets/images/default_user.jpeg'">
+                <h6 class="expanded-row-header-text">{{ member.firstname }} {{ member.lastname }}</h6>
+                <button mat-icon-button color="basic">
+                  <mat-icon (click)="member.ishidden = !member.ishidden"
+                    [matTooltip]="member.ishidden ? 'Afficher les infos du membre' : 'Masquer les infos du membre'">
+                    {{ member.ishidden ? 'visibility_off' : 'visibility' }}
+                  </mat-icon>
+                </button>
+              </div>
+
+              <div *ngIf="!member.ishidden">
+                <div>
+                  <div class="expanded-row-main-infos">
+                    <div class="expand-row-icon">
+                      <mat-icon>bug_report</mat-icon>
+                    </div>
+                    <div>
+                      <p>Nombre : {{ member.bugsnumber }}.</p>
+                      <p>Durée totale de correction : {{ member.timespentbugs }} heure(s).</p>
+                    </div>
+                  </div>
+                  <mat-divider></mat-divider>
+                  <div class="expanded-row-main-infos">
+                    <div class="expand-row-icon">
+                      <mat-icon>ballot</mat-icon>
+                    </div>
+                    <div>
+                      <p>Nombre : {{ member.tasksnumber }}.</p>
+                      <p>Durée totale de réalisation  : {{ member.timespenttasks }} heure(s).</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="expanded-row-elements-container">
+                  <div *ngFor="let bug of member.bugs" class="expanded-row-element">
+                    <button mat-icon-button color="primary" 
+                      matTooltip="Détails du bug"
+                      (click)="onBugDetails(bug)">
+                      <mat-icon>bug_report</mat-icon>
+                    </button>
+                    <div class="expanded-row-text-container">
+                      <p class="expanded-row-text">{{ bug.title }}</p>
+                      <p class="expanded-row-sub-text">{{ bug.timespent }} heure(s)</p>
+                    </div>
+                  </div>
+                  
+                  <div *ngFor="let task of member.tasks" class="expanded-row-element">
+                    <button mat-icon-button color="primary" 
+                      matTooltip="Détails de la tâche"
+                      (click)="onTaskDetails(task)">
+                      <mat-icon>ballot</mat-icon>
+                    </button>
+                    <div class="expanded-row-text-container">
+                      <p class="expanded-row-text">{{ task.title }}</p>
+                      <p class="expanded-row-sub-text">{{ task.timespent }} heure(s)</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </td>
+      </ng-container>
+
+      <!-- Month column -->
+      <ng-container matColumnDef="month">
+        <mat-header-cell *matHeaderCellDef>Mois</mat-header-cell>
+        <mat-cell *matCellDef="let month">
+          {{ month.name }}
+        </mat-cell>
+      </ng-container>
+
+      <!-- Elements (bugs + tasks) column -->
+      <ng-container matColumnDef="elements">
+        <mat-header-cell *matHeaderCellDef>Bugs & tâches</mat-header-cell>
+        <mat-cell *matCellDef="let month">
+          <div *ngIf="month.bugsnumber !== 0 || month.tasksnumber !== 0">
+            <div *ngIf="month.bugsnumber !== 0" class="elements-cell">
+              <div class="element-icon">
+                <mat-icon>bug_report</mat-icon>
+              </div>
+              <div>
+                <p>Nombre : {{ month.bugsnumber }}</p>
+                <p>Durée totale de correction : {{ month.timespentbugs }} heure(s)</p>
+              </div>
+            </div>
+            <div *ngIf="month.tasksnumber !== 0" class="elements-cell">
+              <div class="element-icon">
+                <mat-icon>ballot</mat-icon>
+              </div>
+              <div>
+                <p>Nombre : {{ month.tasksnumber }}</p>
+                <p>Durée totale de correction : {{ month.timespenttasks }} heure(s)</p>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="month.bugsnumber === 0 && month.tasksnumber === 0">
+            <p>Pas de temps accordé ni aux bugs ni aux tâches</p>
+          </div>
+        </mat-cell>
+      </ng-container>
+
+    </mat-table>
+    <mat-paginator [pageSizeOptions]="[3, 6, 9, 12]"></mat-paginator>
+
+  </div>
+
+  <div class="btn-group-container">
+    <button mat-raised-button mat-dialog-close color="basic">Fermer</button>
+  </div>
+</div>

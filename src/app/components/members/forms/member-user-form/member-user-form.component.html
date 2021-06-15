@@ -1,0 +1,35 @@
+<h1>Assigner un utilisateur au membre {{ previousFormData.firstname }} {{ previousFormData.lastname }}</h1>
+<form #form="ngForm" autocomplete="off"
+  (ngSubmit)="onSubmit(form)">
+
+  <input type="hidden"
+    #memberid="ngModel" name="memberid"
+    [(ngModel)]="previousFormData.memberid">
+
+  <mat-form-field *ngIf="usersTable.length !== 0">
+    <mat-label>Utilisateur</mat-label>
+    <mat-select #user="ngModel" name="user"
+      [(ngModel)]="previousFormData.uid"
+      required>
+      <mat-option *ngFor="let user of usersTable" [value]="user">
+        {{ user.email }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <div *ngIf="usersTable.length === 0">
+    <p class="text-warning">Aucun utilisateur anonyme libre ! Veuillez en créer un nouveau.</p>
+    <button mat-raised-button color="primary"
+      (click)="onAddUser()">
+      <mat-icon>add</mat-icon>Ajouter un utilisateur
+    </button>
+  </div>
+
+  <div class="btn-group-container">
+    <button mat-raised-button mat-dialog-close>Retour</button>
+    <button mat-raised-button color="primary" type="submit"
+      [disabled]="form.invalid || usersTable.length === 0">
+      Assigner un utilisateur
+    </button>
+  </div>
+</form>
