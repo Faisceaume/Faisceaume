@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { auth } from 'firebase/app';
+import firebase from 'firebase/app';
 
 import { RoutingService } from 'src/app/services/routing/routing.service';
 import { UsersService } from 'src/app/services/users/users.service';
@@ -32,7 +32,7 @@ export class AuthService {
    */
   createNewUserWithEmailAndPassword(email: string, password: string): Promise<any> {
     return new Promise<any>( (resolve, reject) => {
-      this.fireAuth.auth.createUserWithEmailAndPassword(email, password)
+      this.fireAuth.createUserWithEmailAndPassword(email, password)
       .then( result => {
         resolve(result.user);
         const nextId = this.db.firestore.collection('users').doc().id;
@@ -74,7 +74,7 @@ export class AuthService {
    */
   signInUser(email: string, password: string): Promise<any> {
     return new Promise<any>( (resolve, reject) => {
-      this.fireAuth.auth.signInWithEmailAndPassword(email, password)
+      this.fireAuth.signInWithEmailAndPassword(email, password)
       .then(result => {
         resolve(result);
         this.routingService.redirectHome();
@@ -124,8 +124,8 @@ export class AuthService {
    */
   connectionWithGoogle(): Promise<any> {
     return new Promise<any>( (resolve, reject) => {
-      const provider = new auth.GoogleAuthProvider();
-      this.fireAuth.auth.signInWithPopup(provider).then( fireUser => {
+      const provider = new firebase.auth.GoogleAuthProvider();
+      this.fireAuth.signInWithPopup(provider).then( fireUser => {
         resolve(fireUser);
         const googleUser = fireUser.user;
         

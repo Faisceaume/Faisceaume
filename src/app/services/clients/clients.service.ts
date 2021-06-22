@@ -14,6 +14,7 @@ import { ProjectsService } from 'src/app/services/projects/projects.service';
 import { Client } from 'src/app/models/client';
 import { ROLE_TYPES_EN } from 'src/app/models/role';
 import { CSS_VAR_NAMES_BG_COLOR, CSS_VAR_NAMES_TEXT_COLOR } from 'src/app/models/shared';
+import { Project } from 'src/app/models/project';
 
 
 @Injectable({
@@ -101,7 +102,7 @@ export class ClientsService {
     if (projectId) {
       // First get the project
       this.db.collection('projects').doc(projectId).get().subscribe( document => {
-        const project = document.data();
+        const project = document.data() as Project;
 
         if (project) {
           // Second get the client with the project          
