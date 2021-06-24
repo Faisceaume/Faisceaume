@@ -194,7 +194,7 @@ export class UsersService {
       const formData = form.value;
       formData.roletype = this.rolesService.setRoleToEnglish(formData.roletype);
       
-      this.fireAuth.auth.createUserWithEmailAndPassword(formData.email, formData.password)
+      this.fireAuth.createUserWithEmailAndPassword(formData.email, formData.password)
       .then( () => {
         const nextId = this.db.firestore.collection('users').doc().id;    
         const newUser = this.db.firestore.collection('users').doc(nextId);

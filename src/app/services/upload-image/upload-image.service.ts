@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 
 import { AngularFireStorage } from '@angular/fire/storage';
-import * as firebase from 'firebase/app';
 
 
 @Injectable({
@@ -24,9 +23,9 @@ export class UploadImageService {
         const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
         console.log(`Upload is ${progress}% done.`);
         switch (snapshot.state) {
-          case firebase.storage.TaskState.PAUSED: // or 'paused'
+          case 'paused': // was firebase.storage.TaskState.PAUSED
             console.log('Upload is paused.'); break;
-          case firebase.storage.TaskState.RUNNING: // or 'running'
+          case 'running': // was firebase.storage.TaskState.RUNNING
             console.log('Upload is running.'); break;
           }
         }, error => {

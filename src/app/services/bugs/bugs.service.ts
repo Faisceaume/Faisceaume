@@ -238,7 +238,7 @@ export class BugsService {
     if (form) {
       const formData = form.value;
       
-      this.fireAuth.auth.onAuthStateChanged( fireUser => {
+      this.fireAuth.onAuthStateChanged( fireUser => {
         if (fireUser) {
           this.db.firestore.collection('users').where('email', '==', fireUser.email).get()
           .then(querySnapshot => {

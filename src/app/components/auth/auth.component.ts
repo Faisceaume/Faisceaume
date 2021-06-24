@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NgForm, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { NgForm, FormBuilder, FormGroup, Validators, FormGroupDirective } from '@angular/forms';
 
 import { DialogService } from 'src/app/services/dialog/dialog.service';
 import { AuthService } from 'src/app/services/auth/auth.service';
@@ -49,7 +49,7 @@ export class AuthComponent implements OnInit {
     });
   }
 
-  onSubmitSignUp(form: NgForm): void {
+  onSubmitSignUp(form: FormGroupDirective): void {
     const data = form.value;
     if (form.valid) {
       this.authService.createNewUserWithEmailAndPassword(data.email, data.password)

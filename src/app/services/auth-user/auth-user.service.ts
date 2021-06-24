@@ -36,7 +36,7 @@ export class AuthUserService {
 
   /** Get the authenticated user and set authUserSub. */
   private getAuthUserDb(): void {
-    this.fireAuth.auth.onAuthStateChanged( fireUser => {
+    this.fireAuth.onAuthStateChanged( fireUser => {
       if (fireUser) {
         this.db.firestore.collection('users').where('email', '==', fireUser.email).get()
         .then( querySnapshot => {
@@ -165,7 +165,7 @@ export class AuthUserService {
 
   /** Sign out the authenticated user. */
   signOutAuthUser(): void {
-    this.fireAuth.auth.signOut()
+    this.fireAuth.signOut()
     .then( () => {
       console.log('User successfully sign out.');
     })
