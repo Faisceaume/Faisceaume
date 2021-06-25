@@ -1,9 +1,14 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
 
 import { TaskStatusFormComponent } from './task-status-form.component';
 
 import { RouterTestingModule } from '@angular/router/testing';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
+import { Overlay } from '@angular/cdk/overlay';
+import { MatDialogRef } from '@angular/material/dialog';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestore } from '@angular/fire/firestore';
@@ -13,30 +18,40 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { environment } from 'src/environments/environment';
 
 
-describe('TaskStatusFormComponent', () => {
+describe('COMPONENT: TaskStatusFormComponent', () => {
   let fixture: ComponentFixture<TaskStatusFormComponent>;
   let component: TaskStatusFormComponent;
   let debugElement: DebugElement;
 
-  beforeEach( () => {
+  beforeEach( waitForAsync( () => {
     TestBed.configureTestingModule({
+      declarations: [
+        TaskStatusFormComponent
+      ],
       imports: [
         RouterTestingModule,
+        MatDialogModule,
+        FormsModule,
+        ReactiveFormsModule,
         AngularFireModule.initializeApp(environment.firebase)
       ],
       providers: [
+        MatDialog,
+        Overlay,
+        { provide: MatDialogRef, useValue: {} },
         AngularFirestore,
         AngularFireStorage,
         AngularFireAuth
       ],
-    });
+    }).compileComponents();
+
     fixture = TestBed.createComponent(TaskStatusFormComponent);
     component = fixture.debugElement.componentInstance;
     debugElement = fixture.debugElement;
-  });
+  }));
 
 
-  it('TEST should create the component', () => {
+  it('Create the component', () => {
     expect(component).toBeTruthy();
   });
 });

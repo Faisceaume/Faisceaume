@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
 
 import { SidenavComponent } from './sidenav.component';
@@ -13,13 +13,16 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { environment } from 'src/environments/environment';
 
 
-describe('SidenavComponent', () => {
+describe('COMPONENT: SidenavComponent', () => {
   let fixture: ComponentFixture<SidenavComponent>;
   let component: SidenavComponent;
   let debugElement: DebugElement;
 
-  beforeEach( () => {
+  beforeEach( waitForAsync( () => {
     TestBed.configureTestingModule({
+      declarations: [
+        SidenavComponent
+      ],
       imports: [
         RouterTestingModule,
         AngularFireModule.initializeApp(environment.firebase)
@@ -29,14 +32,15 @@ describe('SidenavComponent', () => {
         AngularFireStorage,
         AngularFireAuth
       ],
-    });
+    }).compileComponents();
+
     fixture = TestBed.createComponent(SidenavComponent);
     component = fixture.debugElement.componentInstance;
     debugElement = fixture.debugElement;
-  });
+  }));
 
 
-  it('TEST should create the component', () => {
+  it('Create the component', () => {
     expect(component).toBeTruthy();
   });
 });

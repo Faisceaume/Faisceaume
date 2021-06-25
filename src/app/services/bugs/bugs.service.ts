@@ -39,7 +39,7 @@ export class BugsService {
     timestamp: 0,
     timeestimated: 0,
     timespent: 0,
-    timecompleted: 0,
+    timestampcompleted: 0,
     location: 0
   };
   isBugsSection = false;
@@ -566,7 +566,7 @@ export class BugsService {
    */
   setDateCompleted(data: any): void {
     if (data.status === BUG_STATUS_EN.RESOLVED) {
-      data.timecompleted = new Date().getTime();
+      data.timestampcompleted = new Date().getTime();
     }
   }
 
@@ -615,7 +615,7 @@ export class BugsService {
         timestamp: 0,
         timeestimated: 0,
         timespent: 0,
-        timecompleted: 0,
+        timestampcompleted: 0,
         location: 0
       };
     }

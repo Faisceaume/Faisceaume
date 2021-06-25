@@ -1,4 +1,4 @@
-import { TestBed } from '@angular/core/testing';
+import { TestBed, waitForAsync } from '@angular/core/testing';
 
 import { UploadImageService } from './upload-image.service';
 
@@ -10,10 +10,10 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { environment } from 'src/environments/environment';
 
 
-describe('UploadImageService', () => {
+describe('SERVICE: UploadImageService', () => {
   let service: UploadImageService;
 
-  beforeEach( () => {
+  beforeEach( waitForAsync( () => {
     TestBed.configureTestingModule({
       imports: [
         AngularFireModule.initializeApp(environment.firebase)
@@ -24,11 +24,12 @@ describe('UploadImageService', () => {
         AngularFireAuth
       ]
     });
-    service = TestBed.get(UploadImageService);
-  });
+
+    service = TestBed.inject(UploadImageService);
+  }));
 
 
-  it('TEST should create the service', () => {
+  it('Create the service', () => {
     expect(service).toBeTruthy();
   });
 });

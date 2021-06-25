@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
 
 import { TasksListComponent } from './tasks-list.component';
@@ -16,13 +16,16 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { environment } from 'src/environments/environment';
 
 
-describe('TasksListComponent', () => {
+describe('COMPONENT: TasksListComponent', () => {
   let fixture: ComponentFixture<TasksListComponent>;
   let component: TasksListComponent;
   let debugElement: DebugElement;
 
-  beforeEach( () => {
+  beforeEach( waitForAsync( () => {
     TestBed.configureTestingModule({
+      declarations: [
+        TasksListComponent
+      ],
       imports: [
         RouterTestingModule,
         MatDialogModule,
@@ -35,14 +38,15 @@ describe('TasksListComponent', () => {
         AngularFireStorage,
         AngularFireAuth
       ],
-    });
+    }).compileComponents();
+
     fixture = TestBed.createComponent(TasksListComponent);
     component = fixture.debugElement.componentInstance;
     debugElement = fixture.debugElement;
-  });
+  }));
 
 
-  it('TEST should create the component', () => {
+  it('Create the component', () => {
     expect(component).toBeTruthy();
   });
 });

@@ -56,7 +56,7 @@
 
             <p>Reporté le : {{ bug.timestamp | date: 'EEEE, dd/MM/yy' }}.</p>
             
-            <p *ngIf="bug.timecompleted">Terminée le {{ bug.timecompleted | date: 'EEEE, dd/MM/yy' }}.</p>
+            <p *ngIf="bug.timestampcompleted">Terminée le {{ bug.timestampcompleted | date: 'EEEE, dd/MM/yy' }}.</p>
           </mat-card-content>
 
           <mat-card-actions>

@@ -48,7 +48,7 @@
 
         <p *ngIf="task.timespent">Durée consacrée à réaliser la tâche : {{ task.timespent }} heure(s).</p>
         
-        <p *ngIf="task.timecompleted">Terminée le {{ task.timecompleted | date: 'EEEE, dd/MM/yy' }}.</p>
+        <p *ngIf="task.timestampcompleted">Terminée le {{ task.timestampcompleted | date: 'EEEE, dd/MM/yy' }}.</p>
       </mat-card-content>
       <mat-card-actions>
         <button mat-raised-button color="primary"

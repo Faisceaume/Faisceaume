@@ -55,7 +55,7 @@
 
             <p>Ajoutée le : {{ task.timestamp | date: 'EEEE, dd/MM/yy' }}.</p>
             
-            <p *ngIf="task.timecompleted">Terminée le {{ task.timecompleted | date: 'EEEE, dd/MM/yy' }}.</p>
+            <p *ngIf="task.timestampcompleted">Terminée le {{ task.timestampcompleted | date: 'EEEE, dd/MM/yy' }}.</p>
           </mat-card-content>
 
           <mat-card-actions>
@@ -123,7 +123,7 @@
           </ng-container>
 
           <!-- Member column -->
-          <ng-container matColumnDef="member">
+          <ng-container matColumnDef="member" class="member-column">
             <mat-header-cell *matHeaderCellDef mat-sort-header>Réalisée par</mat-header-cell>
             <mat-cell *matCellDef="let task"
               [ngStyle]="{'background-color': task.statusbackgroundcolor }">

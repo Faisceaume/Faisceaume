@@ -9,7 +9,7 @@ export class Task {
   timestamp: number;
   timeestimated: number;
   timespent?: number;
-  timecompleted?: number;
+  timestampcompleted?: number;
   location: number;
 }
 

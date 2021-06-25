@@ -1,4 +1,4 @@
-import { TestBed } from '@angular/core/testing';
+import { TestBed, waitForAsync } from '@angular/core/testing';
 
 import { CategoriesService } from './categories.service';
 
@@ -10,10 +10,10 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { environment } from 'src/environments/environment';
 
 
-describe('CategorieService', () => {
-  let service = CategoriesService;
+describe('SERRIVCE: CategorieService', () => {
+  let service: CategoriesService;
 
-  beforeEach( () => {
+  beforeEach( waitForAsync( () => {
     TestBed.configureTestingModule({
       imports: [
         AngularFireModule.initializeApp(environment.firebase)
@@ -24,11 +24,12 @@ describe('CategorieService', () => {
         AngularFireAuth
       ]
     });
-    service = TestBed.get(CategoriesService);
-  });
+    
+    service = TestBed.inject(CategoriesService);
+  }));
 
 
-  it('TEST should create the service', () => { 
+  it('Create the service', () => { 
     expect(service).toBeTruthy();
   });
 });

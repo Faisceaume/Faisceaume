@@ -65,7 +65,7 @@
     <mat-form-field *ngIf="!previousFormData.memberid">
       <mat-label>Membre</mat-label>
       <mat-select #member="ngModel" name="member"
-        [(ngModel)]="previousFormData.memberid">
+        [(ngModel)]="previousFormData.member">
         <mat-option *ngFor="let member of membersTable" [value]="member">
           {{ member.firstname }} {{ member.lastname }}
         </mat-option>

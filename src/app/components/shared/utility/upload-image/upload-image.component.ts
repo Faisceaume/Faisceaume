@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 import { UploadImageService } from 'src/app/services/upload-image/upload-image.service';
 
@@ -8,45 +8,42 @@ import { UploadImageService } from 'src/app/services/upload-image/upload-image.s
   templateUrl: './upload-image.component.html',
   styleUrls: ['./upload-image.component.css']
 })
-export class UploadImageComponent implements OnInit {
+export class UploadImageComponent {
 
-  @Input() title: string;
-
-  fileUrl: string;
+  @Input('title') title: string;
+  @Input('folder') folder: string;
 
   isFileOK = true;
   isFileUploading = false;
   isFileUploaded = false;
   errorMessages: string[] = [];
 
-  constructor(private uploadImageService: UploadImageService) { }
+  constructor(public uploadImageService: UploadImageService) { }
   
-
-  ngOnInit(): void {
-    this.fileUrl = this.uploadImageService.fileUrl;
-  }
 
   onUploadFile(file: File): void {
     this.isFileUploading = true;
-    this.uploadImageService.uploadFile(file).then( (url: string) => {
+    this.uploadImageService.uploadFile(this.folder, file).then( (url: string) => {
       this.uploadImageService.fileUrl = url;
       this.isFileUploading = false;
       this.isFileUploaded = true;
     });
   }
 
-  detectFile(event): void {
+  detectFile(event: any): void {
     const file: File = event.target.files[0];
     this.imageTreatment(file);
   }
 
-  handleDrop(e): void {
-    e.preventDefault();
-    const file = e.dataTransfer.files[0];
+  handleDrop(event: any): void {
+    event.preventDefault();
+    const file = event.dataTransfer.files[0];
     this.imageTreatment(file);
   }
 
   imageTreatment(file: File): void {
+    // Clear the error messages array each time the user add a new img
+    this.errorMessages.length = 0;
     this.getImageDimension(window.URL.createObjectURL(file)).then( dimension => {
       if (file.size < 90000 && dimension < 800) {
         this.onUploadFile(file);
@@ -55,7 +52,7 @@ export class UploadImageComponent implements OnInit {
         this.isFileOK = false;
       }
       if (file.size >= 90000) {
-          this.errorMessages.push('Le poids de l\'image doit être inférieur à 30 000 octets.');
+        this.errorMessages.push('Le poids de l\'image doit être inférieur à 30 000 octets.');
       }
       if (dimension >= 800) {
         this.errorMessages.push('La dimension de l\'image doit être inférieure à 800px.');
@@ -77,7 +74,8 @@ export class UploadImageComponent implements OnInit {
 
 
   onDeleteDrapImage() {
-    this.uploadImageService.deletePhoto(this.uploadImageService.fileUrl);
+    this.uploadImageService.deleteFile(this.uploadImageService.fileUrl);
     this.uploadImageService.fileUrl = null;
+    this.isFileUploaded = false;
   }
 }

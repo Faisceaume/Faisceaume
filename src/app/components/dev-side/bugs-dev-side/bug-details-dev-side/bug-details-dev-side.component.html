@@ -51,7 +51,7 @@
         
         <p *ngIf="bug.timespent">Durée consacrée à corriger le bug : {{ bug.timespent }} heure(s).</p>
         
-        <p *ngIf="bug.timecompleted">Corrigé le {{ bug.timecompleted | date: 'EEEE, dd/MM/yy' }}.</p>
+        <p *ngIf="bug.timestampcompleted">Corrigé le {{ bug.timestampcompleted | date: 'EEEE, dd/MM/yy' }}.</p>
       </mat-card-content>
       <img mat-card-image *ngIf="bug.picture"
         [src]="bug.picture" alt="Capture d'écran du bug">

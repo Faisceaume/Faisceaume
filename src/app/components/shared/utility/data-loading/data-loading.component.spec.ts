@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
 
 import { DataLoadingComponent } from './data-loading.component';
@@ -13,13 +13,16 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { environment } from 'src/environments/environment';
 
 
-describe('DataLoadingComponent', () => {
+describe('COMPONENT: DataLoadingComponent', () => {
   let fixture: ComponentFixture<DataLoadingComponent>;
   let component: DataLoadingComponent;
   let debugElement: DebugElement;
 
-  beforeEach( () => {
+  beforeEach( waitForAsync( () => {
     TestBed.configureTestingModule({
+      declarations: [
+        DataLoadingComponent
+      ],
       imports: [
         RouterTestingModule,
         AngularFireModule.initializeApp(environment.firebase)
@@ -29,14 +32,15 @@ describe('DataLoadingComponent', () => {
         AngularFireStorage,
         AngularFireAuth
       ],
-    });
+    }).compileComponents();
+
     fixture = TestBed.createComponent(DataLoadingComponent);
     component = fixture.debugElement.componentInstance;
     debugElement = fixture.debugElement;
-  });
+  }));
 
 
-  it('TEST should create the component', () => {
+  it('Create the component', () => {
     expect(component).toBeTruthy();
   });
 });

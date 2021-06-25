@@ -18,7 +18,7 @@ export class SharedService {
    * @returns {number} The total number of pages.
    */
   setTotalPages(array: any[], itemsPerPage: number): number {
-    return  itemsPerPage !== 0
+    return itemsPerPage !== 0
     ? Math.ceil(array.length / itemsPerPage)
     : 1;  // default value
   }
@@ -34,8 +34,9 @@ export class SharedService {
 
     let indexStart = (currentPage-1) * itemsPerPage; // -1: array start at 0; pages begin at 1
     const loopEnd = currentPage * itemsPerPage;
-
-    while (array[indexStart] && indexStart !== loopEnd) {
+    
+    // By writing only 'array[indexStart]', if the value at this index equals 0, it blocks the algorithm
+    while ((array[indexStart] || array[indexStart] === 0) && indexStart !== loopEnd) {
       newArray.push(array[indexStart]);
       indexStart++;
     }

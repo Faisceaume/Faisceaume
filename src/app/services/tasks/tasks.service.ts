@@ -14,8 +14,7 @@ import { TASK_STATUS_FR } from 'src/app/models/task';
 import { CSS_VAR_NAMES_TEXT_COLOR } from 'src/app/models/shared';
 import { CSS_VAR_NAMES_BG_COLOR } from 'src/app/models/shared';
 import { STATUS_ICON_NAMES } from 'src/app/models/shared';
-import { of } from 'rxjs';
-import * as firebase from 'firebase';
+import firebase from 'firebase/app';
 
 
 @Injectable({
@@ -33,7 +32,7 @@ export class TasksService {
     status: null,
     timestamp: 0,
     timeestimated: 0,
-    timecompleted: 0,
+    timestampcompleted: 0,
     location: 0,
   };
   isTasksSection = false;
@@ -160,9 +159,7 @@ export class TasksService {
    */
   getAllTasksByProjectId(projectId: string): Observable<Task[]> {
     this.getAllTasksByProjectIdDB(projectId);
-    return this.tasksArraySub.complete
-    ? this.tasksArraySub
-    : of([]);
+    return this.tasksArraySub;
   }
 
   /**
@@ -182,9 +179,7 @@ export class TasksService {
    */
   getAllTasksByMemberId(memberId: string): Observable<Task[]> {
     this.getAllTasksByMemberIdDB(memberId);
-    return this.tasksArraySub.complete
-    ? this.tasksArraySub
-    : of([]);
+    return this.tasksArraySub;
   }
 
   /**
@@ -582,7 +577,7 @@ export class TasksService {
    */
   setDateCompleted(data: any): void {
     if (data.status === TASK_STATUS_EN.DONE) {
-      data.timecompleted = new Date().getTime();
+      data.timestampcompleted = new Date().getTime();
     }
   }
 
@@ -644,7 +639,7 @@ export class TasksService {
         status: null,
         timestamp: 0,
         timeestimated: 0,
-        timecompleted: 0,
+        timestampcompleted: 0,
         location: 0,
       };
     }

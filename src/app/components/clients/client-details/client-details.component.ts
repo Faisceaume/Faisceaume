@@ -116,8 +116,8 @@ export class ClientDetailsComponent implements OnInit, OnDestroy {
   onDeleteClient(client: Client): void {
     this.dialogService.openConfirmDialog(
       'Confirmer la suppression du client ?',
-      'Son compte utilisateur sera également supprimé, ainsi que toutes les références à ce client (projet, bugs) seront supprimées.');
-    
+      'Son compte utilisateur sera également supprimé, ainsi que toutes les références à ce client (projet, bugs) seront supprimées.'
+    );
     this.dialogService.dialogConfirmResultSub.subscribe( isConfirmed => {
       if (isConfirmed) {
         this.clientsService.deleteClientById(client.clientid);

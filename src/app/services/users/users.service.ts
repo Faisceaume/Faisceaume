@@ -3,6 +3,7 @@ import { NgForm } from '@angular/forms';
 
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/firestore';
+import firebase from 'firebase';
 
 import { Observable } from 'rxjs/internal/Observable';
 import { Subject } from 'rxjs/internal/Subject';
@@ -12,11 +13,16 @@ import { RolesService } from 'src/app/services/roles/roles.service';
 import { User } from 'src/app/models/user';
 import { Role } from 'src/app/models/role';
 
+import { environment } from 'src/environments/environment';
+//import { environment } from 'src/environments/environment.prod';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class UsersService {
+
+  secondApp: firebase.app.App;
   
   formData = {
     uid: '',
@@ -188,55 +194,70 @@ export class UsersService {
   /**
    * PUT: add a new user.
    * @param {NgForm} form The form, it must contain the email and the role type.
+   * @returns {Promise<any>} The promise; contain the new user in case of success.
    */
-  createNewUser(form: NgForm): void {
-    if (form) {
-      const formData = form.value;
-      formData.roletype = this.rolesService.setRoleToEnglish(formData.roletype);
+  createNewUser(form: NgForm): Promise<any> {
+    return new Promise<any>( (resolve, reject) => {
+      if (form) {
+        const formData = form.value;
+        formData.roletype = this.rolesService.setRoleToEnglish(formData.roletype);
+  
+        // Cheat consists to create a second connection to the firebase
+        // First connection (main connection): the current user stay connected
+        // Second connection: the new user is connected
+        if (!this.secondApp) {
+          this.secondApp = firebase.initializeApp(environment.firebase, 'secondary');
+        }
+        
+        this.secondApp.auth().createUserWithEmailAndPassword(formData.email, formData.password)
+        .then( () => {
+          const nextId = this.db.firestore.collection('users').doc().id;    
+          const newUser = this.db.firestore.collection('users').doc(nextId);
       
-      this.fireAuth.createUserWithEmailAndPassword(formData.email, formData.password)
-      .then( () => {
-        const nextId = this.db.firestore.collection('users').doc().id;    
-        const newUser = this.db.firestore.collection('users').doc(nextId);
-    
-        // First get the role
-        this.db.firestore.collection('roles').where('type', '==', formData.roletype).get()
-        .then( querySnapshot => {
-          querySnapshot.forEach( document => {
-            const role = document.data() as Role;
-
-            if (role) {     
-              // Second create the user
-              const data = Object.assign({}, {
-                uid: nextId,
-                roleid: role.roleid,
-                email: formData.email,
-                timestamp: new Date().getTime(),
-              });
-          
-              const batch = this.db.firestore.batch();
-              batch.set(newUser, data);
-          
-              batch.commit()
-              .then( () => {
-                console.log('User successfully created.');
-              })
-              .catch( error => {
-                console.error(`ERROR: failed to create a new user. ${error}`);
-              });
-            } else {
-              console.error(`ERROR: failed to create user with the role type: ${formData.roletype}.`);
-            }
+          // First get the role
+          this.db.firestore.collection('roles').where('type', '==', formData.roletype).get()
+          .then( querySnapshot => {
+            querySnapshot.forEach( document => {
+              const role = document.data() as Role;
+  
+              if (role) {     
+                // Second create the user
+                const data = Object.assign({}, {
+                  uid: nextId,
+                  roleid: role.roleid,
+                  email: formData.email,
+                  timestamp: new Date().getTime(),
+                });
+                resolve(newUser);
+            
+                const batch = this.db.firestore.batch();
+                batch.set(newUser, data);
+            
+                batch.commit()
+                .then( () => {
+                  console.log('User successfully created.');
+                })
+                .catch( error => {
+                  console.error(`ERROR: failed to create a new user. ${error}`);
+                });
+              } else {
+                console.error(`ERROR: failed to create user with the role type: ${formData.roletype}.`);
+              }
+            });
+          })
+          .catch( error => {
+            console.error(`ERROR: failed to create user with the role type: ${formData.roletype}. ${error}.`);
           });
         })
         .catch( error => {
           console.error(`ERROR: impossible to create a new user. ${error}.`);
+          reject(error);
         });
-      });
-    } else {
-      console.error(`ERROR: param form is incorrect: ${form}.`);
-    }
-    this.resetForm(form);
+      } else {
+        console.error(`ERROR: param form is incorrect: ${form}.`);
+      }
+      this.resetForm(form);
+    });
   }
 
   

@@ -1,4 +1,4 @@
-import { TestBed } from '@angular/core/testing';
+import { TestBed, waitForAsync } from '@angular/core/testing';
 
 import { DialogService } from './dialog.service';
 
@@ -7,10 +7,10 @@ import { MatDialog } from '@angular/material/dialog'
 import { Overlay } from '@angular/cdk/overlay';
 
 
-describe('DialogService', () => {
+describe('SERVICE: DialogService', () => {
   let service: DialogService;
 
-  beforeEach( () => {
+  beforeEach( waitForAsync( () => {
     TestBed.configureTestingModule({
       providers: [
         MatDialog,
@@ -20,11 +20,12 @@ describe('DialogService', () => {
         MatDialogModule
       ]
     });
-    service = TestBed.get(DialogService);
-  });
+    
+    service = TestBed.inject(DialogService);
+  }));
 
 
-  it('TEST should create the service', () => {
+  it('Create the service', () => {
     expect(service).toBeTruthy();
   });
 });

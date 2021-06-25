@@ -146,6 +146,10 @@ mat-table {
   background-color: var(--bg-light-color) !important;
 }
 
+mat-row {
+  align-items: stretch !important; /* The cells height to take full height of row */
+}
+
 .table-filter-container {
   background-color: var(--bg-light-color) !important;
   padding: var(--sm-length);

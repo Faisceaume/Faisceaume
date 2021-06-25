@@ -2,10 +2,12 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 
 import { RoutingService } from 'src/app/services/routing/routing.service';
+import { DialogService } from 'src/app/services/dialog/dialog.service';
 import { UsersService } from 'src/app/services/users/users.service'
 
 import { User } from 'src/app/models/user';
 import { ROLE_TYPES_EN, ROLE_TYPES_FR } from 'src/app/models/role';
+import { Error } from 'src/app/models/shared';
 
 class UserData extends User {
   password: string;
@@ -28,6 +30,7 @@ export class UserFormComponent implements OnInit, OnDestroy {
 
   constructor(
     private routingService: RoutingService,
+    private dialogService: DialogService,
     private usersService: UsersService) { }
 
 
@@ -48,8 +51,13 @@ export class UserFormComponent implements OnInit, OnDestroy {
   }
 
   onSubmit(form: NgForm): void {
-    this.usersService.createNewUser(form);
-    this.routingService.redirectUsersList();
+    this.usersService.createNewUser(form)
+    .then( () => {
+      this.routingService.redirectUsersList();
+    })
+    .catch( (error: Error) => {
+      this.dialogService.openErrorDialog(error.code, error.message);
+    });
   }
 
 

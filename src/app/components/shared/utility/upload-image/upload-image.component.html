@@ -1,4 +1,4 @@
-<div *ngIf="!fileUrl" class="upload-img-container">
+<div *ngIf="!uploadImageService.fileUrl" class="upload-img-container">
   <mat-label class="field-color">{{ title }}</mat-label>
   <div class="input-file-container">
     <!-- Cheat to custom the input file button by creating an associated label with CSS -->
@@ -17,12 +17,12 @@
     </div>
   </div>
   <ul *ngIf="errorMessages">
-    <li *ngFor='let error of errorMessages' class="text-danger">{{ error }}</li>
+    <li *ngFor="let error of errorMessages" class="text-danger">{{ error }}</li>
   </ul>
 </div>
 
-<div *ngIf="fileUrl" class="upload-img-container">
-  <img mat-card-image [src]="fileUrl">
+<div *ngIf="uploadImageService.fileUrl" class="upload-img-container">
+  <img mat-card-image [src]="uploadImageService.fileUrl">
   <button mat-icon-button
     matTooltip="Supprimer l'image"
     (click)="onDeleteDrapImage()">

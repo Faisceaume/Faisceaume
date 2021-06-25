@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NgForm, FormBuilder, FormGroup, Validators, FormGroupDirective } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormGroupDirective } from '@angular/forms';
 
 import { DialogService } from 'src/app/services/dialog/dialog.service';
 import { AuthService } from 'src/app/services/auth/auth.service';
@@ -60,7 +60,6 @@ export class AuthComponent implements OnInit {
         this.dialogService.openErrorDialog(error.code, error.message);
       });
     }
-
   }
 
   connectionWithGoogle(): void {

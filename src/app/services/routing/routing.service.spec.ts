@@ -1,4 +1,4 @@
-import { TestBed } from '@angular/core/testing';
+import { TestBed, waitForAsync } from '@angular/core/testing';
 
 import { RoutingService } from './routing.service';
 
@@ -8,10 +8,10 @@ import { PathLocationStrategy } from '@angular/common';
 import { APP_BASE_HREF } from '@angular/common';
 
 
-describe('RoutingService', () => {
+describe('SERVICE: RoutingService', () => {
   let service: RoutingService;
 
-  beforeEach( () => {
+  beforeEach( waitForAsync( () => {
     TestBed.configureTestingModule({
       imports: [
         RouterTestingModule
@@ -23,11 +23,11 @@ describe('RoutingService', () => {
       ]
     });
     
-    service = TestBed.get(RoutingService);
-  });
+    service = TestBed.inject(RoutingService);
+  }));
 
 
-  it('TEST should create the service', () => {
+  it('Create the service', () => {
     expect(service).toBeTruthy();
   });
 });

@@ -13,6 +13,7 @@ import { UsersService } from 'src/app/services/users/users.service';
 import { User } from 'src/app/models/user';
 import { ROLE_TYPES_EN } from 'src/app/models/role';
 import { Member } from 'src/app/models/member';
+import { IMG_FOLDERS_NAMES } from 'src/app/models/shared';
 
 
 @Component({
@@ -26,7 +27,8 @@ export class MemberFormComponent implements OnInit, OnDestroy {
   rolesGranted = [ROLE_TYPES_EN.ADMIN];
   
 
-  uploadImgTitle="Avatar du membre";
+  uploadImgTitle = 'Avatar du membre';
+  uploadFolderName = IMG_FOLDERS_NAMES.MEMBERS;
 
   previousFormData: Member;
 
@@ -49,6 +51,7 @@ export class MemberFormComponent implements OnInit, OnDestroy {
     this.membersService.isMembersSection = true;
 
     this.previousFormData = Object.assign({}, this.membersService.formData);
+    this.uploadImageService.fileUrl = this.previousFormData.picture;
 
     this.isFormEdit = this.sharedService.getIsFormEdit(this.previousFormData.memberid);
     this.operationType = this.sharedService.getOperationType(this.previousFormData.memberid);
@@ -83,7 +86,7 @@ export class MemberFormComponent implements OnInit, OnDestroy {
   }
 
   onDeleteDrapImage(): void {
-    this.uploadImageService.deletePhoto(this.uploadImageService.fileUrl);
+    this.uploadImageService.deleteFile(this.uploadImageService.fileUrl);
     this.uploadImageService.fileUrl = null;
   }
 

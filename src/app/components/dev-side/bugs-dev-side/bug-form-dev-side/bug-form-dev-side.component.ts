@@ -11,7 +11,7 @@ import { BugsService } from 'src/app/services/bugs/bugs.service';
 import { ProjectsService } from 'src/app/services/projects/projects.service';
 
 import { ROLE_TYPES_EN } from 'src/app/models/role';
-import { TIMES_TABLE } from 'src/app/models/shared';
+import { IMG_FOLDERS_NAMES, TIMES_TABLE } from 'src/app/models/shared';
 import { Bug,BUG_STATUS_FR } from 'src/app/models/bug';
 import { Project } from 'src/app/models/project';
 
@@ -32,6 +32,7 @@ export class BugFormDevSideComponent implements OnInit, OnDestroy {
 
 
   uploadImgTitle = 'Capture d\'écran du bug';
+  uploadFolderName = IMG_FOLDERS_NAMES.BUGS;
 
   previousFormData: BugData;
 

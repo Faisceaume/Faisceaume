@@ -38,16 +38,16 @@
         <mat-icon>people</mat-icon>
         <span class="icon-text">Membres</span>   
       </a>
-      <a mat-list-item routerLink="projects/list">
+      <a mat-list-item routerLink="/projects/list">
         <mat-icon>vertical_split</mat-icon>
         <span class="icon-text">Projets</span>   
       </a>
       <mat-divider></mat-divider>
-      <a mat-list-item routerLink="tasks/my-tasks">
+      <a mat-list-item routerLink="/tasks/my-tasks">
         <mat-icon>assignment</mat-icon>
         <span class="icon-text">Mes tâches</span>   
       </a>
-      <a mat-list-item routerLink="bugs/my-bugs">
+      <a mat-list-item routerLink="/bugs/my-bugs">
         <mat-icon>assignment_late</mat-icon>
         <span class="icon-text">Mes bugs</span>   
       </a>
@@ -65,20 +65,20 @@
 
     <!-- Dev part -->
     <div *ngIf="isDev">
-      <a mat-list-item routerLink="dev/members">
+      <a mat-list-item routerLink="/dev/members">
         <mat-icon>people</mat-icon>
         <span class="icon-text">Membres</span>
       </a>
-      <a mat-list-item routerLink="dev/projects">
+      <a mat-list-item routerLink="/dev/projects">
         <mat-icon>vertical_split</mat-icon>
         <span class="icon-text">Projets</span>
       </a>
       <mat-divider></mat-divider>
-      <a mat-list-item routerLink="dev/my-tasks">
+      <a mat-list-item routerLink="/dev/my-tasks">
         <mat-icon>assignment</mat-icon>
         <span class="icon-text">Mes tâches</span>   
       </a>
-      <a mat-list-item routerLink="dev/my-bugs">
+      <a mat-list-item routerLink="/dev/my-bugs">
         <mat-icon>assignment_late</mat-icon>
         <span class="icon-text">Mes bugs</span>   
       </a>
@@ -86,7 +86,7 @@
 
     <!-- Client part -->
     <div *ngIf="isClient">
-      <a mat-list-item routerLink="client/my-projects">
+      <a mat-list-item routerLink="/client/my-projects">
         <mat-icon>vertical_split</mat-icon>
         <span class="icon-text">Mes projets</span>   
       </a>

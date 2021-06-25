@@ -25,6 +25,12 @@ mat-label {
   border: 5px solid var(--text-dark-color);
 }
 
+.mat-card-image {
+  max-width: 100%; /* Prevent the image to exceed the container */
+  width: unset;
+  margin: 0;
+}
+
 /* Cheat to custom the input file button by creating an associated label with CSS */
 .label-file {
   color: var(--text-light-color);

@@ -12,6 +12,7 @@ import { ClientsService } from 'src/app/services/clients/clients.service';
 import { ROLE_TYPES_EN } from 'src/app/models/role';
 import { Project } from 'src/app/models/project';
 import { Client } from 'src/app/models/client';
+import { IMG_FOLDERS_NAMES } from 'src/app/models/shared';
 
 class ProjectData extends Project {
   client?: Client;
@@ -29,6 +30,7 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
 
 
   uploadImgTitle = 'Image du projet';
+  uploadFolderName = IMG_FOLDERS_NAMES.PROJECTS;
 
   previousFormData: ProjectData;
 
@@ -94,7 +96,7 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
   }
 
   onDeleteDrapImage() {
-    this.uploadImageService.deletePhoto(this.uploadImageService.fileUrl);
+    this.uploadImageService.deleteFile(this.uploadImageService.fileUrl);
     this.uploadImageService.fileUrl = null;
   }
 

@@ -15,6 +15,7 @@ import { ProjectsService } from 'src/app/services/projects/projects.service';
 import { ROLE_TYPES_EN } from 'src/app/models/role';
 import { Bug } from 'src/app/models/bug';
 import { Project } from 'src/app/models/project';
+import { IMG_FOLDERS_NAMES } from 'src/app/models/shared';
 
 class BugData extends Bug {
   project?: Project;
@@ -32,6 +33,7 @@ export class BugFormClientSideComponent implements OnInit, OnDestroy {
 
 
   titleImgUpload = 'Capture d\'écran du bug';
+  uploadFolderName = IMG_FOLDERS_NAMES.BUGS;
   
   previousFormData: BugData;
 
@@ -88,7 +90,7 @@ export class BugFormClientSideComponent implements OnInit, OnDestroy {
   }
 
   onDeleteDrapImage() {
-    this.uploadImageService.deletePhoto(this.uploadImageService.fileUrl);
+    this.uploadImageService.deleteFile(this.uploadImageService.fileUrl);
     this.uploadImageService.fileUrl = null;
   }
 

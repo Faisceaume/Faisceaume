@@ -1,4 +1,4 @@
-import { TestBed } from '@angular/core/testing';
+import { TestBed, waitForAsync } from '@angular/core/testing';
 
 import { AuthGuardService } from './auth-guard.service';
 
@@ -12,10 +12,10 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { environment } from 'src/environments/environment';
 
 
-describe('AuthGuardServiceGuard', () => {
+describe('SERVICE: AuthGuardServiceGuard', () => {
   let service: AuthGuardService;
 
-  beforeEach( () => {
+  beforeEach( waitForAsync( () => {
     TestBed.configureTestingModule({
       imports: [
         RouterTestingModule,
@@ -27,10 +27,11 @@ describe('AuthGuardServiceGuard', () => {
         AngularFireAuth
       ]
     });
-    service = TestBed.get(AuthGuardService);
-  });
 
-  it('TEST should create the service', () => {
+    service = TestBed.inject(AuthGuardService);
+  }));
+
+  it('Create the service', () => {
     expect(service).toBeTruthy();
   });
 });
