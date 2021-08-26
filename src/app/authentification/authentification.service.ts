@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 import { Utilisateur} from './utilisateur';
 import { Router } from '@angular/router';
 import { AngularFirestore } from '@angular/fire/firestore';
@@ -16,6 +16,7 @@ export class AuthentificationService {
 
   constructor(private afauth: AngularFireAuth,
               private router: Router,
+              private ngZone: NgZone,
               private db: AngularFirestore) { }
 
   createNewUser(mail: string, password: string) {
@@ -29,7 +30,7 @@ export class AuthentificationService {
         const nextDocument1 = this.db.firestore.collection('users').doc(nextId);
         batch.set(nextDocument1, data);
         batch.commit();
-        this.router.navigate(['members']);
+        this.ngZone.run(() => { this.router.navigate(['members']) });
       }, err => reject(err));
     });
 
@@ -40,7 +41,7 @@ SignInUser(email: string, password: string ) {
     this.afauth.auth.signInWithEmailAndPassword(email, password)
     .then(res => {
       resolve(res);
-      this.router.navigate(['members']);
+      this.ngZone.run(() => { this.router.navigate(['members']) });
     }, err => reject(err));
   });
 
@@ -63,7 +64,7 @@ connectionWithGoogle(): void {
          uid: u.uid,
          email: u.email
        } as Users;
-       this.router.navigate(['members']);
+       this.ngZone.run(() => { this.router.navigate(['members']) });
      }
    );
 }
