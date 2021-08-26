@@ -40,13 +40,33 @@ export class TasksListComponent implements OnInit/*, OnDestroy*/ {
 
   ngOnInit() {
     this.categorieService.getAllCategories();
+    this.membersService.getAllMembers();
     this.categorieService.categoriesSubject.subscribe(data => {
       this.categories = data;
     });
 
-    this.membersService.getAllMembers();
     this.membersService.membersSubject.subscribe(data => {
       this.options = data;
+
+      this.afauth.auth.onAuthStateChanged((user) => {
+        if (user) {
+          this.usersService.getSingleUser(user.email).then((item: Users) => {
+              if (item.memberid) {
+                const userMember = this.options.find(member => member.memberid === item.memberid);
+                this.membersService.setSessionMemberValue(userMember);
+                if (this.categories.find(cat => cat.id === userMember.categoryid).isadmin) {
+                    this.displayAll(true);
+                    this.usersService.setIsAdministrateur(true);
+                  } else {
+                    this.displayAll(false, userMember.memberid);
+                    this.usersService.setIsAdministrateur(false);
+                  }
+                this.getTasksSubscription = true;
+              }
+          });
+        }
+      });
+
     });
 
     this.tasksService.setTasksSectionValue(true);
@@ -56,29 +76,7 @@ export class TasksListComponent implements OnInit/*, OnDestroy*/ {
       this.tasksService.setToUpdateTaskStatut(false);
     }
 
-    this.afauth.auth.onAuthStateChanged(
-  (user) => {
-    if (user) {
-      this.usersService.getSingleUser(user.email).then(
-       (item: Users) => {
-          if (item.memberid) {
-            const userMember = this.options.find(member => member.memberid === item.memberid);
-            this.membersService.setSessionMemberValue(userMember);
-            if (this.categories.find(cat => cat.id === userMember.categoryid).isadmin) {
-                this.displayAll(true);
-                this.usersService.setIsAdministrateur(true);
-              } else {
-                this.displayAll(false, userMember.memberid);
-                this.usersService.setIsAdministrateur(false);
-              }
-            this.getTasksSubscription = true;
-          }
-       }
-     );
 
-    }
-  }
-);
 
 }
 

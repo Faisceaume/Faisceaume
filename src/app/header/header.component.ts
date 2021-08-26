@@ -52,26 +52,24 @@ export class HeaderComponent implements OnInit , OnDestroy  {
 
   ngOnInit() {
     this.categorieService.getAllCategories();
+    this.memberService.getAllMembers();
+    this.projectsService.getAllProjects();
+
     this.subscriptionCategorie = this.categorieService.categoriesSubject.subscribe(data => {
       this.categories = data;
-    });
 
-    this.memberService.getAllMembers();
-    this.subscriptionMember = this.memberService.membersSubject.subscribe(data => {
-      this.options = data;
-    });
+      this.subscriptionMember = this.memberService.membersSubject.subscribe(data => {
+        this.options = data;
+      });
 
-    this.projectsService.getAllProjects();
-    this.subscriptionProject = this.projectsService.projectsSubject.subscribe(data => {
-      this.projects = data;
-    });
+      this.subscriptionProject = this.projectsService.projectsSubject.subscribe(data => {
+        this.projects = data;
+      });
 
-    this.afauth.auth.onAuthStateChanged(
-      (user) => {
+      this.afauth.auth.onAuthStateChanged((user) => {
         if (user) {
           this.isAuthentification = true;
-          this.usersService.getSingleUser(user.email).then(
-           (item: Users) => {
+          this.usersService.getSingleUser(user.email).then((item: Users) => {
               this.user = item;
               if (this.user.memberid) {
                 this.userMember = this.options.find(member => member.memberid === item.memberid);
@@ -84,14 +82,17 @@ export class HeaderComponent implements OnInit , OnDestroy  {
               } else {
                 this.usersService.setIsAdministrateur(false);
               }
-           }
-         );
-
+           });
         } else {
           this.isAuthentification = false;
         }
-      }
-    );
+      });
+
+    });
+
+
+
+
 
     this.filteredOptions = this.myControl.valueChanges
       .pipe(
