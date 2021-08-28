@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
 import { TasksService } from 'src/app/tasks/tasks.service';
 import { Task } from 'src/app/tasks/task';
 import { Subscription } from 'rxjs';
-import { MatDialogConfig, MatDialog } from '@angular/material';
+import { MatDialogConfig, MatDialog } from '@angular/material/dialog';
 import { EditCategorieComponent } from '../categories/edit-categorie/edit-categorie.component';
 
 @Component({

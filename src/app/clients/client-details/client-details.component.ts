@@ -31,7 +31,7 @@ export class ClientDetailsComponent implements OnInit {
     private projectsService: ProjectsService
   ) { }
 
-  ngOnInit() {   
+  ngOnInit() {
     this.initForm();
     this.idClient = this.route.snapshot.paramMap.get('id');
     this.clientService.getOneClient(this.idClient);
@@ -41,7 +41,7 @@ export class ClientDetailsComponent implements OnInit {
         console.log(this.formData.projects);
         this.display = true;
       });
-      resolve();
+      resolve('');
     });
     prom.then(() => {
       this.projectsService.getAllProjects();
@@ -49,9 +49,9 @@ export class ClientDetailsComponent implements OnInit {
       this.projects = data;
     });
     });
-    
-    
-    
+
+
+
   }
 
   initForm() {
@@ -65,7 +65,7 @@ export class ClientDetailsComponent implements OnInit {
     }
   }
 
-  updateField(champ, valeurChamp: any[]) {
+  updateField(champ, valeurChamp: any) {
     let projectValue: ProjectClient = {
       title: '',
       projectid: ''

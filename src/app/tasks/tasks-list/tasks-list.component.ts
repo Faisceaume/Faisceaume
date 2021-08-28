@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { MatDialog, MatDialogConfig } from '@angular/material';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { TaskFormComponent } from '../task-form/task-form.component';
 import { TasksService } from '../tasks.service';
 import { Task } from '../task';
@@ -48,7 +48,7 @@ export class TasksListComponent implements OnInit/*, OnDestroy*/ {
     this.membersService.membersSubject.subscribe(data => {
       this.options = data;
 
-      this.afauth.auth.onAuthStateChanged((user) => {
+      this.afauth.onAuthStateChanged((user) => {
         if (user) {
           this.usersService.getSingleUser(user.email).then((item: Users) => {
               if (item.memberid) {

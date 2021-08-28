@@ -1,13 +1,13 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { Task } from '../../tasks/task';
-import { MatTableDataSource } from '@angular/material';
+import { MatTableDataSource } from '@angular/material/table';
 import {MatSort} from '@angular/material/sort';
 import {MemberService} from '../../members/member.service';
 import {TasksService} from '../../tasks/tasks.service';
 import {UsersService} from '../../authentification/users.service';
 import {Member} from '../../members/member';
 import { Router } from '@angular/router';
-import { MatDialog, MatDialogConfig } from '@angular/material';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { TaskFormComponent } from '../../tasks/task-form/task-form.component';
 import { ProjectsService } from 'src/app/projects/projects.service';
 

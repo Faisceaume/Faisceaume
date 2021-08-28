@@ -7,7 +7,7 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { Task } from '../../tasks/task';
 import { TasksService } from 'src/app/tasks/tasks.service';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { MatDialogConfig, MatDialog } from '@angular/material';
+import { MatDialogConfig, MatDialog } from '@angular/material/dialog';
 import { TaskFormComponent } from 'src/app/tasks/task-form/task-form.component';
 import { Subscription } from 'rxjs';
 

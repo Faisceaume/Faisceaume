@@ -11,7 +11,7 @@ import { CategoriesService } from '../members/categories/categories.service';
 import { UsersService } from '../authentification/users.service';
 import {Users} from '../authentification/users';
 import { TasksService } from '../tasks/tasks.service';
-import { MatDialogConfig, MatDialog } from '@angular/material';
+import { MatDialogConfig, MatDialog } from '@angular/material/dialog';
 import { TaskFormComponent } from '../tasks/task-form/task-form.component';
 import { ProjectsService } from '../projects/projects.service';
 import { AngularFireAuth } from '@angular/fire/auth';
@@ -66,7 +66,7 @@ export class HeaderComponent implements OnInit , OnDestroy  {
         this.projects = data;
       });
 
-      this.afauth.auth.onAuthStateChanged((user) => {
+      this.afauth.onAuthStateChanged((user) => {
         if (user) {
           this.isAuthentification = true;
           this.usersService.getSingleUser(user.email).then((item: Users) => {

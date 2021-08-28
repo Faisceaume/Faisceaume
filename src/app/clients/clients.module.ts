@@ -10,7 +10,11 @@ import { CheckoutComponent } from './client-details/checkout/checkout.component'
 
 
 @NgModule({
-  declarations: [ClientDetailsComponent, ClientFormComponent, ClientsComponent, CheckoutComponent],
+  declarations: [
+    ClientDetailsComponent,
+    ClientFormComponent,
+    ClientsComponent,
+    CheckoutComponent],
   imports: [
     CommonModule,
     SharedModule,

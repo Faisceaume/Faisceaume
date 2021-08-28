@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Client } from '../client';
 import { ClientsService } from '../clients.service';
-import { MatDialogRef } from '@angular/material';
+import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-client-form',

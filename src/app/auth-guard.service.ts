@@ -13,7 +13,7 @@ export class AuthGuardService implements CanActivate {
 
   canActivate(): Observable<boolean> | Promise<boolean> | boolean {
     return new Promise<boolean>((resolve, reject) => {
-      this.afauth.auth.onAuthStateChanged(
+      this.afauth.onAuthStateChanged(
         (user) => {
           if (user) {
             resolve(true);

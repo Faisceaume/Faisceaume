@@ -4,8 +4,8 @@ import { Router } from '@angular/router';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Users } from './users';
-import { auth } from 'firebase/app';
 import { first } from 'rxjs/operators';
+import * as firebase from 'firebase';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +21,7 @@ export class AuthentificationService {
 
   createNewUser(mail: string, password: string) {
     return new Promise<any>((resolve, reject) => {
-      this.afauth.auth.createUserWithEmailAndPassword(mail, password)
+      this.afauth.createUserWithEmailAndPassword(mail, password)
       .then(res => {
         resolve(res);
         const batch = this.db.firestore.batch();
@@ -38,7 +38,7 @@ export class AuthentificationService {
 
 SignInUser(email: string, password: string ) {
   return new Promise<any>((resolve, reject) => {
-    this.afauth.auth.signInWithEmailAndPassword(email, password)
+    this.afauth.signInWithEmailAndPassword(email, password)
     .then(res => {
       resolve(res);
       this.ngZone.run(() => { this.router.navigate(['members']) });
@@ -48,7 +48,7 @@ SignInUser(email: string, password: string ) {
 }
 
 signOutUser() {
-  this.afauth.auth.signOut().then(() => {
+  this.afauth.signOut().then(() => {
     // Sign-out successful.
   }).catch((error) => {
     // An error happened.
@@ -56,8 +56,8 @@ signOutUser() {
 }
 
 connectionWithGoogle(): void {
-  const provider = new auth.GoogleAuthProvider();
-  this.afauth.auth.signInWithPopup(provider).then(
+  const provider = new firebase.default.auth.GoogleAuthProvider();
+  this.afauth.signInWithPopup(provider).then(
      (result) => {
        const u = result.user;
        const item = {

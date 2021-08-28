@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { TasksService } from '../tasks.service';
 import { MemberService } from 'src/app/members/member.service';
-import { MatDialogRef } from '@angular/material';
+import { MatDialogRef } from '@angular/material/dialog';
 import { Member } from 'src/app/members/member';
 import { UsersService } from 'src/app/authentification/users.service';
 import { Project } from 'src/app/projects/project';

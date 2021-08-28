@@ -5,7 +5,8 @@ import { MemberService } from 'src/app/members/member.service';
 import { NgForm } from '@angular/forms';
 import { Project } from '../project';
 import { Task } from 'src/app/tasks/task';
-import { MatTableDataSource, MatPaginator } from '@angular/material';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator} from '@angular/material/paginator'
 
 export interface Classement {
    listeTasks: Task[];
@@ -42,7 +43,7 @@ export class ProjectFormComponent implements OnInit {
 
   moisAffiches: string[] = [];
 
-  indexs: number[] = []; 
+  indexs: number[] = [];
 
   panelOpenState = false;
 
@@ -73,8 +74,8 @@ export class ProjectFormComponent implements OnInit {
             totalTimeSpent: 0
           };
       });
-      
-      this.taskForOperation.forEach((item: Task) => { 
+
+      this.taskForOperation.forEach((item: Task) => {
         this.tasksFilter[new Date(item.timestamp).getMonth()].listeTasks.push(item);
         this.indexs.push( new Date(item.timestamp).getMonth() );
         // tslint:disable-next-line: radix
