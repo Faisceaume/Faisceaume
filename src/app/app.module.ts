@@ -11,6 +11,7 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireStorageModule } from '@angular/fire/storage';
+import { AngularFireFunctionsModule } from '@angular/fire/functions';
 
 import { SharedModule } from './components/shared/shared.module';
 import { BugsModule } from './components/bugs/bugs.module';
@@ -28,7 +29,7 @@ import { HomeComponent } from './components/shared/navigation/home/home.componen
 import { NotFoundComponent } from './components/shared/navigation/not-found/not-found.component';
 
 import { environment } from 'src/environments/environment';
-//import { environment } from 'src/environments/environment.prod';
+// import { environment } from 'src/environments/environment.prod';
 
 export function initDatabase(initDatabaseService: InitDatabaseService) {
   return () => initDatabaseService.initDatabase();
@@ -62,20 +63,24 @@ const COMPONENTS = [
 ];
 
 
+
 @NgModule({
   declarations: [
     ...COMPONENTS
   ],
   imports: [
-    ...MODULES
-  ],
-  providers: [
-    InitDatabaseService, {
-      provide: APP_INITIALIZER,
-      useFactory: initDatabase,
-      deps: [InitDatabaseService],
-      multi: true,
-    }
+    SharedModule,
+    BrowserModule,
+    AngularFireModule.initializeApp(environment.firebaseConfig),
+    AngularFirestoreModule,
+    AngularFireAuthModule,
+    AngularFireStorageModule,
+    AngularFireFunctionsModule,
+    BrowserAnimationsModule,
+    ReactiveFormsModule,
+    MembersModule,
+    ProjectsModule,
+    AppRoutingModule
   ],
   bootstrap: [AppComponent]
 })
