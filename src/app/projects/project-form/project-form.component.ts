@@ -83,7 +83,7 @@ export class ProjectFormComponent implements OnInit {
         // tslint:disable-next-line: radix
         this.tasksFilter[new Date(item.timestamp).getMonth()].totalTimeSpent += parseInt(item.timespent);
         //console.log( this.tasksFilter[new Date(item.timestamp).getMonth()].totalTimeSpent );
-        console.log(this.tasksFilter);
+        //console.log(this.tasksFilter);
       });
       this.tasksFilter.forEach((element: Classement) => {
         this.indexMois.push(this.tasksFilter.indexOf(element));
