@@ -61,8 +61,10 @@ export class ProjectFormComponent implements OnInit {
       this.projectsService.resetForm();
     } else {
       this.currentProject = this.projectsService.formData;
+      console.log('The current project: ', this.currentProject);
+
       this.currentProject.tasks.forEach((item: Task) => {
-        if (item.statut === true) {
+        if (item.status === 'done') {
           item.description = item.description.slice(0, 300) + '...';
           this.taskForOperation.push(item);
         }
@@ -81,6 +83,7 @@ export class ProjectFormComponent implements OnInit {
         // tslint:disable-next-line: radix
         this.tasksFilter[new Date(item.timestamp).getMonth()].totalTimeSpent += parseInt(item.timespent);
         //console.log( this.tasksFilter[new Date(item.timestamp).getMonth()].totalTimeSpent );
+        console.log(this.tasksFilter);
       });
       this.tasksFilter.forEach((element: Classement) => {
         this.indexMois.push(this.tasksFilter.indexOf(element));

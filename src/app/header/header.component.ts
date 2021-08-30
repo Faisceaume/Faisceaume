@@ -16,6 +16,7 @@ import { TaskFormComponent } from '../tasks/task-form/task-form.component';
 import { ProjectsService } from '../projects/projects.service';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Project } from '../projects/project';
+import { AngularFirestore } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-header',
@@ -48,6 +49,7 @@ export class HeaderComponent implements OnInit , OnDestroy  {
               public tasksService: TasksService,
               private matDialog: MatDialog,
               public projectsService: ProjectsService,
+              private db: AngularFirestore,
               private afauth: AngularFireAuth) { }
 
   ngOnInit() {
@@ -171,5 +173,23 @@ export class HeaderComponent implements OnInit , OnDestroy  {
     this.subscriptionMember.unsubscribe();
     this.subscriptionProject.unsubscribe();
   }
+
+  // setImage() {
+  //   // this.db.firestore.collection("projects").doc('Tx3VYuxHGrMX9VtH8iFH').collection('tasks').where('memberid', '==', '64AuWZ7o0IyY4ggE8RFy').get().then(function(querySnapshot) {
+  //   //   querySnapshot.forEach(function(doc) {
+  //   //       doc.ref.update({
+  //   //           memberpicture: 'https://firebasestorage.googleapis.com/v0/b/faisceaume-d51dc.appspot.com/o/membersImages%2F1579608131770ronaldo.jpg?alt=media&token=13d91655-1ea8-45c5-8616-bf6ff997f32e'
+  //   //       });
+  //   //   });
+  //   // });
+
+  //   this.db.firestore.collection("tasks").where('memberid', '==', '64AuWZ7o0IyY4ggE8RFy').get().then(function(querySnapshot) {
+  //     querySnapshot.forEach(function(doc) {
+  //         doc.ref.update({
+  //             memberpicture: 'https://firebasestorage.googleapis.com/v0/b/faisceaume-d51dc.appspot.com/o/membersImages%2F1579608131770ronaldo.jpg?alt=media&token=13d91655-1ea8-45c5-8616-bf6ff997f32e'
+  //         });
+  //     });
+  //   });
+  // }
 
 }
