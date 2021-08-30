@@ -1,0 +1,33 @@
+<div class="container" fxLayout="row wrap" fxLayoutGap="3px"
+[ngStyle]="{ 'margin-top':'20px' }" *ngIf="tasksService.onsShowGrille">
+  <mat-card class="example-card" *ngFor="let task of tasks">
+      <mat-card-header>
+        <div mat-card-avatar [style.background-image]="getBackground(task.memberpicture)"
+        class="example-header-image" *ngIf="task.memberpicture"></div>
+        <mat-card-title>{{ task.title }} </mat-card-title>
+        <mat-card-subtitle>{{ task.time }} heure(s)</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <p>
+          {{ task.description}}
+        </p>
+      </mat-card-content>
+      <mat-card-actions>
+
+        <button mat-icon-button color="accent" (click)="onEdit(task)">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button color="accent" (click)="onDelete(task)">
+          <mat-icon>delete</mat-icon>
+        </button>
+        <button mat-icon-button color="accent" *ngIf="!task.statut" (click)="onUpdateTaskStatut(task)">
+          <mat-icon>check</mat-icon>
+        </button>
+
+      </mat-card-actions>
+  </mat-card>
+</div>
+
+<div class="container" *ngIf="!tasksService.onsShowGrille">
+  <app-tasks-view *ngIf="tasks"></app-tasks-view>
+</div>

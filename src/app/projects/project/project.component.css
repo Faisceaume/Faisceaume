@@ -1,0 +1,88 @@
+.example-card {
+    max-width: 400px;
+  }
+img {
+  /* width: 250px; */
+  /* height: 150px; */
+  /* margin: auto; */
+  max-width: 100%;
+  height: auto;
+}
+
+
+
+.outer-card {
+  margin: 10px;
+  min-width: 300px;
+  max-width: 300px;
+  padding: 10px;
+  background: #212121;
+}
+
+.inner-card {
+    margin: 5px 0;
+    cursor: pointer;
+}
+
+.cdk-drag-animating {
+  transition: transform 300ms ease;
+}
+
+.tasks.cdk-drop-list-dragging .cdk-drag {
+  transition: transform 300ms ease;
+}
+
+.cdk-drag-placeholder {
+  opacity: 0.5;
+}
+
+.blue { background: #71deff; color: black; }
+.green { background: #36e9b6; color: black;  }
+.yellow { background: #ffcf44; color: black; }
+.purple { background: #b15cff; }
+.red { background: #e74a4a; }
+
+.gray { background: gray; text-decoration: line-through; }
+
+.mat-card-vignette {
+  width: 30px;
+  height: 30px;
+  border-radius: 15px;
+}
+
+
+
+.capsule-project {
+  background-color: #000;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+}
+
+.capsule-project h4, .capsule-project h5, .capsule-project h6 {
+  margin: 10px; padding: 0;
+}
+
+.capsule-project h4 {
+  color: #FFF;
+}
+.capsule-project h5 {
+  color: #eee;
+}
+.capsule-project h6 {
+  color: #ccc;
+}
+
+
+.capsule-task {
+  background-color: #333;
+  padding: 5px;
+  margin: 2px 5px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+}
+
+.capsule-task:hover {
+  background-color: #999;
+}

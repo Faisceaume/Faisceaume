@@ -1,0 +1,80 @@
+<div class="container" *ngIf="usersService.isAdministrateur && tasksService.onDisplayFilterByMember">
+  <div fxLayout="row" [ngStyle]="{'padding':'20px 0 10px'}">
+    <div fxFlex="20" fxLayoutAlign="center center" fxLayout="column"
+      *ngFor="let member of members; let i = index"
+      (click)="displayOnMember(member,i)"
+      >
+        <img  class="tab-thumb" src="{{ member.picture }}">
+        <p>{{ member.name }}</p>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+  <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+
+      <!-- Position Column -->
+      <ng-container matColumnDef="created_at">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Date </th>
+        <td mat-cell *matCellDef="let element"
+        [ngStyle]="{'color': element.statut ? '#b2bec3':'#1e272e'}"> {{element.timestamp | date: 'M/dd' }} </td>
+      </ng-container>
+
+      <!-- Name Column -->
+      <ng-container matColumnDef="title">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Title </th>
+        <td mat-cell *matCellDef="let element"
+        [ngStyle]="{'color': element.statut ? '#b2bec3':'#1e272e'}"> {{element.title}} </td>
+      </ng-container>
+
+      <!-- Weight Column -->
+      <ng-container matColumnDef="description">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Description </th>
+        <td mat-cell *matCellDef="let element"
+        [ngStyle]="{'color': element.statut ? '#b2bec3':'#1e272e'}"> {{element.description}} </td>
+      </ng-container>
+
+      <!-- Symbol Column
+      <ng-container matColumnDef="statut">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Statut </th>
+        <td mat-cell *matCellDef="let element"> {{element.statut}} </td>
+      </ng-container>-->
+
+      <!-- Symbol Column -->
+      <!-- <ng-container matColumnDef="time">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Time </th>
+          <td mat-cell *matCellDef="let element"
+          [ngStyle]="{'color': element.statut ? '#b2bec3':'#1e272e'}"> {{element.time}} </td>
+        </ng-container> -->
+
+
+      <!-- Symbol Column -->
+      <!-- <ng-container matColumnDef="member"> -->
+        <!-- <th mat-header-cell *matHeaderCellDef mat-sort-header> User  </th> -->
+        <!-- <td mat-cell *matCellDef="let element"> {{ element.memberid }} -->
+        <!-- <img matTooltip="Editer membre" class="vignettetab" src="{{ element.memberpicture }}" -->
+        <!-- (click)="onEditMemberSection(element)" -->
+        <!-- *ngIf="usersService.isAdministrateur"> -->
+      <!-- </td> -->
+      <!-- </ng-container> -->
+
+      <ng-container matColumnDef="action">
+        <th mat-header-cell *matHeaderCellDef>  </th>
+        <td mat-cell *matCellDef="let element">
+
+          <button mat-icon-button *ngIf="element.statut">
+            <mat-icon>check_box</mat-icon>
+          </button>
+          <button matTooltip="Finaliser/Modifier"
+            mat-icon-button (click)="onUpdateTaskStatut(element)" *ngIf="!element.statut">
+            <mat-icon>check_box_outline_blank</mat-icon>
+          </button>
+
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+</div>

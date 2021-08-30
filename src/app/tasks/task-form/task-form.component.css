@@ -1,0 +1,25 @@
+
+.example-card {
+    max-width: 300px;
+  }
+
+  .del{
+    width: 40%;
+    margin: auto;
+  }
+
+
+  .addform {
+    /* background-color: #21D4FD; */
+    /* background-image: linear-gradient(19deg, #21D4FD 0%, #5021ff 100%);   */
+  }
+
+  h2 {
+    font-size: 1.3em;
+  }
+
+
+  .rappel-time {
+    font-size: 0.7em;
+    color: #ccc;
+  }

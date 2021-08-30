@@ -1,0 +1,28 @@
+<div fxLayout="column">
+
+    <div fxLayout="row">
+        <h2 fxFlex="80" style="padding-left: 0;">Ajouter un client</h2>
+    
+        <div fxFlex="20" fxLayoutAlign="end start">
+            <button mat-icon-button class="button-right-modal" (click)="closeDialog()" type="button">
+                <mat-icon>close</mat-icon>
+            </button>
+        </div>
+    </div>
+    
+    <div>
+        <form fxLayout="column" autocomplete="off"  #form="ngForm" (ngSubmit)="onSubmit()">
+    
+            <mat-form-field fxFlex="100">
+                <input matInput [(ngModel)]="formData.email" required placeholder="Email" name="email"> 
+            </mat-form-field>
+    
+            <div fxLayoutAlign="end end">
+                <button mat-fab color="warn" type="submit"
+                  [disabled]="form.invalid">
+                    <mat-icon>save</mat-icon>
+                </button>
+              </div>
+        </form>
+    </div>
+</div>

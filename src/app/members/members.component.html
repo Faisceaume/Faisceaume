@@ -1,0 +1,47 @@
+<div cdkDropList cdkDropListOrientation="horizontal" (cdkDropListDropped)="drop($event)"
+class="parent" *ngIf="usersService.isAdministrateur && conditionToDropped">
+  <div
+      class="member-grid"
+      *ngFor="let member of members"
+      [style.background-image]="getBackground(member.picture)"
+      [ngStyle]="{ 'background' : 'no-repeat center center' }" cdkDrag>
+        <div [ngStyle]="{ 'padding':'15px 5px', 'height':'50px'}">
+          <h3>
+            {{ member.name }}
+            <span [matBadge]="member.location" matBadgeColor="accent" matBadgeOverlap="false" *ngIf="member.location"></span>
+          </h3>
+          <h4>{{ getSingleCategorie(member) ? getSingleCategorie(member).libelle : '' }}</h4>
+        </div>
+
+        <div [ngStyle]="{ 'height':'200px'}"></div>
+
+        <div *ngIf="usersService.isAdministrateur" fxLayout="row" fxLayoutAlign="end end" class="members-buttons">
+          <button mat-icon-button (click)="onEdit(member)"><mat-icon>edit</mat-icon></button>
+          <button mat-icon-button (click)="onDelete(member)"><mat-icon>delete</mat-icon></button>
+        </div>
+    </div>
+</div>
+
+
+<div  class="parent" *ngIf="!usersService.isAdministrateur || (usersService.isAdministrateur && !conditionToDropped)">
+  <div
+      class="member-grid"
+      *ngFor="let member of members"
+      [style.background-image]="getBackground(member.picture)"
+      [ngStyle]="{ 'background' : 'no-repeat center center' }">
+        <div [ngStyle]="{ 'padding':'15px 5px', 'height':'50px'}">
+          <h3>
+            {{ member.name }}
+            <span [matBadge]="member.location" matBadgeColor="accent" matBadgeOverlap="false" *ngIf="member.location"></span>
+          </h3>
+          <h4>{{ getSingleCategorie(member) ? getSingleCategorie(member).libelle : '' }}</h4>
+        </div>
+
+        <div [ngStyle]="{ 'height':'200px'}"></div>
+
+        <div *ngIf="usersService.isAdministrateur" fxLayout="row" fxLayoutAlign="end end" class="members-buttons">
+          <button mat-icon-button matTooltip="Editer" (click)="onEdit(member)"><mat-icon>edit</mat-icon></button>
+          <button mat-icon-button matTooltip="Supprimer" (click)="onDelete(member)"><mat-icon>delete</mat-icon></button>
+        </div>
+    </div>
+</div>
