@@ -69,6 +69,9 @@
           "configurations": {
             "production": {
               "browserTarget": "faisceaume:build:production"
+            },
+            "development": {
+              "browserTarget": "faisceaume:build:development"
             }
           }
         },
