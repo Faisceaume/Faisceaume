@@ -41,8 +41,6 @@ export class ProjectFormComponent implements OnInit {
     'Décembre'
   ];
 
-  moisAffiches: string[] = [];
-  indexs: number[] = [];
   panelOpenState = false;
   displayedColumns: string[] = ['title', 'description', 'timespent'];
 
@@ -66,28 +64,33 @@ export class ProjectFormComponent implements OnInit {
       });
 
       this.taskForOperation.forEach((item: Task) => {
+          let year = new Date(item.timestamp).getFullYear();
+          if( !this.years.includes(year) ) this.years.push(year);
+          console.log(new Date(item.timestamp).getMonth(), year)
+
           this.tasksFilter[new Date(item.timestamp).getMonth()] = {
             listeTasks: [],
-            totalTimeSpent: 0
+            totalTimeSpent: 0,
+            year: year
           };
       });
+      console.log(this.tasksFilter)
 
       this.taskForOperation.forEach((item: Task) => {
-        let year = new Date(item.timestamp).getFullYear();
-        if( !this.years.includes(year) ) this.years.push(year)
-        this.tasksFilter[new Date(item.timestamp).getMonth()].listeTasks.push(item);
-
-        this.tasksFilter[new Date(item.timestamp).getMonth()].year = year;
-
-        this.indexs.push( new Date(item.timestamp).getMonth() );
-        this.tasksFilter[new Date(item.timestamp).getMonth()].totalTimeSpent += parseInt(item.timespent);
+        this.years.forEach(y => {
+          if(y === this.tasksFilter[new Date(item.timestamp).getMonth()].year) {
+            this.tasksFilter[new Date(item.timestamp).getMonth()].listeTasks.push(item);
+            this.tasksFilter[new Date(item.timestamp).getMonth()].totalTimeSpent += parseInt(item.timespent);
+          }
+        })
       });
       this.tasksFilter.forEach((element: Classement) => {
-        //console.log(this.tasksFilter.indexOf(element), element.year)
         this.indexMois.push(this.tasksFilter.indexOf(element));
       });
     }
 
+    this.years = this.years.sort((a,b) => b-a);
+    this.indexMois = this.indexMois.sort((a,b) => b-a);
   }
 
   onSubmit(form: NgForm) {

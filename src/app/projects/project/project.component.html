@@ -18,7 +18,7 @@
       <div
         class="inner-card"
         cdkDrag
-        *ngFor="let task of project.tasks" (click)="onEditTask(task)">
+        *ngFor="let task of projectListTask" (click)="onEditTask(task)">
         <div class="capsule-task" fxLayout="row" fxLayoutAlign="start center">
           <div>
             <img class="mat-card-vignette" mat-card-image

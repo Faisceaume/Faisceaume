@@ -4,7 +4,7 @@ import { ProjectsService } from '../projects.service';
 import { MemberService } from 'src/app/members/member.service';
 import { Router } from '@angular/router';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { Task } from '../../tasks/task';
+import { Status, Task } from '../../tasks/task';
 import { TasksService } from 'src/app/tasks/tasks.service';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { MatDialogConfig, MatDialog } from '@angular/material/dialog';
@@ -20,6 +20,7 @@ export class ProjectComponent implements OnInit /*, OnDestroy*/ {
 
   @Input() project: Project;
   projectTasks: Task[];
+  projectListTask: Task[];
   /*subscription: Subscription;*/
 
 
@@ -30,10 +31,12 @@ export class ProjectComponent implements OnInit /*, OnDestroy*/ {
               private matDialog: MatDialog) { }
 
   ngOnInit() {
+
     this.tasksService.getAllTasksForProject(this.project.projectid);
     /*this.subscription = */this.tasksService.tasksSubject.subscribe(
       data => {
         this.projectTasks = this.project.tasks;
+        this.projectListTask = this.project.tasks.filter(task => task.status === Status.UNTREATED);
       }
     );
   }
