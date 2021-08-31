@@ -51,40 +51,51 @@
 </div>
 
 
-<div class="container" *ngIf="currentProject && tasksFilter" >
+<div class="container" *ngIf="currentProject && tasksFilter" style="padding: 2em 1em" class="addform">
+
   <mat-accordion>
-    <mat-expansion-panel *ngFor="let item of indexMois;">
+    <mat-expansion-panel *ngFor='let year of years'>
       <mat-expansion-panel-header>
-        <mat-panel-title>
-          {{mois[item]}}
+        <mat-panel-title class="year-title">
+          {{ year }}
         </mat-panel-title>
-        <mat-panel-description>
-          {{ this.tasksFilter[item].totalTimeSpent }} Heures / {{ this.tasksFilter[item].totalTimeSpent/8 }} Jours
-        </mat-panel-description>
       </mat-expansion-panel-header>
+              <mat-accordion>
+                <mat-expansion-panel *ngFor="let item of indexMois;">
+                  <mat-expansion-panel-header *ngIf="tasksFilter[item].year === year">
+                    <mat-panel-title style="font-size: 2em; font-weight: bold; color: #333">
+                      {{mois[item]}}
+                    </mat-panel-title>
+                    <mat-panel-description>
+                      Total Time : <strong>{{ this.tasksFilter[item].totalTimeSpent | number: '1.0-0'}} Heures  /
+                      {{ this.tasksFilter[item].totalTimeSpent/8  | number: '1.0-0' }} Jours</strong>
+                    </mat-panel-description>
+                  </mat-expansion-panel-header>
 
-      <table mat-table [dataSource]="tasksFilter[item].listeTasks" *ngIf="tasksFilter[item]" style="box-shadow: none;">
+                  <table mat-table [dataSource]="tasksFilter[item].listeTasks" *ngIf="tasksFilter[item] && tasksFilter[item].year === year" style="box-shadow: none;">
 
-        <ng-container matColumnDef="title">
-          <th mat-header-cell *matHeaderCellDef> Title </th>
-          <td mat-cell *matCellDef="let element"> {{element.title}} </td>
-        </ng-container>
+                    <ng-container matColumnDef="title">
+                      <th mat-header-cell *matHeaderCellDef> Title </th>
+                      <td mat-cell *matCellDef="let element"> {{element.title}} </td>
+                    </ng-container>
 
-        <ng-container matColumnDef="description">
-          <th mat-header-cell *matHeaderCellDef> Description </th>
-          <td mat-cell *matCellDef="let element">
-            {{element.description}}
-          </td>
-        </ng-container>
+                    <ng-container matColumnDef="description">
+                      <th mat-header-cell *matHeaderCellDef> Description </th>
+                      <td mat-cell *matCellDef="let element">
+                        {{element.description}}
+                      </td>
+                    </ng-container>
 
-        <ng-container matColumnDef="timespent">
-          <th mat-header-cell *matHeaderCellDef> TimeSpent </th>
-          <td mat-cell *matCellDef="let element"> {{element.timespent}} </td>
-        </ng-container>
+                    <ng-container matColumnDef="timespent">
+                      <th mat-header-cell *matHeaderCellDef> TimeSpent </th>
+                      <td mat-cell *matCellDef="let element"> {{element.timespent}} </td>
+                    </ng-container>
 
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-      </table>
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                  </table>
+                </mat-expansion-panel>
+              </mat-accordion>
     </mat-expansion-panel>
   </mat-accordion>
 

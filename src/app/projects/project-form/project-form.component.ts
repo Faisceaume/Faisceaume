@@ -11,6 +11,7 @@ import { MatPaginator} from '@angular/material/paginator'
 export interface Classement {
    listeTasks: Task[];
    totalTimeSpent: number;
+   year?: number;
 }
 
 
@@ -26,6 +27,7 @@ export class ProjectFormComponent implements OnInit {
   taskForOperation: Task[] = [];
   tasksFilter: Classement[] = [];
   indexMois: number[] = [];
+  years: number[] = [];
   mois = [
     'Janvier',
     'Fevrier',
@@ -61,8 +63,6 @@ export class ProjectFormComponent implements OnInit {
       this.projectsService.resetForm();
     } else {
       this.currentProject = this.projectsService.formData;
-      console.log('The current project: ', this.currentProject);
-
       this.currentProject.tasks.forEach((item: Task) => {
         if (item.status === 'done') {
           item.description = item.description.slice(0, 300) + '...';
@@ -78,14 +78,17 @@ export class ProjectFormComponent implements OnInit {
       });
 
       this.taskForOperation.forEach((item: Task) => {
+        let year = new Date(item.timestamp).getFullYear();
+        if( !this.years.includes(year) ) this.years.push(year)
         this.tasksFilter[new Date(item.timestamp).getMonth()].listeTasks.push(item);
+
+        this.tasksFilter[new Date(item.timestamp).getMonth()].year = year;
+
         this.indexs.push( new Date(item.timestamp).getMonth() );
-        // tslint:disable-next-line: radix
         this.tasksFilter[new Date(item.timestamp).getMonth()].totalTimeSpent += parseInt(item.timespent);
-        //console.log( this.tasksFilter[new Date(item.timestamp).getMonth()].totalTimeSpent );
-        //console.log(this.tasksFilter);
       });
       this.tasksFilter.forEach((element: Classement) => {
+        //console.log(this.tasksFilter.indexOf(element), element.year)
         this.indexMois.push(this.tasksFilter.indexOf(element));
       });
     }
