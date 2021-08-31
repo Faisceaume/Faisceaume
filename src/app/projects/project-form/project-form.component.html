@@ -51,23 +51,24 @@
 </div>
 
 
-<div class="container" *ngIf="currentProject && tasksFilter" >
+<div class="container" *ngIf="currentProject && tasksFilter" style="padding: 2em 1em" class="addform">
 
   <mat-accordion>
     <mat-expansion-panel *ngFor='let year of years'>
       <mat-expansion-panel-header>
-        <mat-panel-title>
+        <mat-panel-title class="year-title">
           {{ year }}
         </mat-panel-title>
       </mat-expansion-panel-header>
               <mat-accordion>
                 <mat-expansion-panel *ngFor="let item of indexMois;">
                   <mat-expansion-panel-header *ngIf="tasksFilter[item].year === year">
-                    <mat-panel-title>
+                    <mat-panel-title style="font-size: 2em; font-weight: bold; color: #333">
                       {{mois[item]}}
                     </mat-panel-title>
                     <mat-panel-description>
-                      Total TimeSpent : {{ this.tasksFilter[item].totalTimeSpent / 8 }} jours
+                      Total Time : <strong>{{ this.tasksFilter[item].totalTimeSpent | number: '1.0-0'}} Heures  /
+                      {{ this.tasksFilter[item].totalTimeSpent/8  | number: '1.0-0' }} Jours</strong>
                     </mat-panel-description>
                   </mat-expansion-panel-header>
 

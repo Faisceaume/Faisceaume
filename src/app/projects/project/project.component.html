@@ -2,11 +2,11 @@
 <div fxLayout="column" fxLayoutAlign="start start" class="capsule-project" fxLayoutGap="5px">
 
     <div>
-      <h4>{{ project.title }}</h4>
+      <h4 (click)="onEdit(project)">{{ project.title }}</h4>
       <!-- <h5>{{ project.projectid }}</h5> -->
     </div>
 
-    <img src="{{ project.picture }}">
+    <img (click)="onEdit(project)" src="{{ project.picture }}">
 
     <div
       class="tasks"
