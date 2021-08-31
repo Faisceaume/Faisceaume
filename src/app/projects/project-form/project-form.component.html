@@ -1,15 +1,14 @@
 <div class="addform" fxLayout="column" [ngStyle]="{'padding':'20px'}">
 
-
   <form #form="ngForm" fxLayout="row wrap" autocomplete="off" (submit)="onSubmit(form)">
 
-      <h2 fxFlex="100">New Project</h2>
+      <!-- <h2 fxFlex="100">New Project</h2> -->
 
       <div fxFlex="30" *ngIf="memberService.fileUrl != null">
         <img mat-card-image [src]="memberService.fileUrl" class="imgproject">
-        <button mat-icon-button (click)="onDeleteDrapImage()">
+        <!-- <button mat-icon-button (click)="onDeleteDrapImage()">
           <mat-icon>delete</mat-icon>
-        </button>
+        </button> -->
       </div>
 
       <div fxFlex="70" style="padding: 10px;" fxLayout="column">
@@ -28,6 +27,7 @@
         </mat-form-field>
         <div fxFlex="100">
           <app-upload-image *ngIf="!memberService.fileUrl"></app-upload-image>
+          <button mat-raised-button color="primary" type="button" (click)="onDeleteDrapImage()" style="margin: 0 10px 0 0">Modifier l'image</button>
           <button mat-raised-button color="primary" type="submit"
           [disabled]="!memberService.fileUrl || form.invalid">
           {{projectsService.formData.projectid ? 'Modifier': 'Ajouter'}}
@@ -63,12 +63,15 @@
               <mat-accordion>
                 <mat-expansion-panel *ngFor="let item of indexMois;">
                   <mat-expansion-panel-header *ngIf="tasksFilter[item].year === year">
-                    <mat-panel-title style="font-size: 2em; font-weight: bold; color: #333">
+                    <mat-panel-title class="month-header">
+                      <span class="total-time">
+                        <strong>{{ this.tasksFilter[item].totalTimeSpent | number: '1.0-0'}} H  -
+                        {{ this.tasksFilter[item].totalTimeSpent/8  | number: '1.0-0' }} D</strong>
+                      </span>
                       {{mois[item]}}
                     </mat-panel-title>
                     <mat-panel-description>
-                      Total Time : <strong>{{ this.tasksFilter[item].totalTimeSpent | number: '1.0-0'}} Heures  /
-                      {{ this.tasksFilter[item].totalTimeSpent/8  | number: '1.0-0' }} Jours</strong>
+
                     </mat-panel-description>
                   </mat-expansion-panel-header>
 

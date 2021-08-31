@@ -37,11 +37,38 @@
   .year-title {
     font-size: 3em;
     font-weight: bold;
-    background-color: #333;
+    background-color: #673ab7;
     color:#eee;
-    padding: 1em;
+    padding: 1em 0.5em;
   }
   .year-title:hover {
-    background: #000;
+    background: #9c27b0;
     color:"#FFF";
   }
+
+  .total-time {
+    text-align: center;
+    width: 80px;
+    margin: 0 10px 0 0;
+    font-size: .4em;
+    background-color: #F44336;
+    color: #fff;
+    padding: 5px 20px 3px;
+    border-radius: 20px;
+    float: right;
+    text-transform: uppercase;
+  }
+  .month-header {
+    font-size: 2em;
+    font-weight: bold;
+    color: #F44336;
+    align-items: center;
+  }
+  .header-col {
+    color: #e91e63;
+  }
+  .bg-accordeon {
+    background-color: #00bcd4
+  }
+
+  /* https://coolors.co/f44336-e91e63-9c27b0-673ab7-3f51b5-2196f3-03a9f4-00bcd4-009688-4caf50 */
