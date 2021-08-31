@@ -174,22 +174,48 @@ export class HeaderComponent implements OnInit , OnDestroy  {
     this.subscriptionProject.unsubscribe();
   }
 
-  // setImage() {
-  //   // this.db.firestore.collection("projects").doc('Tx3VYuxHGrMX9VtH8iFH').collection('tasks').where('memberid', '==', '64AuWZ7o0IyY4ggE8RFy').get().then(function(querySnapshot) {
-  //   //   querySnapshot.forEach(function(doc) {
-  //   //       doc.ref.update({
-  //   //           memberpicture: 'https://firebasestorage.googleapis.com/v0/b/faisceaume-d51dc.appspot.com/o/membersImages%2F1579608131770ronaldo.jpg?alt=media&token=13d91655-1ea8-45c5-8616-bf6ff997f32e'
-  //   //       });
-  //   //   });
-  //   // });
+  setImage() {
+    // const ids = [
+    //   'Tx3VYuxHGrMX9VtH8iFH',
+    //   'BnyW0rYo7CtyXHYORnNx',
+    //   'Dy6XzOGo7xu0cXWHnLLK',
+    //   'UFhnXWZRdsoWnka3VZdj',
+    //   'eAyTSzYd5mpSKWUWpXiu',
+    //   'vQlijKu8Zc6PR68l5Rh0'
+    // ];
+    // const ids =[
+    //   '64AuWZ7o0IyY4ggE8RFy',
+    //   'umv44LoC1zryOMC0ImuD',
+    //   'EzU8wTUPw1BGOKp2oYhs',
+    //   '8bFEElV0ghHfe5W7881D'
+    // ]
+    // for (let index = 0; index < ids.length; index++) {
+    //   this.db.firestore.collection("members").doc(ids[index]).collection('tasks').where('statut', '==', true).get().then(function(querySnapshot) {
+    //     querySnapshot.forEach(function(doc) {
+    //         doc.ref.update({
+    //             status: 'done'
+    //         });
+    //     });
+    //   });
+    // }
 
-  //   this.db.firestore.collection("tasks").where('memberid', '==', '64AuWZ7o0IyY4ggE8RFy').get().then(function(querySnapshot) {
-  //     querySnapshot.forEach(function(doc) {
-  //         doc.ref.update({
-  //             memberpicture: 'https://firebasestorage.googleapis.com/v0/b/faisceaume-d51dc.appspot.com/o/membersImages%2F1579608131770ronaldo.jpg?alt=media&token=13d91655-1ea8-45c5-8616-bf6ff997f32e'
-  //         });
-  //     });
-  //   });
-  // }
+
+
+    // this.db.firestore.collection("tasks").where('statut', '==', false).get().then(function(querySnapshot) {
+    //   querySnapshot.forEach(function(doc) {
+    //       doc.ref.update({
+    //          status: 'untreated'
+    //       });
+    //   });
+    // });
+
+    // this.db.firestore.collection("tasks").where('statut', '==', true).get().then(function(querySnapshot) {
+    //   querySnapshot.forEach(function(doc) {
+    //       doc.ref.update({
+    //          status: 'done'
+    //       });
+    //   });
+    // });
+  }
 
 }
