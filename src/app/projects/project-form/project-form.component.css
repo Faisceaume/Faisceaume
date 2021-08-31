@@ -8,6 +8,8 @@
   }
 
 
+
+
   .addform {
     background-color: #21D4FD;
     background-image: linear-gradient(19deg, #21D4FD 0%, #5021ff 100%);
@@ -30,4 +32,16 @@
   .imgproject {
     max-width: 100%;
     height: auto;
+  }
+
+  .year-title {
+    font-size: 3em;
+    font-weight: bold;
+    background-color: #333;
+    color:#eee;
+    padding: 1em;
+  }
+  .year-title:hover {
+    background: #000;
+    color:"#FFF";
   }

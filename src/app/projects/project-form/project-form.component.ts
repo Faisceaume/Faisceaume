@@ -14,8 +14,6 @@ export interface Classement {
    year?: number;
 }
 
-
-
 @Component({
   selector: 'app-project-form',
   templateUrl: './project-form.component.html',
@@ -44,11 +42,8 @@ export class ProjectFormComponent implements OnInit {
   ];
 
   moisAffiches: string[] = [];
-
   indexs: number[] = [];
-
   panelOpenState = false;
-
   displayedColumns: string[] = ['title', 'description', 'timespent'];
 
   constructor(
