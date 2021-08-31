@@ -8,6 +8,7 @@ import { UsersService } from 'src/app/authentification/users.service';
 import { Project } from 'src/app/projects/project';
 import { ProjectsService } from 'src/app/projects/projects.service';
 import { Subscription } from 'rxjs';
+import { Status } from '../task';
 
 @Component({
   selector: 'app-task-form',
@@ -63,7 +64,7 @@ export class TaskFormComponent implements OnInit/*, OnDestroy*/ {
         form.value.memberpicture = this.memebersService.sessionMember.picture;
         form.value.memberid = this.memebersService.sessionMember.memberid;
       }
-      form.value.statut = false;
+      form.value.status = Status.UNTREATED;
       this.tasksService.createNewTask(form);
     }
     this.projetcsService.setCurrentProject();

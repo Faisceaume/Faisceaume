@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Task } from './task';
+import { Status, Task } from './task';
 import { NgForm } from '@angular/forms';
 import { MemberService } from '../members/member.service';
 import { Subject } from 'rxjs';
@@ -38,7 +38,8 @@ export class TasksService {
         description: '',
         time: 0,
         projectid: '',
-        statut: false,
+        //statut: false,
+        status: Status.UNTREATED,
         timestamp: 0,
         location: 0,
         timespent: 0
@@ -117,7 +118,7 @@ export class TasksService {
 
   updateTaskStatut(form: NgForm) {
     const formData = form.value;
-
+    formData.timespent = parseInt(formData.timespent);
     /*const db = firebase.firestore();*/
     const batch = this.db.firestore.batch();
     const newsRef = this.db.firestore.collection('tasks').doc(formData.taskid);
@@ -125,7 +126,7 @@ export class TasksService {
     const sousRef2 = this.db.firestore.collection('projects').doc(formData.projectid).collection('tasks').doc(formData.taskid);
 
     let data = Object.assign({}, formData);
-    data = Object.assign(data, {statut: true, timestampcomplete: new Date().toLocaleString()});
+    data = Object.assign(data, {status: Status.DONE, timestampcomplete: new Date().toLocaleString()});
     batch.update(newsRef,  data);
     batch.update(sousRef,  data);
     batch.update(sousRef2,  data);

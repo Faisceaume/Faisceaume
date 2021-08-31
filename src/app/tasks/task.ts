@@ -1,3 +1,8 @@
+export enum Status {
+  DONE = 'done',
+  UNTREATED = 'untreated'
+}
+
 export class Task {
     taskid: string;
     userid: string;
@@ -6,8 +11,8 @@ export class Task {
     description: string;
     time: number;
     projectid: string;
-    statut: boolean;
-    status?: string;
+    //statut: boolean;
+    status?: Status;
     timestamp: any;
     memberpicture?: string;
     location: number;
