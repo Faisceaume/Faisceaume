@@ -46,18 +46,29 @@
     color:"#FFF";
   }
 
-  .total-time {
-    text-align: center;
-    width: 80px;
-    margin: 0 10px 0 0;
+  .total-time-month, .total-time-year  {
+    text-align: left;
     font-size: .4em;
-    background-color: #F44336;
     color: #fff;
-    padding: 5px 20px 3px;
-    border-radius: 20px;
-    float: right;
     text-transform: uppercase;
   }
+  .total-time-month {
+    padding: 5px 20px 3px;
+    margin: 0 10px 0 0;
+    width: 80px;
+    border-radius: 20px;
+    background-color: #F44336;
+    text-align: center;
+  }
+  .total-time-year {
+    width: 120px;
+    padding: 15px;
+    margin: 0 10px 0 20px;
+    color: #F44336;
+    border: 1px solid #3F51B5;
+  }
+
+
   .month-header {
     font-size: 2em;
     font-weight: bold;

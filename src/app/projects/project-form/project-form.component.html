@@ -58,9 +58,11 @@
       <mat-expansion-panel-header>
         <mat-panel-title class="year-title">
           {{ tasksYear.year }}
-          <span class="total-time">
-            <strong>{{ tasksYear.totalTimeSpentYear| number: '1.0-0'}} H  -
-            {{ tasksYear.totalTimeSpentYear/8  | number: '1.0-0' }} D</strong>
+          <span class="total-time-year">
+            <strong>
+              <!-- {{ tasksYear.totalTimeSpentYear| number: '1.0-0'}} H  - -->
+              {{ tasksYear.totalTimeSpentYear/8  | number: '1.0-0' }} Days
+            </strong>
           </span>
         </mat-panel-title>
       </mat-expansion-panel-header>
@@ -69,7 +71,7 @@
                 <mat-expansion-panel *ngFor="let item of tasksYear.tasksMonth;">
                   <mat-expansion-panel-header>
                     <mat-panel-title class="month-header">
-                      <span class="total-time">
+                      <span class="total-time-month">
                         <strong>{{ item.totalTimeSpent | number: '1.0-0'}} H  -
                         {{ item.totalTimeSpent/8  | number: '1.0-0' }} D</strong>
                       </span>
