@@ -14,6 +14,18 @@ export interface Classement {
    year?: number;
 }
 
+export interface TasksMonth {
+  month: number,
+  listTasks: Task[],
+  totalTimeSpent: number
+}
+
+export interface TasksYear {
+  year: number,
+  tasksMonth: TasksMonth[],
+  totalTimeSpentYear?: number
+}
+
 @Component({
   selector: 'app-project-form',
   templateUrl: './project-form.component.html',
@@ -41,6 +53,8 @@ export class ProjectFormComponent implements OnInit {
     'Décembre'
   ];
 
+  tasksYears = [] as TasksYear[];
+
   panelOpenState = false;
   displayedColumns: string[] = ['title', 'description', 'timespent'];
 
@@ -60,37 +74,51 @@ export class ProjectFormComponent implements OnInit {
         if (item.status === 'done') {
           item.description = item.description.slice(0, 300) + '...';
           this.taskForOperation.push(item);
+
+          // Get different year from all tasks: [2020, 2021]
+          let year = new Date(item.timestamp).getFullYear();
+          if( !this.years.includes(year) ) this.years.push(year);
         }
       });
 
-      this.taskForOperation.forEach((item: Task) => {
-          let year = new Date(item.timestamp).getFullYear();
-          if( !this.years.includes(year) ) this.years.push(year);
-          console.log(new Date(item.timestamp).getMonth(), year)
-
-          this.tasksFilter[new Date(item.timestamp).getMonth()] = {
-            listeTasks: [],
-            totalTimeSpent: 0,
-            year: year
-          };
-      });
-      console.log(this.tasksFilter)
+      // Set year
+      this.years.forEach(year => {
+        this.tasksYears.push({
+          year: year,
+          tasksMonth: [],
+          totalTimeSpentYear: 0
+        });
+      })
 
       this.taskForOperation.forEach((item: Task) => {
-        this.years.forEach(y => {
-          if(y === this.tasksFilter[new Date(item.timestamp).getMonth()].year) {
-            this.tasksFilter[new Date(item.timestamp).getMonth()].listeTasks.push(item);
-            this.tasksFilter[new Date(item.timestamp).getMonth()].totalTimeSpent += parseInt(item.timespent);
-          }
-        })
-      });
-      this.tasksFilter.forEach((element: Classement) => {
-        this.indexMois.push(this.tasksFilter.indexOf(element));
-      });
+        let year = new Date(item.timestamp).getFullYear();
+        let month = new Date(item.timestamp).getMonth();
+        // get index of tasks filter with year of item
+        let index = this.tasksYears.findIndex(el => el.year === year);
+        let indexMonth = this.tasksYears[index].tasksMonth.findIndex(m => m.month === month);
+
+        if(indexMonth !== -1) {
+          this.tasksYears[index].tasksMonth[indexMonth].listTasks.push(item);
+          this.tasksYears[index].tasksMonth[indexMonth].totalTimeSpent += parseInt(item.timespent);
+        } else {
+          this.tasksYears[index].tasksMonth.push({month: month, listTasks: [item], totalTimeSpent: parseInt(item.timespent)});
+        }
+      })
+      console.log(this.tasksYears);
     }
 
-    this.years = this.years.sort((a,b) => b-a);
-    this.indexMois = this.indexMois.sort((a,b) => b-a);
+    // Timespent by year
+    this.tasksYears.forEach(tY => {
+      tY.tasksMonth.forEach(tM => {
+        tY.totalTimeSpentYear += tM.totalTimeSpent
+      })
+    })
+
+    // sort descendant
+    this.tasksYears = this.tasksYears.sort((a,b) => b.year-a.year);
+    this.tasksYears.forEach(taskYear => {
+      taskYear.tasksMonth.sort((a, b) => b.month - a.month);
+    });
   }
 
   onSubmit(form: NgForm) {

@@ -54,28 +54,33 @@
 <div class="container" *ngIf="currentProject && tasksFilter" style="padding: 2em 1em" class="addform">
 
   <mat-accordion>
-    <mat-expansion-panel *ngFor='let year of years'>
+    <mat-expansion-panel *ngFor='let tasksYear of tasksYears'>
       <mat-expansion-panel-header>
         <mat-panel-title class="year-title">
-          {{ year }}
+          {{ tasksYear.year }}
+          <span class="total-time">
+            <strong>{{ tasksYear.totalTimeSpentYear| number: '1.0-0'}} H  -
+            {{ tasksYear.totalTimeSpentYear/8  | number: '1.0-0' }} D</strong>
+          </span>
         </mat-panel-title>
       </mat-expansion-panel-header>
               <mat-accordion>
-                <mat-expansion-panel *ngFor="let item of indexMois;">
-                  <mat-expansion-panel-header *ngIf="tasksFilter[item].year === year">
+                <!-- *ngIf="tasksFilter[item].year === year" -->
+                <mat-expansion-panel *ngFor="let item of tasksYear.tasksMonth;">
+                  <mat-expansion-panel-header>
                     <mat-panel-title class="month-header">
                       <span class="total-time">
-                        <strong>{{ this.tasksFilter[item].totalTimeSpent | number: '1.0-0'}} H  -
-                        {{ this.tasksFilter[item].totalTimeSpent/8  | number: '1.0-0' }} D</strong>
+                        <strong>{{ item.totalTimeSpent | number: '1.0-0'}} H  -
+                        {{ item.totalTimeSpent/8  | number: '1.0-0' }} D</strong>
                       </span>
-                      {{mois[item]}}
+                      {{mois[item.month]}}
                     </mat-panel-title>
                     <mat-panel-description>
 
                     </mat-panel-description>
                   </mat-expansion-panel-header>
 
-                  <table mat-table [dataSource]="tasksFilter[item].listeTasks" *ngIf="tasksFilter[item] && tasksFilter[item].year === year" style="box-shadow: none;">
+                  <table mat-table [dataSource]="item.listTasks" style="box-shadow: none;">
 
                     <ng-container matColumnDef="title">
                       <th mat-header-cell *matHeaderCellDef> Title </th>
