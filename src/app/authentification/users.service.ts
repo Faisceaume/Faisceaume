@@ -55,4 +55,42 @@ export class UsersService {
   emitUsersSubject() {
     this.usersSubject.next(this.users.slice());
   }
+
+  deleteUser(id: string, uid: string) {
+    console.log(id, uid);
+    const batch = this.db.firestore.batch();
+    const ref1 = this.db.firestore.collection('users').doc(uid);
+    if(id) {
+      const ref2 = this.db.firestore.collection('members').doc(id);
+      batch.delete(ref2)
+    }
+    batch.delete(ref1);
+    return batch.commit();
+  }
+
+  blockUser(id: string, uid: string, idCategory: string) {
+    const batch = this.db.firestore.batch();
+    const ref1 = this.db.firestore.collection('users').doc(uid);
+    const ref2 = this.db.firestore.collection('members').doc(id);
+    batch.update(ref1, {
+      categoryid: idCategory
+    });
+    batch.update(ref2, {
+      categoryid: idCategory
+    });
+    return batch.commit();
+  }
+
+  unLockedUser(id: string, uid: string, idCategory: string) {
+    const batch = this.db.firestore.batch();
+    const ref1 = this.db.firestore.collection('users').doc(uid);
+    const ref2 = this.db.firestore.collection('members').doc(id);
+    batch.update(ref1, {
+      categoryid: idCategory
+    });
+    batch.update(ref2, {
+      categoryid: idCategory
+    });
+    return batch.commit();
+  }
 }

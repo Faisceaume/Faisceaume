@@ -5,6 +5,13 @@
 
 <div class="mattab">
 
+  <div *ngIf="isBlocked">
+    En attente d'accès
+  </div>
+  <div *ngIf="!isActive">
+    Votre compte est en cours d'activation par notre équipe
+  </div>
+
   <mat-tab-group mat-align-tabs="center">
 
     <mat-tab label="Connection">

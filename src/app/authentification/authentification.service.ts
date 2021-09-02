@@ -21,8 +21,7 @@ export class AuthentificationService {
 
   createNewUser(mail: string, password: string) {
     return new Promise<any>((resolve, reject) => {
-      this.afauth.createUserWithEmailAndPassword(mail, password)
-      .then(res => {
+      this.afauth.createUserWithEmailAndPassword(mail, password).then(res => {
         resolve(res);
         const batch = this.db.firestore.batch();
         const nextId = this.db.firestore.collection('users').doc().id;
@@ -30,18 +29,18 @@ export class AuthentificationService {
         const nextDocument1 = this.db.firestore.collection('users').doc(nextId);
         batch.set(nextDocument1, data);
         batch.commit();
-        this.ngZone.run(() => { this.router.navigate(['members']) });
-      }, err => reject(err));
+        //this.ngZone.run(() => { this.router.navigate(['members']) });
+      }).catch(err => {
+        reject(err);
+      });
     });
-
-}
+  }
 
 SignInUser(email: string, password: string ) {
   return new Promise<any>((resolve, reject) => {
-    this.afauth.signInWithEmailAndPassword(email, password)
-    .then(res => {
+    this.afauth.signInWithEmailAndPassword(email, password).then(res => {
       resolve(res);
-      this.ngZone.run(() => { this.router.navigate(['members']) });
+      //this.ngZone.run(() => { this.router.navigate(['members']) });
     }, err => reject(err));
   });
 
@@ -55,19 +54,29 @@ signOutUser() {
   });
 }
 
-connectionWithGoogle(): void {
+connectionWithGoogle() {
   const provider = new firebase.default.auth.GoogleAuthProvider();
-  this.afauth.signInWithPopup(provider).then(
-     (result) => {
-       const u = result.user;
-       const item = {
-         uid: u.uid,
-         email: u.email
-       } as Users;
-       this.ngZone.run(() => { this.router.navigate(['members']) });
-     }
-   );
+  return new Promise<any>((resolve, reject) => {
+    this.afauth.signInWithPopup(provider).then((result) => {
+      const u = result.user;
+      const item = {
+        uid: u.uid,
+        email: u.email
+      } as Users;
+      const batch = this.db.firestore.batch();
+      const data = Object.assign({}, {email:  item.email, uid: item.uid});
+      const nextDocument1 = this.db.firestore.collection('users').doc(item.uid);
+      batch.set(nextDocument1, data);
+      batch.commit();
+      resolve(item)
+       //this.ngZone.run(() => { this.router.navigate(['members']) });
+     }).catch(err => {
+       reject(err);
+     });
+  });
 }
+
+
 async getUser() {
   return this.afauth.authState.pipe(first()).toPromise();
 }

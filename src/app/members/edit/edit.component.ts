@@ -34,7 +34,7 @@ export class EditComponent implements OnInit/*, OnDestroy*/ {
     }
     this.categorieService.getAllCategories();
     this.categorieService.categoriesSubject.subscribe(data => {
-      this.categories = data;
+      this.categories = data.filter(d => d.libelle !== 'blocked');
     });
 
     if (this.memberService.formData) {
