@@ -141,7 +141,7 @@ createNewMember(form: NgForm) {
 
 
   if (this.singleUser) {
-    const content = Object.assign( {}, {uid: this.singleUser.uid, memberid: nextId, createdat: new Date().getTime()} );
+    const content = Object.assign( {}, {uid: this.singleUser.uid, memberid: nextId, createdat: new Date().getTime(), timestamp: new Date().getTime()} );
     const userUrl = this.db.firestore.collection('users').doc(this.singleUser.uid);
     batch.update(userUrl, content);
   }

@@ -45,11 +45,48 @@
               <th mat-header-cell *matHeaderCellDef>TimeStamp </th>
               <td mat-cell *matCellDef="let element"
               [ngStyle]="{'background-color': element.memberid ? '#27ae60':'#e74c3c'}"> {{element.timestamp ? element.timestamp : 'no data'}} </td>
-           </ng-container>
+          </ng-container>
+
+          <ng-container matColumnDef="blocked">
+            <th mat-header-cell *matHeaderCellDef>Block</th>
+            <td mat-cell *matCellDef="let element"
+            [ngStyle]="{'background-color': element.memberid ? '#27ae60':'#e74c3c'}">
+                <span *ngIf="!element.memberid">Not member</span>
+                <button (click)="blockUser(element.memberid, element.uid)"  mat-icon-button *ngIf="element.memberid && element.categoryid !== blockid">
+                  <mat-icon>lock_open</mat-icon>
+                </button>
+                <button (click)="unLockedUser(element.memberid, element.uid)"  mat-icon-button *ngIf="element.memberid && element.categoryid === blockid">
+                  <mat-icon>lock</mat-icon>
+                </button>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="delete">
+            <th mat-header-cell *matHeaderCellDef>Delete</th>
+            <td mat-cell *matCellDef="let element"
+            [ngStyle]="{'background-color': element.memberid ? '#27ae60':'#e74c3c'}">
+              <button (click)="deleteUserMember(element.memberid, element.uid)" mat-icon-button color="primary">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="member">
+            <th mat-header-cell *matHeaderCellDef>Join</th>
+            <td mat-cell *matCellDef="let element"
+            [ngStyle]="{'background-color': element.memberid ? '#27ae60':'#e74c3c'}">
+              <button *ngIf="element.memberid" (click)="joinMember(element)" mat-icon-button color="primary">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button *ngIf="!element.memberid" (click)="joinMember(element)" mat-icon-button color="primary">
+                <mat-icon>person_add</mat-icon>
+              </button>
+            </td>
+          </ng-container>
 
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
           <tr mat-row *matRowDef="let row; columns: displayedColumns;"
-              (click)="joinMember(row)"
+
               style="cursor:pointer"></tr>
         </table>
       </div>
