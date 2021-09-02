@@ -7,6 +7,7 @@ import { CategoriesService } from '../members/categories/categories.service';
 import { Categorie } from '../members/categories/categorie';
 import { Users } from './users';
 import { Router } from '@angular/router';
+import { AngularFireAuth } from '@angular/fire/auth';
 
 @Component({
   selector: 'app-authentification',
@@ -35,6 +36,7 @@ export class AuthentificationComponent implements OnInit {
     private userService: UsersService,
     private memberService: MemberService,
     private router: Router,
+    private angularfireauth: AngularFireAuth,
     private categorieService: CategoriesService
     ) { }
 
@@ -55,12 +57,14 @@ export class AuthentificationComponent implements OnInit {
       }).then((user: Users) => {
         if(user.memberid) {
           if(user.categoryid === this.blockid) {
-            this.isBlocked = true;
+            this.isBlocked = true
+            this.angularfireauth.signOut()
           } else {
             this.router.navigate(['members']);
           }
         } else {
           this.isActive = false;
+          this.angularfireauth.signOut()
         }
       }).catch(err => {
         alert(err);
@@ -78,11 +82,13 @@ export class AuthentificationComponent implements OnInit {
       if(user.memberid) {
         if(user.categoryid === this.blockid) {
           this.isBlocked = true;
+          this.angularfireauth.signOut()
         } else {
           this.router.navigate(['members']);
         }
       } else {
         this.isActive = false;
+        this.angularfireauth.signOut()
       }
     }).catch(err => {
       alert(err);
@@ -96,11 +102,13 @@ export class AuthentificationComponent implements OnInit {
       if(user.memberid) {
         if(user.categoryid === this.blockid) {
           this.isBlocked = true;
+          this.angularfireauth.signOut()
         } else {
           this.router.navigate(['members']);
         }
       } else {
         this.isActive = false;
+        this.angularfireauth.signOut()
       }
     }).catch(err => {
       console.log(err);
