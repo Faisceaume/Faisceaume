@@ -63,11 +63,6 @@ connectionWithGoogle() {
         uid: u.uid,
         email: u.email
       } as Users;
-      const batch = this.db.firestore.batch();
-      const data = Object.assign({}, {email:  item.email, uid: item.uid});
-      const nextDocument1 = this.db.firestore.collection('users').doc(item.uid);
-      batch.set(nextDocument1, data);
-      batch.commit();
       resolve(item)
        //this.ngZone.run(() => { this.router.navigate(['members']) });
      }).catch(err => {
@@ -76,6 +71,13 @@ connectionWithGoogle() {
   });
 }
 
+createUser(item: Users) {
+  const batch = this.db.firestore.batch();
+  const data = Object.assign({}, {email:  item.email, uid: item.uid});
+  const nextDocument1 = this.db.firestore.collection('users').doc(item.uid);
+  batch.set(nextDocument1, data);
+  batch.commit();
+}
 
 async getUser() {
   return this.afauth.authState.pipe(first()).toPromise();

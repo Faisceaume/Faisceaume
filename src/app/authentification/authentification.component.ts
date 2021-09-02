@@ -7,6 +7,7 @@ import { CategoriesService } from '../members/categories/categories.service';
 import { Categorie } from '../members/categories/categorie';
 import { Users } from './users';
 import { Router } from '@angular/router';
+import { AngularFireAuth } from '@angular/fire/auth';
 
 @Component({
   selector: 'app-authentification',
@@ -34,6 +35,7 @@ export class AuthentificationComponent implements OnInit {
     private authentificationService: AuthentificationService,
     private userService: UsersService,
     private memberService: MemberService,
+    private afAuth: AngularFireAuth,
     private router: Router,
     private categorieService: CategoriesService
     ) { }
