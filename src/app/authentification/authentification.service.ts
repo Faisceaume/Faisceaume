@@ -6,6 +6,7 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { Users } from './users';
 import { first } from 'rxjs/operators';
 import * as firebase from 'firebase';
+import { UsersService } from './users.service';
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +18,7 @@ export class AuthentificationService {
   constructor(private afauth: AngularFireAuth,
               private router: Router,
               private ngZone: NgZone,
+              private userService: UsersService,
               private db: AngularFirestore) { }
 
   createNewUser(mail: string, password: string) {
@@ -63,7 +65,17 @@ connectionWithGoogle() {
         uid: u.uid,
         email: u.email
       } as Users;
-      resolve(item)
+      this.userService.getSingleUser(item.email).then((user) => {
+        if(user.uid === null) {
+          const batch = this.db.firestore.batch();
+          const data = Object.assign({}, {email:  item.email, uid: item.uid});
+          const nextDocument1 = this.db.firestore.collection('users').doc(item.uid);
+          batch.set(nextDocument1, data);
+          return batch.commit();
+        }
+      }).then(() => {
+        resolve(item);
+      });
        //this.ngZone.run(() => { this.router.navigate(['members']) });
      }).catch(err => {
        reject(err);
@@ -71,13 +83,6 @@ connectionWithGoogle() {
   });
 }
 
-createUser(item: Users) {
-  const batch = this.db.firestore.batch();
-  const data = Object.assign({}, {email:  item.email, uid: item.uid});
-  const nextDocument1 = this.db.firestore.collection('users').doc(item.uid);
-  batch.set(nextDocument1, data);
-  batch.commit();
-}
 
 async getUser() {
   return this.afauth.authState.pipe(first()).toPromise();

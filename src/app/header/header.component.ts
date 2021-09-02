@@ -41,6 +41,8 @@ export class HeaderComponent implements OnInit , OnDestroy  {
   subscriptionMember: Subscription;
   subscriptionProject: Subscription;
 
+  displayHeader = false;
+
   constructor(private authentificationService: AuthentificationService,
               public memberService: MemberService,
               private router: Router,
@@ -74,6 +76,7 @@ export class HeaderComponent implements OnInit , OnDestroy  {
           this.usersService.getSingleUser(user.email).then((item: Users) => {
               this.user = item;
               if (this.user.memberid) {
+                this.displayHeader = true;
                 this.userMember = this.options.find(member => member.memberid === item.memberid);
                 this.memberService.setSessionMemberValue(this.userMember);
                 if (this.categories.find(cat => cat.id === this.userMember.categoryid).isadmin) {

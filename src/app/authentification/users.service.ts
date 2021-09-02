@@ -37,13 +37,13 @@ export class UsersService {
     return new Promise<Users>((resolve, reject) => {
       const museums = this.db.firestore.collection('users').where('email', '==', email);
       museums.get().then((querySnapshot) =>  {
-        querySnapshot.forEach((doc) => {
-          resolve(
-            {
-              uid: doc.id,
-              ...doc.data()} as Users
-            );
-        });
+        if(querySnapshot.empty) {
+          resolve({uid: null, email: email});
+        } else {
+          querySnapshot.forEach((doc) => {
+            resolve({uid: doc.id, ...doc.data()} as Users);
+          });
+        }
       });
     });
   }
