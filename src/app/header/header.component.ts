@@ -155,22 +155,6 @@ export class HeaderComponent implements OnInit , OnDestroy  {
     this.matDialog.open(TaskFormComponent, dialogConfig);
   }
 
-  onShowGrille() {
-    this.tasksService.setOnShowGrille(true);
-  }
-
-  onShowTable() {
-    this.tasksService.setOnShowGrille(false);
-  }
-
-  closeFilterByMember(): void {
-    this.tasksService.setFilterByMemberValue(false);
-  }
-
-  openFilterByMember(): void {
-    this.tasksService.setFilterByMemberValue(true);
-  }
-
   ngOnDestroy(): void {
     this.subscriptionCategorie.unsubscribe();
     this.subscriptionMember.unsubscribe();

@@ -19,7 +19,15 @@ img.tab-thumb {
   border: 2px solid #000;
 }
 
-img.tab-thumb:hover {
+img.tab-thumb-project {
+  width: 100px; height: 100px;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.1s;
+  border: 2px solid #000;
+}
+
+img.tab-thumb:hover, img.tab-thumb-project:hover {
   border: 2px solid #ccc;
 }
 

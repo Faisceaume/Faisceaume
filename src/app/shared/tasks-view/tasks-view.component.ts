@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { TaskFormComponent } from '../../tasks/task-form/task-form.component';
 import { ProjectsService } from 'src/app/projects/projects.service';
+import { Project } from 'src/app/projects/project';
 
 @Component({
   selector: 'app-tasks-view',
@@ -22,6 +23,7 @@ export class TasksViewComponent implements OnInit {
   dataSource: MatTableDataSource<Task>;
   displayedColumns: string[] = ['created_at', 'title', 'description', 'action'];
   members: Member[];
+  projects: Project[];
 
   @ViewChild(MatSort, {static: true}) sort: MatSort;
 
@@ -38,6 +40,11 @@ export class TasksViewComponent implements OnInit {
     this.membersService.membersSubject.subscribe(
       data => { this.members = data; }
     );
+
+    this.projectService.getAllProjects();
+    this.projectService.projectsSubject.subscribe(data => {
+      this.projects = data;
+    })
 
     if (this.usersService.isAdministrateur && !this.membersService.editMemberSection) {
         this.tasksService.getAllTasks();
@@ -82,13 +89,16 @@ export class TasksViewComponent implements OnInit {
 
   displayOnMember(member: Member, index: number): void {
     if (this.projectService.projectSelected) {
-      this.tasksService.
-    getTasksForMemberAndProject(member.memberid, this.projectService.projectSelected.projectid);
+      this.tasksService.getTasksForMemberAndProject(member.memberid, this.projectService.projectSelected.projectid);
       this.anotherFunction();
       this.changeMemberSelectedCss(index);
     } else {
       alert('Veuillez selectionner le projet');
     }
+  }
+
+  displayOnProject(project: Project,index: string) {
+
   }
 
   changeMemberSelectedCss(index: number): void {
