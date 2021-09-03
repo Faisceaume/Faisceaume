@@ -19,7 +19,7 @@ import { CategoriesService } from '../members/categories/categories.service';
 export class UsersComponent implements OnInit, OnDestroy {
 
   usersSouscription: Subscription;
-  displayedColumns: string[] = ['email', 'memberid', 'createdat', 'blocked', 'delete', 'member'];
+  displayedColumns: string[] = ['email', 'memberid', 'createdat', 'member', 'blocked', 'delete'];
   dataSource: MatTableDataSource<Users>;
   categories: Categorie[];
   blockid: string;

@@ -20,7 +20,7 @@
 </div>
 -->
 
-<div class="container" style="padding: 2em">
+<div class="container" style="padding: 3em">
     <mat-form-field>
         <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
       </mat-form-field>
@@ -44,7 +44,20 @@
           <ng-container matColumnDef="createdat">
               <th mat-header-cell *matHeaderCellDef>TimeStamp </th>
               <td mat-cell *matCellDef="let element"
-              [ngStyle]="{'background-color': element.memberid ? '#27ae60':'#e74c3c'}"> {{element.timestamp ? element.timestamp : 'no data'}} </td>
+              [ngStyle]="{'background-color': element.memberid ? '#27ae60':'#e74c3c'}"> {{element.timestamp | date }} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="member">
+            <th mat-header-cell *matHeaderCellDef>Edit</th>
+            <td mat-cell *matCellDef="let element"
+            [ngStyle]="{'background-color': element.memberid ? '#27ae60':'#e74c3c'}">
+              <button *ngIf="element.memberid" (click)="joinMember(element)" mat-icon-button>
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button *ngIf="!element.memberid" (click)="joinMember(element)" mat-icon-button>
+                <mat-icon>person_add</mat-icon>
+              </button>
+            </td>
           </ng-container>
 
           <ng-container matColumnDef="blocked">
@@ -67,19 +80,6 @@
             [ngStyle]="{'background-color': element.memberid ? '#27ae60':'#e74c3c'}">
               <button (click)="deleteUserMember(element.memberid, element.uid)" mat-icon-button>
                 <mat-icon>delete</mat-icon>
-              </button>
-            </td>
-          </ng-container>
-
-          <ng-container matColumnDef="member">
-            <th mat-header-cell *matHeaderCellDef>Edit</th>
-            <td mat-cell *matCellDef="let element"
-            [ngStyle]="{'background-color': element.memberid ? '#27ae60':'#e74c3c'}">
-              <button *ngIf="element.memberid" (click)="joinMember(element)" mat-icon-button>
-                <mat-icon>edit</mat-icon>
-              </button>
-              <button *ngIf="!element.memberid" (click)="joinMember(element)" mat-icon-button>
-                <mat-icon>person_add</mat-icon>
               </button>
             </td>
           </ng-container>
