@@ -16,13 +16,18 @@ img.vignettetab {
   width: 50px;
 }
 
+h3 {
+  font-size: 1.3em;
+  padding-left: 20px;
+  color: #FFF;
+}
 
 img.tab-thumb {
   width: 100px; height: auto;
   border-radius: 50px;
   cursor: pointer;
   transition: all 0.1s;
-  border: 2px solid #000;
+  border: 5px solid #000;
 }
 
 img.tab-thumb-project {
@@ -30,7 +35,7 @@ img.tab-thumb-project {
   border-radius: 50px;
   cursor: pointer;
   transition: all 0.1s;
-  border: 2px solid #000;
+  border: 5px solid #000;
 }
 
 img.tab-thumb:hover, img.tab-thumb-project:hover {
