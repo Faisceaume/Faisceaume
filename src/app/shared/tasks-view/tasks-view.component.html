@@ -1,4 +1,15 @@
-<div class="container" *ngIf="usersService.isAdministrateur && tasksService.onDisplayFilterByMember">
+<div class="container" *ngIf="usersService.isAdministrateur">
+  <div fxLayout="row" [ngStyle]="{'padding':'20px 0 10px'}">
+    <div fxFlex="20" fxLayoutAlign="center center" fxLayout="column"
+      *ngFor="let project of projects; let i = index"
+      (click)="displayOnProject(project,i)">
+        <img  class="tab-thumb-project" src="{{ project.picture }}">
+        <p>{{ project.title }}</p>
+    </div>
+  </div>
+</div>
+
+<div class="container">
   <div fxLayout="row" [ngStyle]="{'padding':'20px 0 10px'}">
     <div fxFlex="20" fxLayoutAlign="center center" fxLayout="column"
       *ngFor="let member of members; let i = index"

@@ -29,6 +29,7 @@ export class MemberService {
   editMemberSection: boolean;
   // data for upload-image component
   fileUrl: string;
+  memberSelected: Member;
 
   constructor(private db: AngularFirestore, private angularStorage: AngularFireStorage) { }
 

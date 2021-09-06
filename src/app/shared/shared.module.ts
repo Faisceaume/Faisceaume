@@ -22,7 +22,7 @@ import { UploadImageComponent } from './upload-image/upload-image.component';
 import { TasksViewComponent } from './tasks-view/tasks-view.component';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatExpansionModule} from '@angular/material/expansion';
-
+import  {MatRadioModule} from '@angular/material/radio';
 
 
 const modules = [
@@ -45,7 +45,8 @@ const modules = [
     MatSlideToggleModule,
     MatSortModule,
     MatTooltipModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatRadioModule
 ];
 
 @NgModule({

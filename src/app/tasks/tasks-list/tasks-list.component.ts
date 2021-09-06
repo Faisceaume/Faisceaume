@@ -14,6 +14,8 @@ import { Categorie } from 'src/app/members/categories/categorie';
 import { CategoriesService } from 'src/app/members/categories/categories.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { AngularFireAuth } from '@angular/fire/auth';
+import { Project } from 'src/app/projects/project';
+import { ProjectsService } from 'src/app/projects/projects.service';
 
 
 @Component({
@@ -28,6 +30,9 @@ export class TasksListComponent implements OnInit/*, OnDestroy*/ {
   categories: Categorie[];
   isAdmin: boolean;
   getTasksSubscription: boolean;
+  members: Member[];
+  projects: Project[];
+  status: string = 'all';
 
   constructor(public tasksService: TasksService,
               private matDialog: MatDialog,
@@ -35,10 +40,16 @@ export class TasksListComponent implements OnInit/*, OnDestroy*/ {
               private membersService: MemberService,
               public usersService: UsersService,
               private categorieService: CategoriesService,
+              private projectService: ProjectsService,
               private sanitizer: DomSanitizer,
               private afauth: AngularFireAuth) { }
 
   ngOnInit() {
+    this.projectService.getAllProjects();
+    this.projectService.projectsSubject.subscribe(data => {
+      this.projects = data;
+    });
+
     this.categorieService.getAllCategories();
     this.membersService.getAllMembers();
     this.categorieService.categoriesSubject.subscribe(data => {
@@ -47,7 +58,7 @@ export class TasksListComponent implements OnInit/*, OnDestroy*/ {
 
     this.membersService.membersSubject.subscribe(data => {
       this.options = data;
-
+      this.members = data;
       this.afauth.onAuthStateChanged((user) => {
         if (user) {
           this.usersService.getSingleUser(user.email).then((item: Users) => {
@@ -124,6 +135,49 @@ export class TasksListComponent implements OnInit/*, OnDestroy*/ {
 
   getBackground(image) {
     return image ? this.sanitizer.bypassSecurityTrustStyle(`url('${image}')`) : null;
+  }
+
+  displayOnMember(member: Member, index: number): void {
+    this.membersService.memberSelected = member;
+    if (this.projectService.projectSelected) {
+      this.tasksService.getTasksForMemberAndProject(member.memberid, this.projectService.projectSelected.projectid);
+    } else {
+      this.tasksService.getTasksForMember(member.memberid);
+    }
+    this.changeMemberSelectedCss(index);
+  }
+
+  displayOnProject(project: Project,index: number) {
+    this.projectService.projectSelected = project;
+    if(this.membersService.memberSelected) {
+      this.tasksService.getTasksForMemberAndProject(this.membersService.memberSelected.memberid, project.projectid);
+    } else {
+      this.tasksService.getAllTasksForProject(project.projectid);
+    }
+    this.changeMemberSelectedCssProject(index);
+  }
+
+  changeMemberSelectedCss(index: number): void {
+    const pElt = document.querySelectorAll('.mem img');
+    pElt.forEach(item => {
+      item.classList.remove('tab-thumbSelected');
+    });
+    pElt[index].classList.add('tab-thumbSelected');
+  }
+
+  changeMemberSelectedCssProject(index: number): void {
+    const pElt = document.querySelectorAll('.pro img');
+    pElt.forEach(item => {
+      item.classList.remove('tab-thumbSelected');
+    });
+    pElt[index].classList.add('tab-thumbSelected');
+  }
+
+  anotherFunction(): void {
+    // this.tasksService.tasksSubject.subscribe(data => {
+    //   this.dataSource = new MatTableDataSource<Task>(data);
+    //   this.dataSource.sort = this.sort;
+    // });
   }
 
   /*ngOnDestroy(): void {

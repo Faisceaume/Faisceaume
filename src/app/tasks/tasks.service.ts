@@ -17,7 +17,7 @@ export class TasksService {
   allTasks: Task[];
   tasksSection: boolean;
   toUpdateTaskStatut: boolean;
-  onsShowGrille: boolean;
+  onsShowGrille: boolean = true;
   onDisplayFilterByMember: boolean;
 
   constructor(private membersService: MemberService,
@@ -240,10 +240,6 @@ getTasksForMemberAndProject(idMember: string, idProject: string) {
 
 setOnShowGrille(bool: boolean) {
   this.onsShowGrille = bool;
-}
-
-setFilterByMemberValue(item: boolean): void {
-  this.onDisplayFilterByMember = item;
 }
 
 }
