@@ -1,6 +1,9 @@
 <div class="container pro" *ngIf="usersService.isAdministrateur">
   <div fxLayout="row" [ngStyle]="{'padding':'20px 0 10px'}">
-    <div fxFlex="20" fxLayoutAlign="center center" fxLayout="column"
+    <div fxFlex="20" fxLayoutAlign="start center">
+      <h3>PROJECTS</h3>
+    </div>
+    <div fxFlex="20" fxLayoutAlign="start center" fxLayout="column"
       *ngFor="let project of projects; let i = index"
       (click)="displayOnProject(project,i)">
         <img  class="tab-thumb-project" src="{{ project.picture }}">
@@ -11,7 +14,10 @@
 
 <div class="container mem">
   <div fxLayout="row" [ngStyle]="{'padding':'20px 0 10px'}">
-    <div fxFlex="20" fxLayoutAlign="center center" fxLayout="column"
+    <div fxFlex="20" fxLayoutAlign="start center">
+      <h3>MEMBERS</h3>
+    </div>
+    <div fxFlex="20" fxLayoutAlign="start center" fxLayout="column"
       *ngFor="let member of members; let i = index"
       (click)="displayOnMember(member,i)">
         <img  class="tab-thumb" src="{{ member.picture }}">
