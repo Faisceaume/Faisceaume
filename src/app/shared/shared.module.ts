@@ -23,6 +23,9 @@ import { TasksViewComponent } from './tasks-view/tasks-view.component';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatExpansionModule} from '@angular/material/expansion';
 import  {MatRadioModule} from '@angular/material/radio';
+import {MatChipsModule} from '@angular/material/chips';
+
+
 
 
 const modules = [
@@ -46,7 +49,8 @@ const modules = [
     MatSortModule,
     MatTooltipModule,
     MatExpansionModule,
-    MatRadioModule
+    MatRadioModule,
+    MatChipsModule
 ];
 
 @NgModule({

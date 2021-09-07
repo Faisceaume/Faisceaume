@@ -238,6 +238,22 @@ getTasksForMemberAndProject(idMember: string, idProject: string) {
   }
 }
 
+getTasksUntreatedForMemberAndProject(idMember: string, idProject: string) {
+  if (idMember) {
+    this.db.collection('members')
+    .doc(idMember).collection('tasks', ref => ref.where('projectid', '==', idProject).where('status', '==', 'untreated'))
+    .snapshotChanges().subscribe( data => {
+       this.allTasks = data.map( e => {
+         return {
+           taskid : e.payload.doc.id,
+           ...e.payload.doc.data()
+         } as Task;
+       });
+       this.emitTasksSubject();
+     });
+  }
+}
+
 setOnShowGrille(bool: boolean) {
   this.onsShowGrille = bool;
 }

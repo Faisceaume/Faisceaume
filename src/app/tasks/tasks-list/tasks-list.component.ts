@@ -33,6 +33,13 @@ export class TasksListComponent implements OnInit/*, OnDestroy*/ {
   members: Member[];
   projects: Project[];
   status: string = 'all';
+  projectPick: Project = null;
+  memberPick: Member = null;
+  displayProject = true;
+  displayMember = true;
+  disableFilter = true;
+  showAllM = true;
+  showAllP = true;
 
   constructor(public tasksService: TasksService,
               private matDialog: MatDialog,
@@ -138,9 +145,12 @@ export class TasksListComponent implements OnInit/*, OnDestroy*/ {
   }
 
   displayOnMember(member: Member, index: number): void {
-    this.membersService.memberSelected = member;
-    if (this.projectService.projectSelected) {
-      this.tasksService.getTasksForMemberAndProject(member.memberid, this.projectService.projectSelected.projectid);
+    //this.membersService.memberSelected = member;
+    this.memberPick = member;
+    if(this.displayProject) this.displayMember = false;
+    if (this.projectPick !== null) {
+      this.displayChipOnlySelected();
+      this.tasksService.getTasksForMemberAndProject(member.memberid, this.projectPick.projectid);
     } else {
       this.tasksService.getTasksForMember(member.memberid);
     }
@@ -148,9 +158,12 @@ export class TasksListComponent implements OnInit/*, OnDestroy*/ {
   }
 
   displayOnProject(project: Project,index: number) {
-    this.projectService.projectSelected = project;
-    if(this.membersService.memberSelected) {
-      this.tasksService.getTasksForMemberAndProject(this.membersService.memberSelected.memberid, project.projectid);
+    //this.projectService.projectSelected = project;
+    this.projectPick = project;
+    if(this.displayMember)this.displayProject = false;
+    if(this.memberPick !== null) {
+      this.displayChipOnlySelected();
+      this.tasksService.getTasksForMemberAndProject(this.memberPick.memberid, project.projectid);
     } else {
       this.tasksService.getAllTasksForProject(project.projectid);
     }
@@ -173,11 +186,47 @@ export class TasksListComponent implements OnInit/*, OnDestroy*/ {
     pElt[index].classList.add('tab-thumbSelected');
   }
 
-  anotherFunction(): void {
-    // this.tasksService.tasksSubject.subscribe(data => {
-    //   this.dataSource = new MatTableDataSource<Task>(data);
-    //   this.dataSource.sort = this.sort;
-    // });
+  displayChipOnlySelected() {
+    this.disableFilter = false;
+    this.showAllM = false;
+    this.showAllP = false;
+  }
+
+  removeChip() {
+    this.displayProject = true;
+    this.otherFunction();
+    this.showAllM = this.showAllP = true;
+  }
+
+  removeChipProject() {
+    this.displayMember = true;
+    this.otherFunction()
+    this.showAllP = this.showAllM = true;
+  }
+
+  otherFunction() {
+    this.disableFilter = true;
+    this.memberPick = null;
+    this.projectPick = null;
+    this.membersService.memberSelected = {} as Member;
+    this.projectService.projectSelected = {} as Project;
+    const pElt = document.querySelectorAll('.pro img');
+    const mElt = document.querySelectorAll('.mem img');
+    pElt.forEach(item => {
+      item.classList.remove('tab-thumbSelected');
+    });
+    mElt.forEach(item => {
+      item.classList.remove('tab-thumbSelected');
+    });
+    this.tasksService.getAllTasks();
+  }
+
+  displayUntreatedTask(value: any) {
+    if(value) {
+      this.tasksService.getTasksUntreatedForMemberAndProject(this.memberPick.memberid, this.projectPick.projectid);
+    } else {
+      this.tasksService.getTasksForMemberAndProject(this.memberPick.memberid, this.projectPick.projectid);
+    }
   }
 
   /*ngOnDestroy(): void {
