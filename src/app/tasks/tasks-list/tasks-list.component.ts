@@ -100,7 +100,7 @@ export class TasksListComponent implements OnInit/*, OnDestroy*/ {
 
   displayAll(bool: boolean, memberid?: string) {
     if (bool) {
-      this.tasksService.getAllTasks();
+      //this.tasksService.getAllTasks();
     } else {
       this.tasksService.getTasksForMember(memberid);
     }
@@ -218,7 +218,7 @@ export class TasksListComponent implements OnInit/*, OnDestroy*/ {
     mElt.forEach(item => {
       item.classList.remove('tab-thumbSelected');
     });
-    this.tasksService.getAllTasks();
+    this.tasksService.getTasksEmpty();
   }
 
   displayUntreatedTask(value: any) {

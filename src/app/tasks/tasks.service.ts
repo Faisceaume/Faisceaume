@@ -136,6 +136,10 @@ export class TasksService {
     .catch((error) => { console.error('Error Updating document: ', error); });
   }
 
+  getTasksEmpty() {
+    this.allTasks = [];
+    this.emitTasksSubject();
+  }
 
   getAllTasks() {
     this.db.collection('tasks', ref => ref.orderBy('timestamp', 'desc'))
