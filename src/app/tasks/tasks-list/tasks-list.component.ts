@@ -102,7 +102,8 @@ export class TasksListComponent implements OnInit/*, OnDestroy*/ {
     if (bool) {
       //this.tasksService.getAllTasks();
     } else {
-      this.tasksService.getTasksForMember(memberid);
+      if(this.usersService.isAdministrateur) this.tasksService.getTasksForMember(memberid);
+      else this.tasksService.getTasksForMemberUntreated(memberid);
     }
     this.tasksService.tasksSubject.subscribe(data => {
       this.tasks = data;
@@ -160,6 +161,11 @@ export class TasksListComponent implements OnInit/*, OnDestroy*/ {
   displayOnProject(project: Project,index: number) {
     //this.projectService.projectSelected = project;
     this.projectPick = project;
+    if(!this.usersService.isAdministrateur) {
+      this.displayProject = false;
+      this.tasksService.getTasksForMemberAndProjectUntreated(this.membersService.sessionMember.memberid, project.projectid);
+      return;
+    }
     if(this.displayMember)this.displayProject = false;
     if(this.memberPick !== null) {
       this.displayChipOnlySelected();
@@ -194,6 +200,11 @@ export class TasksListComponent implements OnInit/*, OnDestroy*/ {
 
   removeChip() {
     this.displayProject = true;
+    if(!this.usersService.isAdministrateur) {
+      this.projectPick = null;
+      this.tasksService.getTasksForMemberUntreated(this.membersService.sessionMember.memberid);
+      return;
+    }
     this.otherFunction();
     this.showAllM = this.showAllP = true;
   }

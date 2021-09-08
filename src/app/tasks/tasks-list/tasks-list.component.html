@@ -23,7 +23,7 @@
 
 <div *ngIf="!usersService.isAdministrateur && projectPick" style="padding: 1em 0 0 1em">
   <mat-chip-list>
-    <mat-chip (removed)="removeChipProject()" [removable]="true">
+    <mat-chip (removed)="removeChip()" [removable]="true">
       &nbsp; &nbsp; {{ projectPick.title}}
       <mat-icon matChipRemove >cancel</mat-icon>
     </mat-chip>
@@ -73,10 +73,10 @@
         <button mat-icon-button color="accent" (click)="onEdit(task)">
           <mat-icon>edit</mat-icon>
         </button>
-        <button mat-icon-button color="accent" (click)="onDelete(task)">
+        <button *ngIf="usersService.isAdministrateur" mat-icon-button color="accent" (click)="onDelete(task)">
           <mat-icon>delete</mat-icon>
         </button>
-        <button mat-icon-button color="accent" *ngIf="task.status !== 'done'" (click)="onUpdateTaskStatut(task)">
+        <button  mat-icon-button color="accent" *ngIf="task.status !== 'done' && usersService.isAdministrateur" (click)="onUpdateTaskStatut(task)">
           <mat-icon>check</mat-icon>
         </button>
 

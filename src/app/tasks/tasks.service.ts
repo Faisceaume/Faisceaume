@@ -226,6 +226,24 @@ getTasksForMember(idMember: string) {
   }
 }
 
+getTasksForMemberUntreated(idMember: string) {
+  if (idMember) {
+    this.db.collection('members')
+    .doc(idMember).collection('tasks' , ref => ref.orderBy('timestamp', 'desc').limit(30))
+    .snapshotChanges().subscribe( data => {
+       this.allTasks = data.map( e => {
+         return {
+           taskid : e.payload.doc.id,
+           ...e.payload.doc.data()
+         } as Task;
+       });
+       this.allTasks = this.allTasks.filter(el => el.status === 'untreated');
+       this.emitTasksSubject();
+     });
+  }
+}
+
+
 getTasksForMemberAndProject(idMember: string, idProject: string) {
   if (idMember) {
     this.db.collection('members')
@@ -242,6 +260,23 @@ getTasksForMemberAndProject(idMember: string, idProject: string) {
   }
 }
 
+getTasksForMemberAndProjectUntreated(idMember: string, idProject: string) {
+  if (idMember) {
+    this.db.collection('members')
+    .doc(idMember).collection('tasks' , ref => ref.where('projectid', '==', idProject).limit(30))
+    .snapshotChanges().subscribe( data => {
+       this.allTasks = data.map( e => {
+         return {
+           taskid : e.payload.doc.id,
+           ...e.payload.doc.data()
+         } as Task;
+       });
+       this.allTasks = this.allTasks.filter(el => el.status === 'untreated');
+       this.emitTasksSubject();
+     });
+  }
+}
+
 getTasksUntreatedForMemberAndProject(idMember: string, idProject: string) {
   if (idMember) {
     this.db.collection('members')
@@ -253,6 +288,7 @@ getTasksUntreatedForMemberAndProject(idMember: string, idProject: string) {
            ...e.payload.doc.data()
          } as Task;
        });
+       //this.allTasks = this.allTasks.filter(el => el.status === 'untreated');
        this.emitTasksSubject();
      });
   }
