@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, OnDestroy } from '@angular/core';
 import { Task } from '../../tasks/task';
 import { MatTableDataSource } from '@angular/material/table';
 import {MatSort} from '@angular/material/sort';
@@ -12,6 +12,19 @@ import { TaskFormComponent } from '../../tasks/task-form/task-form.component';
 import { ProjectsService } from 'src/app/projects/projects.service';
 import { Project } from 'src/app/projects/project';
 
+
+export interface TasksMonth {
+  month: number,
+  listTasks: Task[],
+  totalTimeSpent: number
+}
+
+export interface TasksYear {
+  year: number,
+  tasksMonth: TasksMonth[],
+  totalTimeSpentYear?: number
+}
+
 @Component({
   selector: 'app-tasks-view',
   templateUrl: './tasks-view.component.html',
@@ -19,11 +32,31 @@ import { Project } from 'src/app/projects/project';
 })
 export class TasksViewComponent implements OnInit {
 
-  @Input() tasksList?: Task[];
-  dataSource: MatTableDataSource<Task>;
-  displayedColumns: string[] = ['created_at', 'title', 'description', 'action'];
+  @Input() member?: Member;
+  dataSource: Task[];
+  displayedColumns: string[] = ['title', 'description', 'timespent' ,'action'];
   members: Member[];
   projects: Project[];
+  projectPick: Project;
+  years: number[] = [];
+  mois = [
+    'Janvier',
+    'Fevrier',
+    'Mars',
+    'Avril',
+    'Mai',
+    'Juin',
+    'Juillet',
+    'Août',
+    'Septembre',
+    'Octobre',
+    'Novembre',
+    'Décembre'
+  ];
+  taskForOperation: Task[] = [];
+
+
+  tasksYears = [] as TasksYear[];
 
   @ViewChild(MatSort, {static: true}) sort: MatSort;
 
@@ -35,29 +68,65 @@ export class TasksViewComponent implements OnInit {
               private projectService: ProjectsService) { }
 
   ngOnInit() {
-
-    this.membersService.getAllMembers();
-    this.membersService.membersSubject.subscribe(
-      data => { this.members = data; }
-    );
-
     this.projectService.getAllProjects();
     this.projectService.projectsSubject.subscribe(data => {
       this.projects = data;
     })
-
-    if (this.usersService.isAdministrateur && !this.membersService.editMemberSection) {
-        this.tasksService.getAllTasks();
-      } else {
-        this.tasksService.getTasksForMember(this.membersService.sessionMember.memberid);
-      }
-    this.anotherFunction();
+    this.tasksService.getTasksForMember(this.member.memberid);
+    this.tasksService.tasksSubject.subscribe(data => {
+      this.dataSource = data
+      this.operationFilterTask(this.dataSource);
+    });
   }
 
-  anotherFunction(): void {
-    this.tasksService.tasksSubject.subscribe(data => {
-      this.dataSource = new MatTableDataSource<Task>(data);
-      this.dataSource.sort = this.sort;
+
+  operationFilterTask(data: Task[]) {
+    console.log(data);
+    data.forEach((item: Task) => {
+      if (item.status === 'done') {
+        item.description = item.description.slice(0, 300) + '...';
+        this.taskForOperation.push(item);
+        // Get different year from all tasks: [2020, 2021]
+        let year = new Date(item.timestamp).getFullYear();
+        if( !this.years.includes(year) ) this.years.push(year);
+      }
+    });
+
+    this.years.forEach(year => {
+      this.tasksYears.push({
+        year: year,
+        tasksMonth: [],
+        totalTimeSpentYear: 0
+      });
+    })
+
+    this.taskForOperation.forEach((item: Task) => {
+      let year = new Date(item.timestamp).getFullYear();
+      let month = new Date(item.timestamp).getMonth();
+      // get index of tasks filter with year of item
+      let index = this.tasksYears.findIndex(el => el.year === year);
+      let indexMonth = this.tasksYears[index].tasksMonth.findIndex(m => m.month === month);
+
+      if(indexMonth !== -1) {
+        this.tasksYears[index].tasksMonth[indexMonth].listTasks.push(item);
+        this.tasksYears[index].tasksMonth[indexMonth].totalTimeSpent += parseInt(item.timespent);
+      } else {
+        this.tasksYears[index].tasksMonth.push({month: month, listTasks: [item], totalTimeSpent: parseInt(item.timespent)});
+      }
+    })
+    console.log(this.tasksYears);
+
+    // Timespent by year
+    this.tasksYears.forEach(tY => {
+      tY.tasksMonth.forEach(tM => {
+        tY.totalTimeSpentYear += tM.totalTimeSpent
+      })
+    })
+
+    // sort descendant
+    this.tasksYears = this.tasksYears.sort((a,b) => b.year-a.year);
+    this.tasksYears.forEach(taskYear => {
+      taskYear.tasksMonth.sort((a, b) => b.month - a.month);
     });
   }
 
@@ -71,7 +140,6 @@ export class TasksViewComponent implements OnInit {
       }
     );
   }
-
 
   onUpdateTaskStatut(task: Task) {
     this.tasksService.setToUpdateTaskStatut(true);
@@ -87,18 +155,12 @@ export class TasksViewComponent implements OnInit {
     this.matDialog.open(TaskFormComponent, dialogConfig);
   }
 
-  displayOnMember(member: Member, index: number): void {
-    if (this.projectService.projectSelected) {
-      this.tasksService.getTasksForMemberAndProject(member.memberid, this.projectService.projectSelected.projectid);
-      this.anotherFunction();
-      this.changeMemberSelectedCss(index);
-    } else {
-      alert('Veuillez selectionner le projet');
+  displayOnProject(project: Project,index: number) {
+    this.projectPick = project;
+    if(this.projectPick !== null) {
+      this.dataSource.filter(el => el.projectid === this.projectPick.projectid);
     }
-  }
-
-  displayOnProject(project: Project,index: string) {
-
+    this.changeMemberSelectedCss(index);
   }
 
   changeMemberSelectedCss(index: number): void {
@@ -106,7 +168,6 @@ export class TasksViewComponent implements OnInit {
     pElt.forEach(item => {
       item.classList.remove('tab-thumbSelected');
     });
-    pElt[index + 1].classList.add('tab-thumbSelected');
+    pElt[index + 2].classList.add('tab-thumbSelected');
   }
-
 }

@@ -32,7 +32,7 @@
       (click)="displayOnMember(member,i)">
         <img  class="tab-thumb" src="{{ member.picture }}">
         <p>{{ member.name }}</p>
-        <div *ngIf="(showAllM || (memberPick.name !== null && memberPick.name === member.name))">
+        <div *ngIf="showAllM || (memberPick.name !== null && memberPick.name === member.name)">
           <mat-chip-list *ngIf="projectPick && memberPick">
             <mat-chip (removed)="removeChip()" [removable]="true">
               <mat-slide-toggle [disabled]="disableFilter" (change)="displayUntreatedTask(status.checked)" #status class="example-margin"></mat-slide-toggle>
