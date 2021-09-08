@@ -58,5 +58,5 @@
 
 
 <div class="container" *ngIf="memberService.formData.memberid">
-    <app-tasks-view [tasksList]="tasks" *ngIf="tasks"></app-tasks-view>
+    <app-tasks-view [member]="memberService.formData" *ngIf="memberService.formData.memberid"></app-tasks-view>
 </div>

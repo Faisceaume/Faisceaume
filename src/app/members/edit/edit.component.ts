@@ -36,13 +36,6 @@ export class EditComponent implements OnInit/*, OnDestroy*/ {
     this.categorieService.categoriesSubject.subscribe(data => {
       this.categories = data.filter(d => d.libelle !== 'blocked');
     });
-
-    if (this.memberService.formData) {
-      this.tasksService.getTasksForMember(this.memberService.formData.memberid);
-      this.tasksService.tasksSubject.subscribe(data => {
-        this.tasks = data;
-    });
-    }
   }
 
   onSubmit(form: NgForm) {
