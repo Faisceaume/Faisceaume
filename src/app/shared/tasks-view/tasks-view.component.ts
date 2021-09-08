@@ -81,7 +81,6 @@ export class TasksViewComponent implements OnInit {
 
 
   operationFilterTask(data: Task[]) {
-    console.log(data);
     data.forEach((item: Task) => {
       if (item.status === 'done') {
         item.description = item.description.slice(0, 300) + '...';
@@ -98,7 +97,7 @@ export class TasksViewComponent implements OnInit {
         tasksMonth: [],
         totalTimeSpentYear: 0
       });
-    })
+    });
 
     this.taskForOperation.forEach((item: Task) => {
       let year = new Date(item.timestamp).getFullYear();
@@ -113,8 +112,7 @@ export class TasksViewComponent implements OnInit {
       } else {
         this.tasksYears[index].tasksMonth.push({month: month, listTasks: [item], totalTimeSpent: parseInt(item.timespent)});
       }
-    })
-    console.log(this.tasksYears);
+    });
 
     // Timespent by year
     this.tasksYears.forEach(tY => {
