@@ -1,4 +1,4 @@
-<div class="container pro" *ngIf="usersService.isAdministrateur && displayProject">
+<div class="container pro" *ngIf="displayProject">
   <div fxLayout="row" [ngStyle]="{'padding':'20px 0 10px'}">
     <div fxFlex="20" fxLayoutAlign="start center" *ngIf="!projectPick">
       <h3>Select Project : </h3>
@@ -17,12 +17,20 @@
             </mat-chip>
           </mat-chip-list>
         </div>
-
     </div>
   </div>
 </div>
 
-<div class="container mem" *ngIf="displayMember">
+<div *ngIf="!usersService.isAdministrateur && projectPick" style="padding: 1em 0 0 1em">
+  <mat-chip-list>
+    <mat-chip (removed)="removeChipProject()" [removable]="true">
+      &nbsp; &nbsp; {{ projectPick.title}}
+      <mat-icon matChipRemove >cancel</mat-icon>
+    </mat-chip>
+  </mat-chip-list>
+</div>
+
+<div class="container mem" *ngIf="usersService.isAdministrateur && displayMember">
   <div fxLayout="row" [ngStyle]="{'padding':'20px 0 10px'}">
     <div fxFlex="20" fxLayoutAlign="start center" *ngIf="!memberPick">
       <h3>Select Member : </h3>
