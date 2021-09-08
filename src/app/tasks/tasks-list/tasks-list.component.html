@@ -1,7 +1,7 @@
 <div class="container pro" *ngIf="usersService.isAdministrateur && displayProject">
   <div fxLayout="row" [ngStyle]="{'padding':'20px 0 10px'}">
-    <div fxFlex="20" fxLayoutAlign="start center">
-      <h3>PROJECTS</h3>
+    <div fxFlex="20" fxLayoutAlign="start center" *ngIf="!projectPick">
+      <h3>Select Project : </h3>
     </div>
     <div fxFlex="20" fxLayoutAlign="start center" fxLayout="column"
       *ngFor="let project of projects; let i = index"
@@ -9,10 +9,10 @@
         <img  class="tab-thumb-project" src="{{ project.picture }}">
         <p>{{ project.title }}</p>
         <div *ngIf="showAllP || (projectPick !== null && project.title === projectPick.title)">
-          <mat-chip-list *ngIf="memberPick && !displayMember">
+          <mat-chip-list *ngIf="memberPick && projectPick">
             <mat-chip (removed)="removeChipProject()" [removable]="true">
               <mat-slide-toggle [disabled]="disableFilter" (change)="displayUntreatedTask(status.checked)" #status class="example-margin"></mat-slide-toggle>
-              {{memberPick.name}}
+              &nbsp; &nbsp; {{memberPick.name}}
               <mat-icon matChipRemove >cancel</mat-icon>
             </mat-chip>
           </mat-chip-list>
@@ -24,19 +24,19 @@
 
 <div class="container mem" *ngIf="displayMember">
   <div fxLayout="row" [ngStyle]="{'padding':'20px 0 10px'}">
-    <div fxFlex="20" fxLayoutAlign="start center">
-      <h3>MEMBERS</h3>
+    <div fxFlex="20" fxLayoutAlign="start center" *ngIf="!memberPick">
+      <h3>Select Member : </h3>
     </div>
     <div fxFlex="20" fxLayoutAlign="start center" fxLayout="column"
       *ngFor="let member of members; let i = index"
       (click)="displayOnMember(member,i)">
         <img  class="tab-thumb" src="{{ member.picture }}">
         <p>{{ member.name }}</p>
-        <div *ngIf="showAllM || (memberPick.name !== null && memberPick.name === member.name)">
-          <mat-chip-list *ngIf="projectPick && !displayProject">
+        <div *ngIf="(showAllM || (memberPick.name !== null && memberPick.name === member.name))">
+          <mat-chip-list *ngIf="projectPick && memberPick">
             <mat-chip (removed)="removeChip()" [removable]="true">
               <mat-slide-toggle [disabled]="disableFilter" (change)="displayUntreatedTask(status.checked)" #status class="example-margin"></mat-slide-toggle>
-              {{projectPick.title}}
+              &nbsp; &nbsp; {{projectPick.title}}
               <mat-icon matChipRemove >cancel</mat-icon>
             </mat-chip>
           </mat-chip-list>
