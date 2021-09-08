@@ -1,3 +1,7 @@
+<div style="width: 35%;" *ngIf="!usersService.isAdministrateur && memberStat">
+  <app-tasks-stats [member]="memberStat"></app-tasks-stats>
+</div>
+
 <div class="container pro" *ngIf="displayProject">
   <div fxLayout="row" [ngStyle]="{'padding':'20px 0 10px'}">
     <div fxFlex="20" fxLayoutAlign="start center" *ngIf="!projectPick">

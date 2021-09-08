@@ -40,6 +40,7 @@ export class TasksListComponent implements OnInit/*, OnDestroy*/ {
   disableFilter = true;
   showAllM = true;
   showAllP = true;
+  memberStat: Member;
 
   constructor(public tasksService: TasksService,
               private matDialog: MatDialog,
@@ -52,6 +53,7 @@ export class TasksListComponent implements OnInit/*, OnDestroy*/ {
               private afauth: AngularFireAuth) { }
 
   ngOnInit() {
+    this.memberStat = this.membersService.sessionMember;
     this.projectService.getAllProjects();
     this.projectService.projectsSubject.subscribe(data => {
       this.projects = data;
@@ -71,6 +73,7 @@ export class TasksListComponent implements OnInit/*, OnDestroy*/ {
           this.usersService.getSingleUser(user.email).then((item: Users) => {
               if (item.memberid) {
                 const userMember = this.options.find(member => member.memberid === item.memberid);
+                this.memberStat = userMember;
                 this.membersService.setSessionMemberValue(userMember);
                 if (this.categories.find(cat => cat.id === userMember.categoryid).isadmin) {
                     this.displayAll(true);
