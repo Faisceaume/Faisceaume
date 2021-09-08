@@ -55,7 +55,6 @@ export class TasksStatsComponent implements OnInit {
       this.precMonth = new Date(date).getMonth()-1;
       this.tasksService.getTasksForMember(this.member.memberid);
       this.tasksService.tasksSubject.pipe(share()).subscribe((data: Task[]) => {
-        console.log(data);
         data.forEach(task => {
           if(new Date(task.timestamp).getMonth() === this.currentMonth && task.status === 'done') {
             this.taskCompleteCurrentMonth++;
