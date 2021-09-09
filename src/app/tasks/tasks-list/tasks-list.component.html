@@ -1,5 +1,17 @@
-<div style="width: 35%;" *ngIf="!usersService.isAdministrateur && memberStat">
+<div class="info-user"
+  fxLayout="row" fxLayoutAlign="start center"
+  *ngIf="!usersService.isAdministrateur && memberStat">
+
   <app-tasks-stats [member]="memberStat"></app-tasks-stats>
+
+  <div *ngIf="!usersService.isAdministrateur && projectPick" style="padding: 1em 0 0 1em">
+    <mat-chip-list>
+      <mat-chip (removed)="removeChip()" [removable]="true">
+        &nbsp; &nbsp; {{ projectPick.title}}
+        <mat-icon matChipRemove >cancel</mat-icon>
+      </mat-chip>
+    </mat-chip-list>
+  </div>
 </div>
 
 <div class="container pro" *ngIf="displayProject">
@@ -25,14 +37,7 @@
   </div>
 </div>
 
-<div *ngIf="!usersService.isAdministrateur && projectPick" style="padding: 1em 0 0 1em">
-  <mat-chip-list>
-    <mat-chip (removed)="removeChip()" [removable]="true">
-      &nbsp; &nbsp; {{ projectPick.title}}
-      <mat-icon matChipRemove >cancel</mat-icon>
-    </mat-chip>
-  </mat-chip-list>
-</div>
+
 
 <div class="container mem" *ngIf="usersService.isAdministrateur && displayMember">
   <div fxLayout="row" [ngStyle]="{'padding':'20px 0 10px'}">

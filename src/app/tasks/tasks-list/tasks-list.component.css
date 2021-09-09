@@ -55,3 +55,11 @@ img.tab-thumbSelected {
 .task-done {
   opacity: 0.5;
 }
+
+
+.info-user {
+  background: rgb(2,0,36);
+  background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(0,0,0,0.9934348739495799) 50%, rgba(1,31,37,1) 100%);
+  margin: 15px;
+  border-radius: 4px;
+}
