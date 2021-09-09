@@ -18,9 +18,14 @@
 }
 
 .mattab {
-    background-color: #fff;
+    margin: 0 200px;
+    text-align: center;
 }
 
 .item {
   text-align: center;
+}
+
+.bgw {
+  background-color: #fff;
 }
