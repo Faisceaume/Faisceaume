@@ -1,1 +1,16 @@
-<p>tasks-stats works!</p>
+<mat-card *ngIf="display">
+  <mat-card-header>
+    <div mat-card-avatar [ngStyle]="{'background-image': 'url(' + member.picture +')', 'background-size': 'cover'}"></div>
+    <mat-card-title>{{ member.name }}</mat-card-title>
+    <mat-card-subtitle> {{ category }} </mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <p>Tache finalisé</p>
+    <p>
+      Ce mois : {{ taskCompleteCurrentMonth }}
+    </p>
+    <p>
+      {{ mois[precMonth] }} : {{ taskCompletePrecMonth }}
+    </p>
+  </mat-card-content>
+</mat-card>

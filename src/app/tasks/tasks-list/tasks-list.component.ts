@@ -40,6 +40,7 @@ export class TasksListComponent implements OnInit/*, OnDestroy*/ {
   disableFilter = true;
   showAllM = true;
   showAllP = true;
+  memberStat: Member;
 
   constructor(public tasksService: TasksService,
               private matDialog: MatDialog,
@@ -52,6 +53,7 @@ export class TasksListComponent implements OnInit/*, OnDestroy*/ {
               private afauth: AngularFireAuth) { }
 
   ngOnInit() {
+    this.memberStat = this.membersService.sessionMember;
     this.projectService.getAllProjects();
     this.projectService.projectsSubject.subscribe(data => {
       this.projects = data;
@@ -71,6 +73,7 @@ export class TasksListComponent implements OnInit/*, OnDestroy*/ {
           this.usersService.getSingleUser(user.email).then((item: Users) => {
               if (item.memberid) {
                 const userMember = this.options.find(member => member.memberid === item.memberid);
+                this.memberStat = userMember;
                 this.membersService.setSessionMemberValue(userMember);
                 if (this.categories.find(cat => cat.id === userMember.categoryid).isadmin) {
                     this.displayAll(true);
@@ -102,7 +105,8 @@ export class TasksListComponent implements OnInit/*, OnDestroy*/ {
     if (bool) {
       //this.tasksService.getAllTasks();
     } else {
-      this.tasksService.getTasksForMember(memberid);
+      if(this.usersService.isAdministrateur) this.tasksService.getTasksForMember(memberid);
+      else this.tasksService.getTasksForMemberUntreated(memberid);
     }
     this.tasksService.tasksSubject.subscribe(data => {
       this.tasks = data;
@@ -160,6 +164,11 @@ export class TasksListComponent implements OnInit/*, OnDestroy*/ {
   displayOnProject(project: Project,index: number) {
     //this.projectService.projectSelected = project;
     this.projectPick = project;
+    if(!this.usersService.isAdministrateur) {
+      this.displayProject = false;
+      this.tasksService.getTasksForMemberAndProjectUntreated(this.membersService.sessionMember.memberid, project.projectid);
+      return;
+    }
     if(this.displayMember)this.displayProject = false;
     if(this.memberPick !== null) {
       this.displayChipOnlySelected();
@@ -194,6 +203,11 @@ export class TasksListComponent implements OnInit/*, OnDestroy*/ {
 
   removeChip() {
     this.displayProject = true;
+    if(!this.usersService.isAdministrateur) {
+      this.projectPick = null;
+      this.tasksService.getTasksForMemberUntreated(this.membersService.sessionMember.memberid);
+      return;
+    }
     this.otherFunction();
     this.showAllM = this.showAllP = true;
   }
