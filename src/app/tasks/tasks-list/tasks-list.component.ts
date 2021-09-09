@@ -154,7 +154,7 @@ export class TasksListComponent implements OnInit/*, OnDestroy*/ {
     if(this.displayProject) this.displayMember = false;
     if (this.projectPick !== null) {
       this.displayChipOnlySelected();
-      this.tasksService.getTasksForMemberAndProject(member.memberid, this.projectPick.projectid);
+      this.tasksService.getTasksUntreatedForMemberAndProject(member.memberid, this.projectPick.projectid);
     } else {
       this.tasksService.getTasksForMember(member.memberid);
     }
@@ -236,7 +236,7 @@ export class TasksListComponent implements OnInit/*, OnDestroy*/ {
   }
 
   displayUntreatedTask(value: any) {
-    if(value) {
+    if(!value) {
       this.tasksService.getTasksUntreatedForMemberAndProject(this.memberPick.memberid, this.projectPick.projectid);
     } else {
       this.tasksService.getTasksForMemberAndProject(this.memberPick.memberid, this.projectPick.projectid);
