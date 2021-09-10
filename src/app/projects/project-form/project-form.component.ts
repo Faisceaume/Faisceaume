@@ -55,6 +55,9 @@ export class ProjectFormComponent implements OnInit {
     'Décembre'
   ];
 
+  isPrinting: boolean = true;
+  isPrintingMonth: boolean = true;
+
   tasksYears = [] as TasksYear[];
 
   panelOpenState = false;
@@ -144,20 +147,27 @@ export class ProjectFormComponent implements OnInit {
   }
 
   onPrint(year: number) {
+    this.isPrinting = false;
     this.multi = true;
     this.expanded = true;
     setTimeout(() => {
       this.printerService.printDiv('yearTable' + year);
       this.multi = false;
       this.expanded = false;
+      this.isPrinting = true;
     }, 1000);
   }
 
   onPrintMonth(month: number, year: number) {
-    this.expanded = true;
-    this.printerService.printDiv('monthTable' + month + year);
-    this.expanded = false;
-    this.multi = false;
+    this.isPrintingMonth = false;
+    setTimeout(() => {
+      this.printerService.printDiv('monthTable' + month + year);
+      this.expanded = true;
+      this.multi = false;
+      this.expanded = false;
+      this.isPrintingMonth = true;
+    }, 200)
+
   }
 
 }

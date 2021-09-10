@@ -72,6 +72,9 @@
         </mat-panel-title>
       </mat-expansion-panel-header>
             <div [id]="'yearTable' + tasksYear.year">
+              <div *ngIf="!isPrinting">
+                <h1>{{ projectsService.formData.title }} / {{ tasksYear.year }} </h1>
+              </div>
               <mat-accordion [multi]="multi">
                 <!-- *ngIf="tasksFilter[item].year === year" -->
                 <mat-expansion-panel [expanded]="expanded" *ngFor="let item of tasksYear.tasksMonth;">
@@ -83,7 +86,7 @@
                       </span>
                       {{mois[item.month]}}
                       <div>
-                        <button mat-icon-button color="accent" matTooltip="Print task" (click)="onPrintMonth(item.month, tasksYear.year)">
+                        <button *ngIf="isPrinting" mat-icon-button color="accent" matTooltip="Print task" (click)="onPrintMonth(item.month, tasksYear.year)">
                             <mat-icon>print</mat-icon>
                         </button>
                       </div>
@@ -93,6 +96,9 @@
                     </mat-panel-description>
                   </mat-expansion-panel-header>
                   <div [id]="'monthTable' + item.month + tasksYear.year">
+                    <div *ngIf="!isPrintingMonth">
+                      <h1>{{ projectsService.formData.title }} / {{ tasksYear.year }} / {{ mois[item.month] }} </h1>
+                    </div>
                     <table mat-table [dataSource]="item.listTasks" style="box-shadow: none;">
 
                       <ng-container matColumnDef="title">
