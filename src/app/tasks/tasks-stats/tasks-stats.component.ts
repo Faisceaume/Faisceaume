@@ -32,8 +32,9 @@ export class TasksStatsComponent implements OnInit {
   ];
   display = false;
   category: string;
-  taskCompleteCurrentMonth = 0;
-  taskCompletePrecMonth = 0;
+  taskCompleteCurrentMonth = 0
+  taskCompletePrecMonth = 0
+  taskCompleteTimeCurrentMonth = 0
 
   constructor(
     private tasksService: TasksService,
@@ -58,6 +59,7 @@ export class TasksStatsComponent implements OnInit {
         data.forEach(task => {
           if(new Date(task.timestamp).getMonth() === this.currentMonth && task.status === 'done') {
             this.taskCompleteCurrentMonth++;
+            this.taskCompleteTimeCurrentMonth += task.timespent
           } else if ((new Date(task.timestamp).getMonth()-1 === this.precMonth) && task.status === 'done') {
             this.taskCompletePrecMonth++;
           }

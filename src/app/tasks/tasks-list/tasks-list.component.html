@@ -1,12 +1,13 @@
 <div class="info-user"
   fxLayout="row" fxLayoutAlign="start center"
-  *ngIf="!usersService.isAdministrateur && memberStat">
+  *ngIf="memberStat">
 
   <app-tasks-stats [member]="memberStat"></app-tasks-stats>
 
-  <div *ngIf="!usersService.isAdministrateur && projectPick" style="padding: 1em 0 0 1em">
+  <div *ngIf="projectPick" style="padding: 1em 0 0 1em">
     <mat-chip-list>
       <mat-chip (removed)="removeChip()" [removable]="true">
+        <mat-slide-toggle [disabled]="disableFilter" (change)="displayUntreatedTask(status.checked)" #status class="example-margin"></mat-slide-toggle>
         &nbsp; &nbsp; {{ projectPick.title}}
         <mat-icon matChipRemove >cancel</mat-icon>
       </mat-chip>
@@ -51,15 +52,6 @@
       (click)="displayOnMember(member,i)">
         <img  class="tab-thumb" src="{{ member.picture }}">
         <p>{{ member.name }}</p>
-        <div style="width: max-content;" *ngIf="showAllM || (memberPick.name !== null && memberPick.name === member.name)">
-          <mat-chip-list *ngIf="projectPick && memberPick">
-            <mat-chip (removed)="removeChip()" [removable]="true">
-              <mat-slide-toggle [disabled]="disableFilter" (change)="displayUntreatedTask(status.checked)" #status class="example-margin"></mat-slide-toggle>
-              &nbsp; &nbsp; {{projectPick.title}}
-              <mat-icon matChipRemove >cancel</mat-icon>
-            </mat-chip>
-          </mat-chip-list>
-        </div>
     </div>
   </div>
 </div>
@@ -67,7 +59,7 @@
 
 
 <div class="container" fxLayout="row wrap" fxLayoutGap="3px"
-[ngStyle]="{ 'margin-top':'20px' }" *ngIf="tasksService.onsShowGrille">
+[ngStyle]="{ 'margin-top':'20px' }" *ngIf="memberPick || projectPick">
   <mat-card class="example-card" *ngFor="let task of tasks">
       <mat-card-header [ngStyle]="{'opacity': task.status === 'done' ? 0.3 : 1 }">
         <div mat-card-avatar [style.background-image]="getBackground(task.memberpicture)"

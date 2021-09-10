@@ -7,11 +7,10 @@ import { ProjectFormComponent } from './project-form/project-form.component';
 import { SharedModule } from '../shared/shared.module';
 import { ProjectComponent } from './project/project.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
-import { ProjectPrintComponent } from './project-print/project-print.component';
 import { NgxPrinterModule } from 'ngx-printer';
 
 @NgModule({
-  declarations: [ProjectsListComponent, ProjectFormComponent, ProjectComponent, ProjectPrintComponent],
+  declarations: [ProjectsListComponent, ProjectFormComponent, ProjectComponent],
   imports: [
     SharedModule,
     CommonModule,
