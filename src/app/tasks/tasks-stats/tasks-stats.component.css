@@ -26,8 +26,8 @@
   border-radius: 25px;
   text-align: center;
   font-weight: bold;
-  margin: 5px;
-  font-size: 0.8em;
+  margin: 10px;
+  font-size: 0.6em;
 }
 
 .lastmonthtask {
@@ -39,14 +39,14 @@
   border-radius: 10px;
   text-align: center;
   font-weight: bold;
-  margin: 15px 5px 0;
-  font-size: 0.8em;
+  margin: 25px 5px 0;
+  font-size: 0.6em;
 }
 .lastmonth {
   height: 20px;
   line-height: 20px;
   padding: 0 10px;
-  margin: 15px 5px;
+  margin: 25px 5px;
   border-radius: 10px;
   font-size: 0.6em;
   font-weight: bold;
