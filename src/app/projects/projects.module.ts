@@ -8,6 +8,7 @@ import { SharedModule } from '../shared/shared.module';
 import { ProjectComponent } from './project/project.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { ProjectPrintComponent } from './project-print/project-print.component';
+import { NgxPrinterModule } from 'ngx-printer';
 
 @NgModule({
   declarations: [ProjectsListComponent, ProjectFormComponent, ProjectComponent, ProjectPrintComponent],
@@ -16,6 +17,7 @@ import { ProjectPrintComponent } from './project-print/project-print.component';
     CommonModule,
     ProjectsRoutingModule,
     DragDropModule,
+    NgxPrinterModule.forRoot({printOpenWindow: true})
   ]
 })
 export class ProjectsModule { }

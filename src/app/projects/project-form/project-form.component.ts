@@ -1,12 +1,14 @@
 
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ProjectsService } from '../projects.service';
 import { MemberService } from 'src/app/members/member.service';
 import { NgForm } from '@angular/forms';
 import { Project } from '../project';
 import { Task } from 'src/app/tasks/task';
-import { MatTableDataSource } from '@angular/material/table';
+import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { MatPaginator} from '@angular/material/paginator'
+import { NgxPrinterService } from 'ngx-printer';
+import { MatAccordion } from '@angular/material/expansion';
 
 export interface Classement {
    listeTasks: Task[];
@@ -57,10 +59,17 @@ export class ProjectFormComponent implements OnInit {
 
   panelOpenState = false;
   displayedColumns: string[] = ['title', 'description', 'timespent'];
+  expanded = false;
+  expandedYear = false;
+
+  //@ViewChild('accordeon1', {read: ElementRef}) accordeon1: ElementRef;
+  //@ViewChild('monthTable', {read: ElementRef}) monthTable: ElementRef;
+  multi = false;
 
   constructor(
     public projectsService: ProjectsService,
-    public memberService: MemberService
+    public memberService: MemberService,
+    private printerService: NgxPrinterService
               ) { }
 
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
@@ -132,6 +141,23 @@ export class ProjectFormComponent implements OnInit {
   onDeleteDrapImage() {
     this.memberService.deletePhoto(this.memberService.fileUrl);
     this.memberService.fileUrl = null;
+  }
+
+  onPrint(year: number) {
+    this.multi = true;
+    this.expanded = true;
+    setTimeout(() => {
+      this.printerService.printDiv('yearTable' + year);
+      this.multi = false;
+      this.expanded = false;
+    }, 1000);
+  }
+
+  onPrintMonth(month: number, year: number) {
+    this.expanded = true;
+    this.printerService.printDiv('monthTable' + month + year);
+    this.expanded = false;
+    this.multi = false;
   }
 
 }

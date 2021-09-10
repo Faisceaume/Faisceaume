@@ -247,7 +247,7 @@ getTasksForMemberUntreated(idMember: string) {
 getTasksForMemberAndProject(idMember: string, idProject: string) {
   if (idMember) {
     this.db.collection('members')
-    .doc(idMember).collection('tasks' , ref => ref.where('projectid', '==', idProject))
+    .doc(idMember).collection('tasks' , ref => /*where('projectid', '==', idProject)*/ ref.orderBy('timestamp', 'desc'))
     .snapshotChanges().subscribe( data => {
        this.allTasks = data.map( e => {
          return {
@@ -255,6 +255,7 @@ getTasksForMemberAndProject(idMember: string, idProject: string) {
            ...e.payload.doc.data()
          } as Task;
        });
+       this.allTasks = this.allTasks.filter(el => el.projectid === idProject);
        this.emitTasksSubject();
      });
   }

@@ -41,6 +41,7 @@ export class TasksListComponent implements OnInit/*, OnDestroy*/ {
   showAllM = true;
   showAllP = true;
   memberStat: Member;
+  valueToggle: boolean;
 
   constructor(public tasksService: TasksService,
               private matDialog: MatDialog,
@@ -128,13 +129,25 @@ export class TasksListComponent implements OnInit/*, OnDestroy*/ {
 
   onDelete(task: Task) {
     if (confirm('Vraiment supprimer ?')) {
-        this.firestore.collection('members')
+        const batch = this.firestore.firestore.batch();
+
+        const ref1 = this.firestore.firestore.collection('members')
                     .doc(task.memberid).collection('tasks')
-                    .doc(task.taskid).delete();
-        this.firestore.collection('projects')
+                    .doc(task.taskid);
+        const ref2 = this.firestore.firestore.collection('projects')
                     .doc(task.projectid).collection('tasks')
-                    .doc(task.taskid).delete();
-        this.firestore.doc('tasks/' + task.taskid).delete();
+                    .doc(task.taskid);
+        const ref3 = this.firestore.firestore.doc('tasks/' + task.taskid);
+        batch.delete(ref1);
+        batch.delete(ref2);
+        batch.delete(ref3);
+        batch.commit().then(() => {
+          if(!this.valueToggle) {
+            this.tasksService.getTasksUntreatedForMemberAndProject(this.memberPick.memberid, this.projectPick.projectid);
+          } else {
+            this.tasksService.getTasksForMemberAndProject(this.memberPick.memberid, this.projectPick.projectid);
+          }
+        })
     }
   }
 
@@ -236,6 +249,7 @@ export class TasksListComponent implements OnInit/*, OnDestroy*/ {
   }
 
   displayUntreatedTask(value: any) {
+    this.valueToggle = value;
     if(!value) {
       this.tasksService.getTasksUntreatedForMemberAndProject(this.memberPick.memberid, this.projectPick.projectid);
     } else {

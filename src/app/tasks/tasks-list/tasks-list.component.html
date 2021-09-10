@@ -24,12 +24,14 @@
       (click)="displayOnProject(project,i)">
         <img  class="tab-thumb-project" src="{{ project.picture }}">
         <p>{{ project.title }}</p>
-        <div *ngIf="showAllP || (projectPick !== null && project.title === projectPick.title)">
+        <div style="width: max-content;" *ngIf="showAllP || (projectPick !== null && project.title === projectPick.title)">
           <mat-chip-list *ngIf="memberPick && projectPick">
             <mat-chip (removed)="removeChipProject()" [removable]="true">
-              <mat-slide-toggle [disabled]="disableFilter" (change)="displayUntreatedTask(status.checked)" #status class="example-margin"></mat-slide-toggle>
-              &nbsp; &nbsp; {{memberPick.name}}
-              <mat-icon matChipRemove >cancel</mat-icon>
+              <div fxLayout="row">
+                <mat-slide-toggle [disabled]="disableFilter" (change)="displayUntreatedTask(status.checked)" #status class="example-margin"></mat-slide-toggle>
+                &nbsp; &nbsp; {{memberPick.name}}
+                <mat-icon matChipRemove >cancel</mat-icon>
+              </div>
             </mat-chip>
           </mat-chip-list>
         </div>
@@ -49,7 +51,7 @@
       (click)="displayOnMember(member,i)">
         <img  class="tab-thumb" src="{{ member.picture }}">
         <p>{{ member.name }}</p>
-        <div *ngIf="showAllM || (memberPick.name !== null && memberPick.name === member.name)">
+        <div style="width: max-content;" *ngIf="showAllM || (memberPick.name !== null && memberPick.name === member.name)">
           <mat-chip-list *ngIf="projectPick && memberPick">
             <mat-chip (removed)="removeChip()" [removable]="true">
               <mat-slide-toggle [disabled]="disableFilter" (change)="displayUntreatedTask(status.checked)" #status class="example-margin"></mat-slide-toggle>
