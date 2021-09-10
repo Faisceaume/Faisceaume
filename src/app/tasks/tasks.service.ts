@@ -295,8 +295,5 @@ getTasksUntreatedForMemberAndProject(idMember: string, idProject: string) {
   }
 }
 
-setOnShowGrille(bool: boolean) {
-  this.onsShowGrille = bool;
-}
 
 }

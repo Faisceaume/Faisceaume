@@ -20,13 +20,14 @@
 .task {
   background-color: #E91E63;
   color: #FFF;
-  width: 40px;
-  height: 40px;
-  line-height: 40px;
-  border-radius: 20px;
+  width: 50px;
+  height: 50px;
+  line-height: 50px;
+  border-radius: 25px;
   text-align: center;
   font-weight: bold;
   margin: 5px;
+  font-size: 0.8em;
 }
 
 .lastmonthtask {

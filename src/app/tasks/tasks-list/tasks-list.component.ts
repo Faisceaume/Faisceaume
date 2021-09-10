@@ -98,8 +98,6 @@ export class TasksListComponent implements OnInit/*, OnDestroy*/ {
       this.tasksService.setToUpdateTaskStatut(false);
     }
 
-
-
 }
 
   displayAll(bool: boolean, memberid?: string) {
@@ -163,7 +161,7 @@ export class TasksListComponent implements OnInit/*, OnDestroy*/ {
 
   displayOnMember(member: Member, index: number): void {
     //this.membersService.memberSelected = member;
-    this.memberPick = member;
+    this.memberPick = this.memberStat = member;
     if(this.displayProject) this.displayMember = false;
     if (this.projectPick !== null) {
       this.displayChipOnlySelected();
