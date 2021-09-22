@@ -43,6 +43,13 @@ export class TasksListComponent implements OnInit/*, OnDestroy*/ {
   memberStat: Member;
   valueToggle: boolean;
 
+
+  taskCompleteCurrentMonth = 0;
+  taskCompletePrecMonth = 0;
+  taskCompleteTimeCurrentMonth = 0;
+  currentMonth: number;
+  precMonth: number;
+
   constructor(public tasksService: TasksService,
               private matDialog: MatDialog,
               private firestore: AngularFirestore,
@@ -75,6 +82,7 @@ export class TasksListComponent implements OnInit/*, OnDestroy*/ {
               if (item.memberid) {
                 const userMember = this.options.find(member => member.memberid === item.memberid);
                 this.memberStat = userMember;
+                this.taskMonthCompute(this.memberStat.memberid);
                 this.membersService.setSessionMemberValue(userMember);
                 if (this.categories.find(cat => cat.id === userMember.categoryid).isadmin) {
                     this.displayAll(true);
@@ -160,7 +168,6 @@ export class TasksListComponent implements OnInit/*, OnDestroy*/ {
   }
 
   displayOnMember(member: Member, index: number): void {
-    //this.membersService.memberSelected = member;
     this.memberPick = this.memberStat = member;
     if(this.displayProject) this.displayMember = false;
     if (this.projectPick !== null) {
@@ -170,10 +177,38 @@ export class TasksListComponent implements OnInit/*, OnDestroy*/ {
       this.tasksService.getTasksForMember(member.memberid);
     }
     this.changeMemberSelectedCss(index);
+
+    // time calculate
+    this.taskMonthCompute(this.memberStat.memberid);
+
+  }
+
+  // Task month
+  taskMonthCompute(id) {
+    const date = Date.now();
+    this.currentMonth = new Date(date).getMonth();
+    this.precMonth = new Date(date).getMonth()-1;
+    this.tasksService.getTasksForMember(id);
+    this.tasksService.tasksSubject.subscribe({
+        next: (data: Task[]) => {
+          data;
+          this.taskCompleteCurrentMonth = 0;
+          this.taskCompletePrecMonth = 0;
+          this.taskCompleteTimeCurrentMonth = 0;
+          for (let i = 0; i < data.length; i++) {
+            if(new Date(data[i].timestamp).getMonth() === this.currentMonth && data[i].status === 'done') {
+              this.taskCompleteCurrentMonth = this.taskCompleteCurrentMonth + 1;
+              this.taskCompleteTimeCurrentMonth += data[i].timespent;
+            } else if ((new Date(data[i].timestamp).getMonth()-1 === this.precMonth) && data[i].status === 'done') {
+              this.taskCompletePrecMonth++;
+            }
+          }
+          console.log(this.taskCompleteCurrentMonth);
+        }
+      });
   }
 
   displayOnProject(project: Project,index: number) {
-    //this.projectService.projectSelected = project;
     this.projectPick = project;
     if(!this.usersService.isAdministrateur) {
       this.displayProject = false;
@@ -183,10 +218,11 @@ export class TasksListComponent implements OnInit/*, OnDestroy*/ {
     if(this.displayMember)this.displayProject = false;
     if(this.memberPick !== null) {
       this.displayChipOnlySelected();
-      this.tasksService.getTasksForMemberAndProject(this.memberPick.memberid, project.projectid);
+      this.tasksService.getTasksForMemberAndProjectUntreated(this.memberPick.memberid, project.projectid);
     } else {
       this.tasksService.getAllTasksForProject(project.projectid);
     }
+    this.taskMonthCompute(this.memberStat.memberid);
     this.changeMemberSelectedCssProject(index);
   }
 
@@ -214,6 +250,7 @@ export class TasksListComponent implements OnInit/*, OnDestroy*/ {
 
   removeChip() {
     this.displayProject = true;
+    this.displayMember = true;
     if(!this.usersService.isAdministrateur) {
       this.projectPick = null;
       this.tasksService.getTasksForMemberUntreated(this.membersService.sessionMember.memberid);
@@ -221,6 +258,8 @@ export class TasksListComponent implements OnInit/*, OnDestroy*/ {
     }
     this.otherFunction();
     this.showAllM = this.showAllP = true;
+    this.memberStat = this.membersService.sessionMember;
+    this.taskMonthCompute(this.memberStat.memberid);
   }
 
   removeChipProject() {
@@ -253,6 +292,10 @@ export class TasksListComponent implements OnInit/*, OnDestroy*/ {
     } else {
       this.tasksService.getTasksForMemberAndProject(this.memberPick.memberid, this.projectPick.projectid);
     }
+  }
+
+  displayMemberAndProject() {
+      this.removeChip();
   }
 
   /*ngOnDestroy(): void {

@@ -2,16 +2,26 @@
   fxLayout="row" fxLayoutAlign="start center"
   *ngIf="memberStat">
 
-  <app-tasks-stats [member]="memberStat"></app-tasks-stats>
+  <app-tasks-stats
+  [member]="memberStat"
+  [taskCompleteCurrentMonth]="taskCompleteCurrentMonth"
+  [taskCompletePrecMonth]="taskCompletePrecMonth"
+  [taskCompleteTimeCurrentMonth]="taskCompleteTimeCurrentMonth"
+  [precMonth]="precMonth"
+  ></app-tasks-stats>
 
   <div *ngIf="projectPick" style="padding: 1em 0 0 1em">
     <mat-chip-list>
-      <mat-chip (removed)="removeChip()" [removable]="true">
+      <mat-chip [removable]="true">
         <mat-slide-toggle [disabled]="disableFilter" (change)="displayUntreatedTask(status.checked)" #status class="example-margin"></mat-slide-toggle>
         &nbsp; &nbsp; {{ projectPick.title}}
-        <mat-icon matChipRemove >cancel</mat-icon>
       </mat-chip>
     </mat-chip-list>
+  </div>
+  <div *ngIf="memberPick || projectPick" fxFlexAlign="end start">
+      <button (click)="displayMemberAndProject()" style="color: white;" mat-icon-button>
+        <mat-icon>clear</mat-icon>
+      </button>
   </div>
 </div>
 
@@ -25,17 +35,6 @@
       (click)="displayOnProject(project,i)">
         <img  class="tab-thumb-project" src="{{ project.picture }}">
         <p>{{ project.title }}</p>
-        <div style="width: max-content;" *ngIf="showAllP || (projectPick !== null && project.title === projectPick.title)">
-          <mat-chip-list *ngIf="memberPick && projectPick">
-            <mat-chip (removed)="removeChipProject()" [removable]="true">
-              <div fxLayout="row">
-                <mat-slide-toggle [disabled]="disableFilter" (change)="displayUntreatedTask(status.checked)" #status class="example-margin"></mat-slide-toggle>
-                &nbsp; &nbsp; {{memberPick.name}}
-                <mat-icon matChipRemove >cancel</mat-icon>
-              </div>
-            </mat-chip>
-          </mat-chip-list>
-        </div>
     </div>
   </div>
 </div>
