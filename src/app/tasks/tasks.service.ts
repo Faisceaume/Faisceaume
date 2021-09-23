@@ -188,7 +188,7 @@ export class TasksService {
 
 
   emitTasksSubject() {
-    this.tasksSubject.next(this.allTasks.slice());
+    this.tasksSubject.next(this.allTasks);
   }
 
 

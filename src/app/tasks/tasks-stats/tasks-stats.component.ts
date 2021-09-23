@@ -1,5 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { share } from 'rxjs';
+import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChange, SimpleChanges } from '@angular/core';
+import { share, Subscription } from 'rxjs';
 import { Categorie } from 'src/app/members/categories/categorie';
 import { CategoriesService } from 'src/app/members/categories/categories.service';
 import { Member } from 'src/app/members/member';
@@ -11,11 +11,14 @@ import { TasksService } from '../tasks.service';
   templateUrl: './tasks-stats.component.html',
   styleUrls: ['./tasks-stats.component.css']
 })
-export class TasksStatsComponent implements OnInit {
+export class TasksStatsComponent implements OnInit, OnChanges {
 
-  @Input() member?: Member;
+  @Input() member: Member;
+  @Input() taskCompleteCurrentMonth: number;
+  @Input() taskCompletePrecMonth: number;
+  @Input() taskCompleteTimeCurrentMonth: number;
   currentMonth: number;
-  precMonth: number;
+  @Input() precMonth: number;
   mois = [
     'Janvier',
     'Fevrier',
@@ -32,9 +35,10 @@ export class TasksStatsComponent implements OnInit {
   ];
   display = false;
   category: string;
-  taskCompleteCurrentMonth = 0
-  taskCompletePrecMonth = 0
-  taskCompleteTimeCurrentMonth = 0
+
+
+  subscription: Subscription = new Subscription();
+  data: Task[];
 
   constructor(
     private tasksService: TasksService,
@@ -43,30 +47,42 @@ export class TasksStatsComponent implements OnInit {
 
   ngOnInit(): void {
     if(this.member !== null) {
-
       this.categoriesService.getAllCategories();
       this.categoriesService.categoriesSubject.subscribe((data: Categorie[]) => {
         this.category = data.find(el => el.id == this.member.categoryid).libelle;
       });
-
       this.display = true;
-      const date = Date.now();
-      console.log();
-      this.currentMonth = new Date(date).getMonth();
-      this.precMonth = new Date(date).getMonth()-1;
-      this.tasksService.getTasksForMember(this.member.memberid);
-      this.tasksService.tasksSubject.pipe(share()).subscribe((data: Task[]) => {
-        data.forEach(task => {
-          if(new Date(task.timestamp).getMonth() === this.currentMonth && task.status === 'done') {
-            this.taskCompleteCurrentMonth++;
-            this.taskCompleteTimeCurrentMonth += task.timespent
-          } else if ((new Date(task.timestamp).getMonth()-1 === this.precMonth) && task.status === 'done') {
-            this.taskCompletePrecMonth++;
-          }
-        })
-      });
-
+      //const date = Date.now();
+      //this.currentMonth = new Date(date).getMonth();
+      //this.precMonth = new Date(date).getMonth()-1;
+      //this.load(this.member.memberid);
     }
   }
 
+  // load(id) {
+  //     this.tasksService.getTasksForMember(id);
+  //     this.subscription = this.tasksService.tasksSubject.subscribe({
+  //       next: (data: Task[]) => {
+  //         this.data = data;
+  //         this.taskCompleteCurrentMonth = 0;
+  //         this.taskCompletePrecMonth = 0;
+  //         this.taskCompleteTimeCurrentMonth = 0;
+  //         for (let i = 0; i < this.data.length; i++) {
+  //           if(new Date(this.data[i].timestamp).getMonth() === this.currentMonth && this.data[i].status === 'done') {
+  //             this.taskCompleteCurrentMonth = this.taskCompleteCurrentMonth + 1;
+  //             this.taskCompleteTimeCurrentMonth += this.data[i].timespent;
+  //           } else if ((new Date(this.data[i].timestamp).getMonth()-1 === this.precMonth) && this.data[i].status === 'done') {
+  //             this.taskCompletePrecMonth++;
+  //           }
+  //         }
+  //       }
+  //     });
+  // }
+
+  ngOnChanges(change: SimpleChanges) {
+    //this.subscription.unsubscribe();
+    //console.log(change.member.currentValue.name)
+    //this.load(change.member.currentValue.memberid);
+    //console.log(this.taskCompleteCurrentMonth);
+  }
 }
