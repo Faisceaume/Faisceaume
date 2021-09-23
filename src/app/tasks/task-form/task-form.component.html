@@ -79,20 +79,21 @@
           <mat-datepicker #datepicker [disabled]="false"></mat-datepicker>
         </mat-form-field>
 
+        <button mat-raised-button color="primary" type="button" [disabled]="form.invalid" (click)="displayDatePicker = !displayDatePicker"
+          *ngIf="usersService.isAdministrateur && !tasksService.toUpdateTaskStatut && !displayDatePicker">
+            Antidaté
+        </button>
+
         <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid"
         *ngIf="!tasksService.toUpdateTaskStatut">
           {{tasksService.formData.taskid ? 'Modifier': 'Ajouter'}}
         </button>
 
-        <button mat-raised-button color="primary" type="button" [disabled]="form.invalid" (click)="displayDatePicker = !displayDatePicker" *ngIf="usersService.isAdministrateur && !tasksService.toUpdateTaskStatut">
-            Tache traitée
-        </button>
-
-
         <button mat-raised-button color="primary" *ngIf="tasksService.toUpdateTaskStatut"
         (click)="seeEditFormTask()">
           Editer
         </button>
+
         <button mat-raised-button color="accent" type="submit" *ngIf="tasksService.toUpdateTaskStatut">
           Finaliser la tâche
         </button>
