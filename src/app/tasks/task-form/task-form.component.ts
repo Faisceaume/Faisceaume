@@ -21,6 +21,8 @@ export class TaskFormComponent implements OnInit/*, OnDestroy*/ {
   timesTable = ['1', '2', '3', '4', '6', '8', '12', '24', '48', '72'];
   projectsTable: Project[];
   statutsTable = [true, false];
+  displayDatePicker = false;
+  timestamp = null;
   /*subscriptionMember: Subscription;
   subscriptionProject: Subscription;*/
 
@@ -64,15 +66,17 @@ export class TaskFormComponent implements OnInit/*, OnDestroy*/ {
         form.value.memberpicture = this.memebersService.sessionMember.picture;
         form.value.memberid = this.memebersService.sessionMember.memberid;
       }
-      form.value.status = Status.UNTREATED;
-      this.tasksService.createNewTask(form);
+      if(this.timestamp) {
+        form.value.status = Status.DONE;
+        form.value.timestamp = this.timestamp;
+        this.tasksService.createNewTask(form);
+      } else {
+        form.value.status = Status.UNTREATED;
+        this.tasksService.createNewTask(form);
+      }
     }
     this.projetcsService.setCurrentProject();
     this.matDialogRef.close();
-  }
 
-  /*ngOnDestroy(): void {
-    this.subscriptionProject.unsubscribe();
-    this.subscriptionMember.unsubscribe();
-  }*/
+  }
 }

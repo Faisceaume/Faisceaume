@@ -203,7 +203,6 @@ export class TasksListComponent implements OnInit/*, OnDestroy*/ {
               this.taskCompletePrecMonth++;
             }
           }
-          console.log(this.taskCompleteCurrentMonth);
         }
       });
   }
