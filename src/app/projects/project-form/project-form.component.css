@@ -61,7 +61,7 @@
     text-align: center;
   }
   .total-time-year {
-    width: 120px;
+    width: 100px;
     padding: 15px;
     margin: 0 10px 0 20px;
     color: #F44336;
@@ -80,6 +80,14 @@
   }
   .bg-accordeon {
     background-color: #00bcd4
+  }
+
+  .print-button {
+    color: #ccc;
+    vertical-align: middle
+  }
+  .print-button:hover {
+    color: #000;
   }
 
   /* https://coolors.co/f44336-e91e63-9c27b0-673ab7-3f51b5-2196f3-03a9f4-00bcd4-009688-4caf50 */

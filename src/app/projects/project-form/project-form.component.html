@@ -65,7 +65,8 @@
             </strong>
           </span>
           <div>
-            <button mat-icon-button color="accent" class="" matTooltip="Print task" (click)="onPrint(tasksYear.year)">
+            <button mat-icon-button color="accent" matTooltip="Print tasks" class="print-button"
+              (click)="onPrint(tasksYear.year)">
                 <mat-icon>print</mat-icon>
             </button>
           </div>
@@ -86,7 +87,9 @@
                       </span>
                       {{mois[item.month]}}
                       <div>
-                        <button *ngIf="isPrinting" mat-icon-button color="accent" matTooltip="Print task" (click)="onPrintMonth(item.month, tasksYear.year)">
+                        <button *ngIf="isPrinting" mat-icon-button color="accent" matTooltip="Print task"
+                          class="print-button"
+                          (click)="onPrintMonth(item.month, tasksYear.year)">
                             <mat-icon>print</mat-icon>
                         </button>
                       </div>
