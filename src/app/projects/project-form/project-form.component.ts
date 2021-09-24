@@ -111,9 +111,9 @@ export class ProjectFormComponent implements OnInit {
 
         if(indexMonth !== -1) {
           this.tasksYears[index].tasksMonth[indexMonth].listTasks.push(item);
-          this.tasksYears[index].tasksMonth[indexMonth].totalTimeSpent += parseInt(item.timespent);
+          this.tasksYears[index].tasksMonth[indexMonth].totalTimeSpent += parseFloat(item.timespent);
         } else {
-          this.tasksYears[index].tasksMonth.push({month: month, listTasks: [item], totalTimeSpent: parseInt(item.timespent)});
+          this.tasksYears[index].tasksMonth.push({month: month, listTasks: [item], totalTimeSpent: parseFloat(item.timespent)});
         }
       })
       console.log(this.tasksYears);

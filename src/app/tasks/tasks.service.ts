@@ -72,14 +72,17 @@ export class TasksService {
 
     let data = Object.assign({}, donneesFormulaire);
 
-    let timestamp = null;
+
     if(donneesFormulaire.timestamp) {
-      timestamp = new Date(donneesFormulaire.timestamp).getTime();
+      let timestamp = new Date(donneesFormulaire.timestamp).getTime();
+      let timespent = parseFloat(donneesFormulaire.time);
+      data = Object.assign(data, {taskid: nextId, location: 0, timestamp: timestamp, timespent: timespent});
     } else {
-      timestamp = new Date().getTime();
+      let timestamp = new Date().getTime();
+      data = Object.assign(data, {taskid: nextId, location: 0, timestamp: timestamp});
     }
 
-    data = Object.assign(data, {taskid: nextId, location: 0, timestamp: timestamp});
+
     const nextDocument2 = this.db.firestore.collection('members')
                         .doc(data.memberid).collection('tasks')
                         .doc(nextId);
