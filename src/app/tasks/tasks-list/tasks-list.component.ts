@@ -188,8 +188,8 @@ export class TasksListComponent implements OnInit/*, OnDestroy*/ {
     const date = Date.now();
     this.currentMonth = new Date(date).getMonth();
     this.precMonth = new Date(date).getMonth()-1;
-    this.tasksService.getTasksForMember(id);
-    this.tasksService.tasksSubject.subscribe({
+    this.tasksService.getTasksForMemberStat(id);
+    this.tasksService.taskstatSubject.subscribe({
         next: (data: Task[]) => {
           data;
           this.taskCompleteCurrentMonth = 0;

@@ -14,7 +14,9 @@ export class TasksService {
 
   formData: Task;
   tasksSubject = new Subject<any[]>();
+  taskstatSubject = new Subject<any[]>();
   allTasks: Task[];
+  allTasksForStat: Task[];
   tasksSection: boolean;
   toUpdateTaskStatut: boolean;
   onsShowGrille: boolean = true;
@@ -201,6 +203,10 @@ export class TasksService {
     this.tasksSubject.next(this.allTasks);
   }
 
+  emitTasksStatSubject() {
+    this.taskstatSubject.next(this.allTasksForStat);
+  }
+
 
   setTasksSectionValue(bool: boolean) {
     this.tasksSection = bool;
@@ -232,6 +238,22 @@ getTasksForMember(idMember: string) {
          } as Task;
        });
        this.emitTasksSubject();
+     });
+  }
+}
+
+getTasksForMemberStat(idMember: string) {
+  if (idMember) {
+    this.db.collection('members')
+    .doc(idMember).collection('tasks' , ref => ref.orderBy('timestamp', 'desc'))
+    .snapshotChanges().subscribe( data => {
+       this.allTasksForStat = data.map( e => {
+         return {
+           taskid : e.payload.doc.id,
+           ...e.payload.doc.data()
+         } as Task;
+       });
+       this.emitTasksStatSubject();
      });
   }
 }

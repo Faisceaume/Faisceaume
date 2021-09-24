@@ -18,7 +18,7 @@ import { Status } from '../task';
 export class TaskFormComponent implements OnInit/*, OnDestroy*/ {
 
   members: Member[];
-  timesTable = ['0.25', '0.5', '1', '1.5', '2', '2.5','3', '3.5', '4', '6', '8', '12', '24', '48', '72'];
+  timesTable = ['0.1', '0.25', '0.5', '1', '1.5', '2', '2.5','3', '3.5', '4', '5', '6', '8', '12', '16', '24', '48', '72'];
   projectsTable: Project[];
   statutsTable = [true, false];
   displayDatePicker = false;
